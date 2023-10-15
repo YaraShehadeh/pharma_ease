@@ -46,7 +46,7 @@ class _LauncherScreenState extends State<LauncherScreen>{
             SizedBox(
               height: 16,
             ),
-            Text('PharmaEase',style: Theme.of(context)
+            Text('PharmaEase?',style: Theme.of(context)
                 .textTheme.headlineMedium
                 ?.copyWith(fontWeight: FontWeight.w700,color:Color(0xFF199A8E),fontSize: 30)
           ,),
