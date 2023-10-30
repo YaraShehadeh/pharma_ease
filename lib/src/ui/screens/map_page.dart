@@ -52,8 +52,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget buildBottomSheetContent(BuildContext context) {
-    return Container(
-      height: 250, // Set a finite height for the BottomSheet content
+    return SizedBox(
+      height: 200, // Set a finite height for the BottomSheet content
       child: Column(
         children: <Widget>[
           SizedBox(height: 15,),
