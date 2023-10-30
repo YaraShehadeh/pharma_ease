@@ -1,0 +1,4 @@
+fastapi
+pymongo
+pymongo[srv]
+motor
