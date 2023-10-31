@@ -8,7 +8,9 @@ def pharmacyEntity(item) -> dict:
             "longitude": item["location"]["longitude"],
             "latitude": item["location"]["latitude"]
         },
-        "drugs": [{"name": drug["name"], "description": drug["description"]} for drug in item.get("drugs", [])]
+        "drugs": [{"name": drug["name"], "description": drug["description"]} for drug in item.get("drugs", [])],
+        "pharmacists": [{"first_name": pharmacist["first_name"] , "last_name": pharmacist["last_name"] ,
+                         "username" : pharmacist["username"] , "password": pharmacist["password"]} for pharmacist in item.get("pharmacists",[])]
     }
 
 def pharmaciesEntity(entity) -> list:

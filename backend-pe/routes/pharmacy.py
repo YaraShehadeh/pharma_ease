@@ -6,11 +6,16 @@ from bson import ObjectId
 
 pharmacy = APIRouter()
 
+
+# Return all pharmacies in the mdb
 @pharmacy.get("/")
 async def get_all_pharmacies():
-    pharmacies = list(collection_name.find().limit(1000))
+    pharmacies = await collection_name.find().to_list(1000)
     return pharmaciesEntity(pharmacies)
 
+
+
+# create a pharmacy in mdb
 @pharmacy.post("/")
 async def add_pharmacy(pharmacy: Pharmacy):
     pharmacy_dict = pharmacy.dict()
@@ -18,6 +23,9 @@ async def add_pharmacy(pharmacy: Pharmacy):
     return {"id": str(pharmacy_id.inserted_id)}
 
 
+
+
+# get pharmacy by id
 @pharmacy.get("/{pharmacy_id}")
 async def get_pharmacy(pharmacy_id: str):
     pharmacy = await collection_name.find_one({"_id": ObjectId(pharmacy_id)})
@@ -25,6 +33,18 @@ async def get_pharmacy(pharmacy_id: str):
         return pharmacyEntity(pharmacy)
     else:
         raise HTTPException(status_code=404, detail="Pharmacy not found")
+
+
+
+@pharmacy.get("/name/{pharmacy_name}")
+async def get_pharmacy_by_name(pharmacy_name: str):
+    pharmacy = await collection_name.find_one({"name":pharmacy_name})
+    if pharmacy:
+        return pharmacyEntity(pharmacy)
+    
+    else:
+        raise HTTPException(status_code= 404 , detail ="Pharmacy not found")
+
 
 
 @pharmacy.delete("/{pharmacy_id}")
