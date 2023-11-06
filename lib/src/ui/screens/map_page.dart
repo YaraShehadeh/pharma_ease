@@ -40,12 +40,36 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Map Page'),
+        title: Text('PharmaEase',style: TextStyle(color: Colors.black),),
+        backgroundColor:  Colors.white,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          children: <Widget>[
+       Padding(
+        padding: EdgeInsets.symmetric(horizontal: 25),
+        child: InkWell(
+          onTap:(){},
+          borderRadius: BorderRadius.circular(40),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText:"WTF",
+              filled: true,
+              fillColor: Colors.black.withOpacity(0.22),
+              enabled: false,
+              disabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(40),
+              ),
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .copyWith(fontSize:2, color: Colors.black),
+            ),
+          ),
+        ),),
+          ],
         ),
       ),
     );
