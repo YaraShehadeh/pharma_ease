@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/map_page.dart';
 import 'dart:async';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/map.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/':(context)=>Map(),
+        '/':(context)=>MapPage(),
         '/second':(context)=> OnBoardingScreen(),
       },
     );
