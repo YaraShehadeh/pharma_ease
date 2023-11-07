@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/side_menu.dart';
 
 class MapPage extends StatefulWidget {
+  const MapPage({super.key});
+
   @override
   _MapPageState createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  PersistentBottomSheetController? _bottomSheetController;
 
   // List<Map<String, String>> pharmacyList = [
   //   {"title": "Pharmacy 1", "trailing": "6 mins"},
@@ -24,16 +24,14 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 0), () {
-      _bottomSheetController = _scaffoldKey.currentState!.showBottomSheet(
-            (context) =>
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-              child: Container(
-                color: Colors.grey,
-                child: buildBottomSheetContent(context),
-              ),
-            ),
+    Timer(const Duration(seconds: 0), () {
+      _scaffoldKey.currentState!.showBottomSheet(
+        (context) => ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+          child: Container(
+            child: buildBottomSheetContent(context),
+          ),
+        ),
       );
     });
   }
@@ -44,79 +42,104 @@ class _MapPageState extends State<MapPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon:Icon(Icons.menu), color: Colors.black,
-        onPressed: () {
-          _scaffoldKey.currentState!.openDrawer();
-        },),
-      title: Row(children: [
+          icon: const Icon(Icons.menu),
+          color: Colors.black,
+          onPressed: () {
+            _scaffoldKey.currentState!.openDrawer();
+          },
+        ),
+        title: const Row(
+          children: [
+            Text(
+              'PharmaEase',
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.white,
+      ),
+      drawer: const Drawer(
+        child: SideMenu(),
+      ),
+      body: Center(
+        child: Stack(
+          children: <Widget>[
+            Map(),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.transparent,
+                child: buildBottomSheetContent(context),
+              ),
+            ),
+            Positioned(
+              left: 10,
+              right: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white
+                  ),
+                  child:  Row(
+                    children: [
+                      const Expanded(
+                        child:  TextField(
+                          decoration: InputDecoration(
+                            hintText: "Search...",
+                            prefixIcon: Icon(Icons.search),
+                            border: InputBorder.none,
+                          ),
 
-        Text('PharmaEase', style: TextStyle(color: Colors.black),),
-      ],),
-      backgroundColor: Colors.white,
-    )
-    ,
-    drawer: Drawer(
-    child: SideMenu(),
-    ),
-    body: Center(
-    child:
-    Stack(children:<Widget>[ Map(),
-    Positioned(
-    bottom: 0,
-    left: 0,
-    right: 0,
-    child: Container(
-    color: Colors.transparent, // Adjust the color as needed
-    child: buildBottomSheetContent(context),
-    ),
-    ),
-    // Padding(
-    //   padding: EdgeInsets.symmetric(horizontal: 25),
-    //   child: InkWell(
-    //     onTap:(){},
-    //     borderRadius: BorderRadius.circular(40),
-    //     child: TextField(
-    //       decoration: InputDecoration(
-    //         hintText:"WTF",
-    //         filled: true,
-    //         fillColor: Colors.black.withOpacity(0.22),
-    //         enabled: false,
-    //         disabledBorder: UnderlineInputBorder(
-    //           borderSide: BorderSide.none,
-    //           borderRadius: BorderRadius.circular(40),
-    //         ),
-    //         hintStyle: Theme.of(context)
-    //             .textTheme
-    //             .headlineMedium!
-    //             .copyWith(fontSize:2, color: Colors.black),
-    //       ),
-    //     ),
-    //   ),),
-    ],
-    ),
-    ),
+                        ),
+
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.camera_alt , color:Color(0xFF199A8E) ,),
+                        onPressed: () {
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
   Widget buildBottomSheetContent(BuildContext context) {
     return SizedBox(
-      height: 200, // Set a finite height for the BottomSheet content
+      height: 215,
       child: Column(
         children: <Widget>[
-          SizedBox(height: 15,),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const SizedBox(
+            height: 15,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text("Nearest Pharmacies",
-                  style: TextStyle(fontWeight: FontWeight.w500),),
-                SizedBox(width: 100,),
+                Text(
+                  "Nearest Pharmacies",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  width: 100,
+                ),
                 Text("View all Pharmacies"),
               ],
             ),
           ),
-          SizedBox(height: 20,),
-          Expanded( // Use Expanded widget to take remaining space
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
             child: ListView.builder(
               itemCount: 5,
               // pharmacyList.length,
@@ -124,12 +147,12 @@ class _MapPageState extends State<MapPage> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       color: Color(0xFF199A8E),
                     ),
-                    child: ListTile(
+                    child: const ListTile(
                       title: Text("title"),
                       trailing: Text("trailing"),
                       leading: Icon(Icons.pin_drop),
