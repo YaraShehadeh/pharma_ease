@@ -98,7 +98,7 @@ class _MapPageState extends State<MapPage> {
 
                       ),
                       IconButton(
-                        icon: Icon(Icons.camera_alt , color:Color(0xFF199A8E) ,),
+                        icon: const Icon(Icons.camera_alt , color:Color(0xFF199A8E) ,),
                         onPressed: () {
                         },
                       ),
