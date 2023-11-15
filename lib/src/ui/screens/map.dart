@@ -12,7 +12,6 @@ class _MapState extends State<Map> {
       CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
   late GoogleMapController _googleMapController;
   Location _locationController = new Location();
-  LatLng? _currentPosition = null;
 
   @override
   void initState() {
@@ -30,10 +29,10 @@ class _MapState extends State<Map> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
-              myLocationEnabled: true,
-              initialCameraPosition: _initialCameraPosition,
-              onMapCreated: (controller) => _googleMapController = controller,
-            ),
+        myLocationEnabled: true,
+        initialCameraPosition: _initialCameraPosition,
+        onMapCreated: (controller) => _googleMapController = controller,
+      ),
     );
   }
 
@@ -58,8 +57,11 @@ class _MapState extends State<Map> {
       if (currentLocation.latitude != null &&
           currentLocation.longitude != null) {
         setState(() {
-          _currentPosition =
-              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                  target: LatLng(
+                      currentLocation.latitude!, currentLocation.longitude!),
+                  zoom: 16)));
         });
       }
     });
