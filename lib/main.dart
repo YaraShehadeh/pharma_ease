@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/':(context)=>(MedicineDetailsScreen()),
+        '/':(context)=>(MedicineDetailsScreen( images: ["assets/images/onboarding_image_2.png", "assets/images/onboarding_image_1.png"])),
         '/second':(context)=> OnBoardingScreen(),
       },
     );
