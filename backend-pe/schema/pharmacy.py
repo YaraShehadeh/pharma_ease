@@ -5,8 +5,8 @@ def pharmacyEntity(item) -> dict:
         "email": item["email"],
         "description": item.get("description", ""),
         "location": {
-            "longitude": item["location"]["longitude"],
-            "latitude": item["location"]["latitude"]
+            "longitude": float(item["location"]["longitude"]),
+            "latitude": float(item["location"]["latitude"])
         },
         "drugs": [{"name": drug["name"], "description": drug["description"]} for drug in item.get("drugs", [])],
         "pharmacists": [{"first_name": pharmacist["first_name"] , "last_name": pharmacist["last_name"] ,

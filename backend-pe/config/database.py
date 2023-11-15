@@ -15,6 +15,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(uri)
 
 db = client.pharmacy_db
 collection_name = db["pharmacy"]
+users_collection = db["users"]
 
 async def setup_indexes():
     # Create unique indexes
@@ -22,4 +23,4 @@ async def setup_indexes():
     await collection_name.create_index("email", unique=True)
     await collection_name.create_index("location", unique=True)
     await collection_name.create_index("pharmacists.username", unique=True)
-
+    
