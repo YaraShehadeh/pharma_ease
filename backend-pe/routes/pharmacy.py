@@ -6,14 +6,14 @@ from config.database import collection_name
 from schema.pharmacy import pharmacyEntity, pharmaciesEntity
 from bson import ObjectId
 from models.mlocation import Location
-import geopy.distance
+from geopy import distance
 from typing import List, Optional
 
 pharmacy = APIRouter()
 
 
 # Return all pharmacies in the mdb
-@pharmacy.get("/")
+@pharmacy.get("/all")
 async def get_all_pharmacies():
     pharmacies = await collection_name.find().to_list(1000)
     print(pharmaciesEntity(pharmacies))
@@ -28,17 +28,16 @@ async def search_drug(drug_name: str, user_lat: float, user_lon: float):
     if not pharmacies:
         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drug")
 
-    
     # Calculate distance from user location to each pharmacy and sort
     for pharmacy in pharmacies:
-        pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"]) 
+        pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
         user_loc = (user_lat, user_lon)
-        pharmacy["distance"] = geopy.distance.distance(pharmacy_location, user_loc).km
+        pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
 
+    # Sort pharmacies by distance
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
 
-    # Return the top 5 closest pharmacies
-    return sorted_pharmacies
+    return pharmaciesEntity(sorted_pharmacies)  # Pass sorted_pharmacies to the entity function
 
 
 # add a drug to the pharmacy
@@ -65,7 +64,7 @@ async def add_drug_to_pharmacy(pharmacy_name: str, drug: Drug):
 
 
 # create a pharmacy in mdb
-@pharmacy.post("/")
+@pharmacy.post("/create")
 async def add_pharmacy(pharmacy: Pharmacy):
     pharmacy_dict = pharmacy.dict()
     pharmacy_id = await collection_name.insert_one(pharmacy_dict)
