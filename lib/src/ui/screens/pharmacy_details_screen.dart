@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/map_page.dart';
 
 class PharmacyDetailsScreen extends StatefulWidget {
   const PharmacyDetailsScreen({super.key});
@@ -14,8 +15,8 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          icon:  Icon(Icons.arrow_back_ios),
+          onPressed: () {Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MapPage()),);},
           color: Colors.black26,
         ),
         actions: <Widget>[
