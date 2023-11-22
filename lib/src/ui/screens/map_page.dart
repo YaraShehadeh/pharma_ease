@@ -3,6 +3,8 @@ import 'package:pharmaease/src/ui/screens/map.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/side_menu.dart';
 
+import '../widgets/search_bar_widget.dart';
+
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -74,39 +76,7 @@ class _MapPageState extends State<MapPage> {
                 child: buildBottomSheetContent(context),
               ),
             ),
-            Positioned(
-              left: 10,
-              right: 10,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.white
-                  ),
-                  child:  Row(
-                    children: [
-                      const Expanded(
-                        child:  TextField(
-                          decoration: InputDecoration(
-                            hintText: "Search...",
-                            prefixIcon: Icon(Icons.search),
-                            border: InputBorder.none,
-                          ),
-
-                        ),
-
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.camera_alt , color:Color(0xFF199A8E) ,),
-                        onPressed: () {
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
+            searchBar(),
           ],
         ),
       ),
@@ -170,3 +140,5 @@ class _MapPageState extends State<MapPage> {
     );
   }
 }
+
+

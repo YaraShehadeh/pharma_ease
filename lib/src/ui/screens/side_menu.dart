@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/medicine%20search/search_medicine_screen.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 
 class SideMenu extends StatelessWidget {
@@ -58,7 +59,7 @@ class SideMenu extends StatelessWidget {
             // const Divider(
             //   color: Colors.white,
             // ),
-            const ListTile(
+             ListTile(
               leading: Icon(Icons.home, size: 28,color:Colors.white70),
               minLeadingWidth: 3,
               title: Text(
@@ -66,14 +67,23 @@ class SideMenu extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w400),
               ),
             ),
-            const ListTile(
+             ListTile(
               leading: Icon(Icons.search, size: 28,color:Colors.white70),
               minLeadingWidth: 3,
               title: Text(
                 'Search Drug',
-                style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w400),
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MedicineListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                );
+              },
             ),
+
+
+
             const ListTile(
               leading: Icon(Icons.message_outlined, size: 28,color:Colors.white70),
               minLeadingWidth: 3,
