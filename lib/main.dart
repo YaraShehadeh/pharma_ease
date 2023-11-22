@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/map_page.dart';
 import 'dart:async';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
-import 'package:pharmaease/src/ui/screens/map.dart';
-
+import 'package:pharmaease/src/ui/screens/map_page.dart';
 void main() {
   runApp(MyApp());
 }
