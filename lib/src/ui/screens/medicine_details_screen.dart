@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/medicine%20search/search_medicine_screen.dart';
+
+import 'medicine search/medicine_model.dart';
 
 class MedicineDetailsScreen extends StatefulWidget {
-  final List<String> images;
+  final Medicine medicine;
 
-  const MedicineDetailsScreen({Key? key, required this.images}) : super(key: key);
+  const MedicineDetailsScreen({Key? key, required this.medicine}) : super(key: key);
 
   @override
   State<MedicineDetailsScreen> createState() => _MedicineDetailsScreenState();
@@ -12,14 +15,15 @@ class MedicineDetailsScreen extends StatefulWidget {
 class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
   int currentIndex = 0;
   bool isExpanded = false;
-  String fullText =
-      "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.";
+  late String fullText ;
+
 
   late String summaryText;
 
   @override
   void initState() {
     super.initState();
+    fullText= widget.medicine.description;
     updateSummaryText();
   }
 
@@ -40,7 +44,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
         leading: IconButton(
           icon:const Icon(Icons.arrow_back, color: Color(0xFF199A8E)),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MedicineListScreen()));
           },
         ),
         title: const Text(''),
@@ -57,9 +61,9 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
           padding:const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
             children: [
-              if (widget.images.length == 1)
+              if (widget.medicine.images.length == 1)
                 Image.asset(
-                  widget.images[0],
+                  widget.medicine.images[0],
                   height: 350,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -71,7 +75,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       PageView.builder(
-                        itemCount: widget.images.length,
+                        itemCount:  widget.medicine.images.length,
                         controller: PageController(initialPage: currentIndex),
                         onPageChanged: (index) {
                           setState(() {
@@ -80,7 +84,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         },
                         itemBuilder: (context, index) {
                           return Image.asset(
-                            widget.images[index],
+                            widget.medicine.images[index],
                             height: 150,
                             width: double.infinity,
                             fit: BoxFit.cover,
@@ -91,7 +95,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         bottom: 8,
                         child: Row(
                           children: List.generate(
-                            widget.images.length,
+                            widget.medicine.images.length,
                             (index) => Container(
                               margin: const EdgeInsets.symmetric(horizontal: 4),
                               width: 8,
@@ -110,11 +114,11 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                 ),
               const SizedBox(height: 25),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Prednisolone",
+                   "${widget.medicine.name}",
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ],
@@ -123,22 +127,22 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
               const SizedBox(
                 height: 8,
               ),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "75ml",
+                    "${widget.medicine.perscription}",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
               ),
 
               const SizedBox(height: 25),
-              const Row(
+               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Description",
+                   "Description",
                     textAlign: TextAlign.start,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
@@ -191,7 +195,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                       color:const Color(0xFF199A8E),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Column(
+                    child:  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -207,14 +211,14 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         Row(
                           children: [
                             Text(
-                              "Available in # pharmacies near you",
+                              "Available in  ${widget.medicine.pharmacies} pharmacies near you",
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w300),
                             ),
                             SizedBox(
-                              width: 90,
+                              width: 50,
                             ),
                             Icon(
                               Icons.arrow_forward_rounded,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/medicine search/medicine_model.dart';
+import 'package:pharmaease/src/ui/screens/medicine_details_screen.dart';
 
 class MedicineCard extends StatefulWidget {
   final Medicine medicine;
@@ -20,9 +21,8 @@ class _MedicineCardState extends State<MedicineCard> {
         margin: EdgeInsets.all(8.0),
         child: InkWell(
           onTap: () {
-            // Implement navigation to a detailed medicine page
-            // You can use Navigator.push() to navigate to a new screen
-            // and pass the selected medicine to the new screen.
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) =>MedicineDetailsScreen(medicine:Medicine(1,'Paracetamol',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.", "3pcs",4,true,['assets/images/onboarding_image_1.png']),)));
           },
           child: Stack(
             alignment: Alignment.topRight,
@@ -32,7 +32,7 @@ class _MedicineCardState extends State<MedicineCard> {
                 children: [
                   Expanded(
                     child: Image.asset(
-                      widget.medicine.imagePath,
+                      widget.medicine.images[0],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -47,14 +47,14 @@ class _MedicineCardState extends State<MedicineCard> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('\$${widget.medicine.price.toStringAsFixed(2)}'),
+                    child: Text('${widget.medicine.perscription}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Icon(Icons.local_pharmacy_outlined,color:  Color(0xFF199A8E),),
-                        Text('\$${widget.medicine.pharmacies.toStringAsFixed(2)} pharmacies near you',style: TextStyle(fontSize: 10),)
+                        Text('${widget.medicine.pharmacies.toStringAsFixed(0)} pharmacies near you',style: TextStyle(fontSize: 10),)
                       ],
                     ),
                   ),

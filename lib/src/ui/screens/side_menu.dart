@@ -75,7 +75,7 @@ class SideMenu extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
               ),
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => MedicineListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
                 );

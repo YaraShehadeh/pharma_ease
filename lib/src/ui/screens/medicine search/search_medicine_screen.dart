@@ -9,15 +9,15 @@ class MedicineListScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // Dummy data for medicines
   final List<Medicine> medicines = [
-    Medicine('Paracetamol', 'Pain reliever', 10.99, 'assets/images/onboarding_image_1.png',12,true),
-    Medicine('Ibuprofen', 'Anti-inflammatory', 8.99, 'assets/images/onboarding_image_1.png',3,false),
-    Medicine('Cough Syrup', 'Cough suppressant', 15.99, 'assets/images/onboarding_image_1.png',9,true),
-    Medicine('Paracetamol', 'Pain reliever', 10.99, 'assets/images/onboarding_image_1.png',12,false),
-    Medicine('Ibuprofen', 'Anti-inflammatory', 8.99, 'assets/images/onboarding_image_1.png',3,true),
-    Medicine('Cough Syrup', 'Cough suppressant', 15.99, 'assets/images/onboarding_image_1.png',9,false),
-    Medicine('Paracetamol', 'Pain reliever', 10.99, 'assets/images/onboarding_image_1.png',12,false),
-    Medicine('Ibuprofen', 'Anti-inflammatory', 8.99, 'assets/images/onboarding_image_1.png',3,false),
-    Medicine('Cough Syrup', 'Cough suppressant', 15.99, 'assets/images/onboarding_image_1.png',9,false),
+    Medicine(1,'Paracetamol',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing", "12 tablets",4,true,['assets/images/onboarding_image_1.png']),
+    Medicine(2,'Ibuprofen',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.","3",9 ,false,['assets/images/onboarding_image_1.png']),
+    Medicine(3,'Cough Syrup',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.","4pcs",10, true, ['assets/images/onboarding_image_1.png'],),
+    Medicine(4,'Paracetamol',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.", "10 capsules",6,true,['assets/images/onboarding_image_1.png']),
+    Medicine(5,'Ibuprofen',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.","2",1 ,true,['assets/images/onboarding_image_1.png']),
+    Medicine(6,'Cough Syrup', "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.","4",6, false,['assets/images/onboarding_image_1.png']),
+    Medicine(7,'Paracetamol', "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.", "5",5 ,false,['assets/images/onboarding_image_1.png']),
+    Medicine(8,'Ibuprofen', "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.",  "10",4,false,['assets/images/onboarding_image_1.png']),
+    Medicine(9,'Cough Syrup',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.","3",2,false,['assets/images/onboarding_image_1.png']),
 
     // Add more medicines as needed
   ];
