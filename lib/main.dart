@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/':(context)=>MapPage(),
+        '/':(context)=>LauncherScreen(),
         '/second':(context)=> OnBoardingScreen(),
       },
     );

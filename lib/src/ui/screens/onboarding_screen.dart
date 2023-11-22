@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/map_page.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   late PageController _pageController;
-  int _pageIndex =0;
+  int _pageIndex = 0;
 
   @override
   void initState() {
@@ -33,38 +34,57 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           child: PageView.builder(
               controller: _pageController,
               itemCount: onboarding_data.length,
-              onPageChanged: (index){
+              onPageChanged: (index) {
                 setState(() {
-                  _pageIndex =index;
+                  _pageIndex = index;
                 });
+                if (index == onboarding_data.length - 1) {
+                  Future.delayed(Duration(seconds: 2), () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MapPage()));
+                  });
+                }
               },
               itemBuilder: (context, index) => OnBoardContent(
                     image: onboarding_data[index].image,
-                    description:  onboarding_data[index].description,
+                    description: onboarding_data[index].description,
                   )),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(onboarding_data.length, (index) => Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: DotIndicator(isActive: index==_pageIndex,),
-            )),
-            SizedBox(width:40),
+            ...List.generate(
+                onboarding_data.length,
+                (index) => Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: DotIndicator(
+                        isActive: index == _pageIndex,
+                      ),
+                    )),
+            SizedBox(width: 40),
             SizedBox(
               height: 100,
               width: 60,
               child: ElevatedButton(
-                onPressed: () {
-                  _pageController.nextPage(
-                      duration: Duration(milliseconds: 300), curve: Curves.ease);
-                },
-                style: ElevatedButton.styleFrom(shape: CircleBorder(),backgroundColor: Color(0xFF199A8E)),
-                child: Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                )
-              ),
+                  onPressed: () {
+                    if (_pageIndex == onboarding_data.length - 1) {
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => MapPage()));
+                      });
+                    } else {
+                      _pageController.nextPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.ease);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      backgroundColor: Color(0xFF199A8E)),
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  )),
             ),
           ],
         )
@@ -72,28 +92,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     )));
   }
 }
-class DotIndicator extends StatelessWidget{
+
+class DotIndicator extends StatelessWidget {
   const DotIndicator({
     Key? key,
-    this.isActive= false,
-}): super(key: key);
+    this.isActive = false,
+  }) : super(key: key);
   final bool isActive;
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: 12,
-      width: isActive? 20: 10,
-        decoration:  BoxDecoration(
-          color: isActive ?Color(0xFF199A8E): Color(0xFF199A8E).withOpacity(0.4),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-
-        ),
+      width: isActive ? 20 : 10,
+      decoration: BoxDecoration(
+        color:
+            isActive ? Color(0xFF199A8E) : Color(0xFF199A8E).withOpacity(0.4),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
     );
   }
 }
-
 
 class OnBoard {
   final String image, description;
@@ -104,7 +124,6 @@ class OnBoard {
   });
 }
 
-
 final List<OnBoard> onboarding_data = [
   OnBoard(
     image: "assets/images/onboarding_image_1.png",
@@ -112,8 +131,9 @@ final List<OnBoard> onboarding_data = [
   ),
   OnBoard(
     image: "assets/images/onboarding_image_2.png",
-    description: "Consult our chatbot",),
-    OnBoard(
+    description: "Consult our chatbot",
+  ),
+  OnBoard(
     image: "assets/images/onboarding_image_3.png",
     description: "Look for an alternative drug ",
   ),
@@ -136,14 +156,14 @@ class OnBoardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth= MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         const Spacer(),
         Image.asset(
           image,
           height: 350,
-          width:450,
+          width: 450,
         ),
         const Spacer(),
         const SizedBox(
@@ -155,16 +175,16 @@ class OnBoardContent extends StatelessWidget {
             borderRadius: BorderRadius.circular(25),
           ),
           height: 150,
-          width:350,
+          width: 350,
           padding: const EdgeInsets.all(16),
           child: Center(
             child: Text(
               description,
               textAlign: TextAlign.start,
-              style: Theme.of(context)
-                  .textTheme.headlineMedium
-                  ?.copyWith(fontWeight: FontWeight.w700,color: Colors.black,fontSize: 30),
-
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                  fontSize: 30),
             ),
           ),
         ),

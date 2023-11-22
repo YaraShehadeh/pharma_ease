@@ -12,40 +12,52 @@ class SideMenu extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            SizedBox(
-              height: 120,
-              child: DrawerHeader(
-                  padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'PharmaEase',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
-                            ?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontSize: 30),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Flexible(
+              // height: 120,
+              Container(
+                height:140,
+                child: DrawerHeader(
+                    padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF199A8E),
+                  ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'PharmaEase',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  fontSize: 30),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
-                        "Helping you every step of the way",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w400),
-                      )),
-                    ],
-                  )),
-            ),
-            const Divider(
-              color: Colors.white,
-            ),
+                              "Helping you every step of the way",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white60,
+                                  fontWeight: FontWeight.w400),
+
+                            ),
+                        ),
+
+
+
+                      ],
+                    ),
+
+                ),
+              ),
+            // const Divider(
+            //   color: Colors.white,
+            // ),
             const ListTile(
               leading: Icon(Icons.home, size: 28,color:Colors.white70),
               minLeadingWidth: 3,
