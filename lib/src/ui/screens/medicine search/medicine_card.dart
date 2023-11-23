@@ -5,7 +5,7 @@ import 'package:pharmaease/src/ui/screens/medicine_details_screen.dart';
 class MedicineCard extends StatefulWidget {
   final Medicine medicine;
 
-  MedicineCard({required this.medicine});
+  const MedicineCard({super.key, required this.medicine});
 
   @override
   State<MedicineCard> createState() => _MedicineCardState();
@@ -15,14 +15,25 @@ class _MedicineCardState extends State<MedicineCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top:2.0,bottom: 2.0),
+      padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
       child: Card(
         color: Colors.white,
-        margin: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
         child: InkWell(
           onTap: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) =>MedicineDetailsScreen(medicine:Medicine(1,'Paracetamol',  "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.", "3pcs",4,true,['assets/images/onboarding_image_1.png']),)));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MedicineDetailsScreen(
+                          medicine: Medicine(
+                              1,
+                              'Paracetamol',
+                              "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.",
+                              "3pcs",
+                              4,
+                              true,
+                              ['assets/images/onboarding_image_1.png']),
+                        )));
           },
           child: Stack(
             alignment: Alignment.topRight,
@@ -40,30 +51,35 @@ class _MedicineCardState extends State<MedicineCard> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       widget.medicine.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('${widget.medicine.perscription}'),
+                    child: Text(widget.medicine.perscription),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Icon(Icons.local_pharmacy_outlined,color:  Color(0xFF199A8E),),
-                        Text('${widget.medicine.pharmacies.toStringAsFixed(0)} pharmacies near you',style: TextStyle(fontSize: 10),)
+                        const Icon(
+                          Icons.local_pharmacy_outlined,
+                          color: Color(0xFF199A8E),
+                        ),
+                        Text(
+                          '${widget.medicine.pharmacies.toStringAsFixed(0)} pharmacies near you',
+                          style: const TextStyle(fontSize: 10),
+                        )
                       ],
                     ),
                   ),
                 ],
               ),
-
               if (widget.medicine.isConflicting)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.warning_amber_rounded,
                     color: Colors.red,
@@ -76,4 +92,3 @@ class _MedicineCardState extends State<MedicineCard> {
     );
   }
 }
-

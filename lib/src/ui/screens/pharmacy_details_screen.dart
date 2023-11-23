@@ -15,8 +15,13 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back_ios),
-          onPressed: () {Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MapPage()),);},
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const MapPage()),
+            );
+          },
           color: Colors.black26,
         ),
         actions: <Widget>[
@@ -33,9 +38,10 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-              const Text("Aster Pharmacy", style: TextStyle(
-                fontSize: 30,
-              )),
+              const Text("Aster Pharmacy",
+                  style: TextStyle(
+                    fontSize: 30,
+                  )),
               const SizedBox(height: 30),
               const Image(
                 image: AssetImage('assets/images/aster.png'),
@@ -70,8 +76,8 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                 ],
               ),
               const Divider(
-                  thickness: 0.6,
-                  color: Colors.black,
+                thickness: 0.6,
+                color: Colors.black,
               ),
               Row(
                 children: [
@@ -88,10 +94,7 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                 ],
               ),
               const Text("Amman, example st"),
-              const Divider(
-                thickness: 0.6,
-                color: Colors.black
-              ),
+              const Divider(thickness: 0.6, color: Colors.black),
               const Text("Description"),
             ],
           )),

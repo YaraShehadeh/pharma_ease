@@ -39,9 +39,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   _pageIndex = index;
                 });
                 if (index == onboarding_data.length - 1) {
-                  Future.delayed(Duration(seconds: 2), () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MapPage()));
+                  Future.delayed(const Duration(seconds: 2), () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MapPage()));
                   });
                 }
               },
@@ -61,27 +63,27 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         isActive: index == _pageIndex,
                       ),
                     )),
-            SizedBox(width: 40),
+            const SizedBox(width: 40),
             SizedBox(
               height: 100,
               width: 60,
               child: ElevatedButton(
                   onPressed: () {
                     if (_pageIndex == onboarding_data.length - 1) {
-                      Future.delayed(Duration(milliseconds: 300), () {
+                      Future.delayed(const Duration(milliseconds: 300), () {
                         Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => MapPage()));
+                            MaterialPageRoute(builder: (context) => const MapPage()));
                       });
                     } else {
                       _pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.ease);
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      backgroundColor: Color(0xFF199A8E)),
-                  child: Icon(
+                      shape: const CircleBorder(),
+                      backgroundColor: const Color(0xFF199A8E)),
+                  child: const Icon(
                     Icons.arrow_forward,
                     color: Colors.white,
                   )),
@@ -108,8 +110,8 @@ class DotIndicator extends StatelessWidget {
       width: isActive ? 20 : 10,
       decoration: BoxDecoration(
         color:
-            isActive ? Color(0xFF199A8E) : Color(0xFF199A8E).withOpacity(0.4),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+            isActive ? const Color(0xFF199A8E) : const Color(0xFF199A8E).withOpacity(0.4),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
     );
   }

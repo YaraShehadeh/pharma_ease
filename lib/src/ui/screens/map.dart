@@ -3,6 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class Map extends StatefulWidget {
+  const Map({super.key});
+
   @override
   State<Map> createState() => _MapState();
 }
@@ -11,7 +13,7 @@ class _MapState extends State<Map> {
   static const _initialCameraPosition =
       CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
   late GoogleMapController _googleMapController;
-  Location _locationController = new Location();
+  final Location _locationController = Location();
 
   @override
   void initState() {
