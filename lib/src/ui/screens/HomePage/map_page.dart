@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:pharmaease/src/ui/screens/map.dart';
+import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
-import 'package:pharmaease/src/ui/screens/side_menu.dart';
 import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
+import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});

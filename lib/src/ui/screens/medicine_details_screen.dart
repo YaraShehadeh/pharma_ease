@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/medicine%20search/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.dart';
 
-import 'medicine search/medicine_model.dart';
+import '../../model/medicine_model.dart';
 
 class MedicineDetailsScreen extends StatefulWidget {
   final Medicine medicine;
@@ -114,13 +114,12 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                 ),
               const SizedBox(height: 25),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    widget.medicine.name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 25),
+                    "{widget.medicine.name}",
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ],
               ),

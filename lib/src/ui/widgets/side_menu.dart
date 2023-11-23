@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/medicine%20search/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/screens/medicinesearch/search_medicine_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({super.key});
@@ -65,7 +65,7 @@ class SideMenu extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.search, size: 28, color: Colors.white70),
+              leading: const Icon(Icons.search, size: 28, color: Colors.white70),
               minLeadingWidth: 3,
               title: const Text(
                 'Search Drug',

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/medicine search/medicine_model.dart';
+import 'package:pharmaease/src/model/medicine_model.dart';
 import 'package:pharmaease/src/ui/screens/medicine_details_screen.dart';
 
 class MedicineCard extends StatefulWidget {
@@ -56,9 +56,9 @@ class _MedicineCardState extends State<MedicineCard> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(widget.medicine.perscription),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('{widget.medicine.perscription}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
