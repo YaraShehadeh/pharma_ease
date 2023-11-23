@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import'package:pharmaease/src/ui/screens/medicineSearch/medicine_card.dart';
-import'package:pharmaease/src/ui/screens/medicineSearch/medicine_model.dart';
+import'package:pharmaease/src/model/medicine_model.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 

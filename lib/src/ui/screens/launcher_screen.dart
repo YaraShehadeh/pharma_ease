@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,9 +12,9 @@ class LauncherScreen extends StatefulWidget {
 class _LauncherScreenState extends State<LauncherScreen> {
   void initState() {
     super.initState();
-    // Timer(Duration(seconds: 3), () {
-    //   Navigator.pushReplacementNamed(context, '/second');
-    // });
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, '/second');
+    });
   }
 
   @override

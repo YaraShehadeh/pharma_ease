@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/medicinesearch/search_medicine_screen.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
+import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({super.key});
@@ -100,16 +101,22 @@ class SideMenu extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w400),
               ),
             ),
-            const ListTile(
+             ListTile(
               leading: Icon(Icons.person, size: 28,color:Colors.white70),
               minLeadingWidth: 3,
               title: Text(
                 'Sign in',
-                style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w400),
+                style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w400),),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                  );
+                },
               ),
              // ADD ROUTING TO SIGN IN PAGE
              // onTap: Navigator.pushReplacement(context, OnBoardingScreen()),
-            ),
+
             const SizedBox(
               height: 290,
             ),
