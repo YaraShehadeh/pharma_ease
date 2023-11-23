@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/medicine%20search/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/screens/medicinesearch/search_medicine_screen.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 
 class SideMenu extends StatelessWidget {

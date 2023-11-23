@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/medicine%20search/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.dart';
 
-import 'medicine search/medicine_model.dart';
+import '../../model/medicine_model.dart';
 
 class MedicineDetailsScreen extends StatefulWidget {
   final Medicine medicine;
 
-  const MedicineDetailsScreen({Key? key, required this.medicine}) : super(key: key);
+  const MedicineDetailsScreen({Key? key, required this.medicine})
+      : super(key: key);
 
   @override
   State<MedicineDetailsScreen> createState() => _MedicineDetailsScreenState();
@@ -15,15 +16,14 @@ class MedicineDetailsScreen extends StatefulWidget {
 class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
   int currentIndex = 0;
   bool isExpanded = false;
-  late String fullText ;
-
+  late String fullText;
 
   late String summaryText;
 
   @override
   void initState() {
     super.initState();
-    fullText= widget.medicine.description;
+    fullText = widget.medicine.description;
     updateSummaryText();
   }
 
@@ -42,23 +42,23 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon:const Icon(Icons.arrow_back, color: Color(0xFF199A8E)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF199A8E)),
           onPressed: () {
-            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MedicineListScreen()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => MedicineListScreen()));
           },
         ),
         title: const Text(''),
         actions: [
           IconButton(
-            icon:const Icon(Icons.home, color: Color(0xFF199A8E)),
-            onPressed: () {
-            },
+            icon: const Icon(Icons.home, color: Color(0xFF199A8E)),
+            onPressed: () {},
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:const EdgeInsets.symmetric(horizontal: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
             children: [
               if (widget.medicine.images.length == 1)
@@ -75,7 +75,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       PageView.builder(
-                        itemCount:  widget.medicine.images.length,
+                        itemCount: widget.medicine.images.length,
                         controller: PageController(initialPage: currentIndex),
                         onPageChanged: (index) {
                           setState(() {
@@ -114,11 +114,11 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                 ),
               const SizedBox(height: 25),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                   "${widget.medicine.name}",
+                    "${widget.medicine.name}",
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ],
@@ -127,7 +127,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
               const SizedBox(
                 height: 8,
               ),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
@@ -138,11 +138,11 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
               ),
 
               const SizedBox(height: 25),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                   "Description",
+                    "Description",
                     textAlign: TextAlign.start,
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
@@ -190,12 +190,13 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                 children: [
                   Container(
                     width: 350,
-                    padding:const EdgeInsets.symmetric(horizontal: 17, vertical: 17),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(
-                      color:const Color(0xFF199A8E),
+                      color: const Color(0xFF199A8E),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child:  Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -249,8 +250,9 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                 children: [
                   Flexible(
                     child: Text(
-                        "Using this medicine with any of the following medicines is usually not recommended, but may be required in some cases. If both medicines are prescribed together, your doctor may change the dose or how often you use one or both of the medicines.",
-                    style: TextStyle(color: Colors.grey,fontSize: 12),),
+                      "Using this medicine with any of the following medicines is usually not recommended, but may be required in some cases. If both medicines are prescribed together, your doctor may change the dose or how often you use one or both of the medicines.",
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
                   ),
                   Icon(
                     Icons.arrow_forward_rounded,
@@ -258,34 +260,41 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height:30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     width: 350,
-                    padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 17),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(
                       color: const Color(0xFF199A8E),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child:const Row(
+                    child: const Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.alt_route_outlined,size: 26,color: Colors.white,),
-                        SizedBox(width:9),
+                        Icon(
+                          Icons.alt_route_outlined,
+                          size: 26,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 9),
                         Padding(
-                          padding:  EdgeInsets.only(top:5.0),
+                          padding: EdgeInsets.only(top: 5.0),
                           child: Row(
                             children: [
                               Text(
                                 "View Drug alternatives",
                                 style: TextStyle(
-                                    fontSize:16,
+                                    fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500),
                               ),
-                              SizedBox(width: 90,),
+                              SizedBox(
+                                width: 90,
+                              ),
                               Icon(
                                 Icons.arrow_forward_rounded,
                                 color: Colors.white,
@@ -296,13 +305,12 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         SizedBox(
                           height: 5,
                         ),
-
                       ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height:30),
+              const SizedBox(height: 30),
             ],
           ),
         ),

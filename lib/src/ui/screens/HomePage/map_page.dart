@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:pharmaease/src/ui/screens/map.dart';
+import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
-import 'package:pharmaease/src/ui/screens/side_menu.dart';
+import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 
-import '../widgets/search_bar_widget.dart';
+import '../../widgets/search_bar_widget.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -123,25 +123,28 @@ class _MapPageState extends State<MapPage> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       color: Color(0xFF199A8E),
                     ),
-                    child:  ListTile(
+                    child: ListTile(
                       title: Text("title"),
                       trailing: Text("trailing"),
                       leading: Icon(Icons.pin_drop),
-                      onTap:(){ Navigator.push(context,MaterialPageRoute(builder: (context)=>PharmacyDetailsScreen()),
-                      // title: Text(pharmacyList[index]["title"] ?? ""),
-                      // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
-                      // leading: Icon(Icons.pin_drop),
-
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PharmacyDetailsScreen()),
+                          // title: Text(pharmacyList[index]["title"] ?? ""),
+                          // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
+                          // leading: Icon(Icons.pin_drop),
+                        );
+                      },
+                    ),
+                  ),
                 );
-                },
-
-                ),),
-            );},
-          ),),
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-

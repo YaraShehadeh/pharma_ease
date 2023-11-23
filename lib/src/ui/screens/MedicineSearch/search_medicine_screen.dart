@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import'package:pharmaease/src/ui/screens/medicine search/medicine_card.dart';
-import'package:pharmaease/src/ui/screens/medicine search/medicine_model.dart';
-import 'package:pharmaease/src/ui/screens/map_page.dart';
-import 'package:pharmaease/src/ui/screens/side_menu.dart';
+import'package:pharmaease/src/ui/screens/medicineSearch/medicine_card.dart';
+import'package:pharmaease/src/ui/screens/medicineSearch/medicine_model.dart';
+import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
+import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 
 
 class MedicineListScreen extends StatelessWidget {
