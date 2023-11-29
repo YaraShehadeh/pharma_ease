@@ -1,0 +1,9 @@
+fastapi
+pymongo
+pymongo[srv]
+motor
+uvicorn
+python-multipart
+PyJWT
+passlib[bcrypt]
+geopy
