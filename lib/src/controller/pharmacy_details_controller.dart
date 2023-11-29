@@ -9,9 +9,13 @@ class PharmacyDetailsController {
     final response = await http.get(Uri.parse('$baseUrl/all'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse
+      final List<PharmacyDetailsModel> pharmacies =  jsonResponse
           .map((item) => PharmacyDetailsModel.fromJson(item))
           .toList();
+      pharmacies.forEach((pharmacy) {
+        print("Pharmacy name: ${pharmacy.pharmacyName}");
+      });
+      return pharmacies;
     } else {
       throw Exception("Failed to load pharmacies");
     }

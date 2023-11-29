@@ -23,14 +23,8 @@ class PharmacyDetailsModel {
   });
 
   factory PharmacyDetailsModel.fromJson(Map<String, dynamic> json) {
-    return PharmacyDetailsModel(
-      pharmacyId: json['pharmacy_id'],
-      pharmacyName: json['pharmacy_name'],
-      pharmacyEmail: json['pharmacy_email'],
-      pharmacyDescription: json['pharmacy_description'],
-      // pharmacyLocation: json['pharmacy_location'],
-      // pharmacyDrugs : json['pharmacy_drugs'],
-      // pharmacyPharmacist : json['pharmacy_pharmacist'],
-    );
+    return _$PharmacyDetailsModelFromJson(json);
   }
+
+  Map<String, dynamic> toJson() => _$PharmacyDetailsModelToJson(this);
 }
