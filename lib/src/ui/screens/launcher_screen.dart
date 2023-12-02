@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class LauncherScreen extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
                 'PharmaEase',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF199A8E),
+                  color: pharmaGreenColor,
                   fontFamily: GoogleFonts.kaushanScript().fontFamily,
                   fontSize: 60,
                 ),

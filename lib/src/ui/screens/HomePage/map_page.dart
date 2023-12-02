@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 
 import '../../widgets/search_bar_widget.dart';
@@ -121,7 +122,7 @@ class _MapPageState extends State<MapPage> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Color(0xFF199A8E),
+                      color: pharmaGreenColor,
                     ),
                     child: ListTile(
                       title: Text("title"),

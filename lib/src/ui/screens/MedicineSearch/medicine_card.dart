@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/model/medicine_model.dart';
 import 'package:pharmaease/src/ui/screens/medicine_details_screen.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class MedicineCard extends StatefulWidget {
   final Medicine medicine;
@@ -66,7 +67,7 @@ class _MedicineCardState extends State<MedicineCard> {
                       children: [
                         Icon(
                           Icons.local_pharmacy_outlined,
-                          color: Color(0xFF199A8E),
+                          color: pharmaGreenColor,
                         ),
                         Text(
                           '${widget.medicine.pharmacies.toStringAsFixed(0)} pharmacies near you',

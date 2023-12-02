@@ -3,6 +3,7 @@ import'package:pharmaease/src/ui/screens/medicineSearch/medicine_card.dart';
 import'package:pharmaease/src/model/medicine_model.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 
 class MedicineListScreen extends StatelessWidget {
@@ -42,7 +43,7 @@ class MedicineListScreen extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                icon:const Icon(Icons.home, color: Color(0xFF199A8E)),
+                icon:const Icon(Icons.home, color: pharmaGreenColor),
                 onPressed: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => MapPage()));
@@ -98,7 +99,7 @@ class MedicineListScreen extends StatelessWidget {
                     IconButton(
                       icon: const Icon(
                         Icons.camera_alt,
-                        color: Color(0xFF199A8E),
+                        color: pharmaGreenColor,
                       ),
                       onPressed: () {},
                     ),

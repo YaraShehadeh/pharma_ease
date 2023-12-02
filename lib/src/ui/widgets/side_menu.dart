@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/medicinesearch/search_medicine_screen.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({super.key});
@@ -10,7 +11,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: const Color(0xFF199A8E),
+        color: pharmaGreenColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -20,7 +21,7 @@ class SideMenu extends StatelessWidget {
                 child: DrawerHeader(
                     padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF199A8E),
+                    color:pharmaGreenColor,
                   ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

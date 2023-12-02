@@ -1,4 +1,5 @@
 import'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class searchBar extends StatelessWidget {
   const searchBar({
@@ -31,7 +32,7 @@ class searchBar extends StatelessWidget {
 
               ),
               IconButton(
-                icon: const Icon(Icons.camera_alt , color:Color(0xFF199A8E) ,),
+                icon: const Icon(Icons.camera_alt , color:pharmaGreenColor ,),
                 onPressed: () {
                 },
               ),
