@@ -137,37 +137,12 @@ class MedicineListScreen extends StatelessWidget {
               },
             ),
           ),
-          Positioned(
+          const Positioned(
             left: 10,
             right: 10,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Search...",
-                          prefixIcon: Icon(Icons.search),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        color: Color(0xFF199A8E),
-                      ),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ),
+              padding: EdgeInsets.all(8.0),
+              child: searchBar(),
             ),
           ),
         ],
