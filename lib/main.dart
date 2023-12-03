@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/forgot_password_screen.dart';
 import 'dart:async';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/map_page.dart';
+import 'package:pharmaease/src/ui/screens/otp_screen.dart';
+import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
+
+import 'src/ui/screens/sign_up_screen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -12,7 +17,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/':(context)=>MapPage(),
+        '/':(context)=> ForgotPasswordScreen(),
         '/second':(context)=> OnBoardingScreen(),
       },
     );

@@ -54,7 +54,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               autofocus: false,
               decoration: const InputDecoration(
                 hintText: "Your name",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(25, 154, 142, 100)),
+                ),
               ),
               onSaved: (_) => _name = _,
             ),
@@ -73,7 +76,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               autofocus: false,
               decoration: const InputDecoration(
                 hintText: "Your email",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(25, 154, 142, 100)),
+                ),
               ),
               onSaved: (_) => _email = _,
             ),
@@ -91,7 +97,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               autofocus: false,
               decoration: const InputDecoration(
                 hintText: "Your phone number",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(25, 154, 142, 100)),
+                ),
               ),
               onSaved: (_) => _phoneNumber = _,
             ),
@@ -104,7 +113,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 _passwordFocus.unfocus();
               },
               autofocus: false,
-              decoration: const InputDecoration(hintText: "Your password"),
+              decoration: const InputDecoration(
+                hintText: "Your password",
+                focusedBorder: UnderlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(25, 154, 142, 100)),
+                ),
+              ),
               onSaved: (_) => _password = _,
             ),
             const SizedBox(height: 30),
@@ -113,7 +128,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(25, 154, 142, 100),
                   fixedSize: const Size(500, 40)),
-              child: const Text("Continue"),
+              child: const Text(
+                "Sign Up",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Row(
+              children: [
+                Expanded(child: Divider(thickness: 0.6)),
+                SizedBox(width: 30),
+                Text(
+                  "Or",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                SizedBox(width: 30),
+                Expanded(child: Divider(thickness: 0.6)),
+              ],
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                  icon: const Image(
+                      image: AssetImage('assets/images/google_logo.png'),
+                      width: 20),
+                  onPressed: () {},
+                  label: const Text(
+                    "Sign Up With Google",
+                    style: TextStyle(color: Colors.black),
+                  )),
+            ),
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  const SignUpScreen();
+                },
+                child: const Text.rich(
+                  TextSpan(
+                      text: "Already have an account? ",
+                      style: TextStyle(color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: "Sign In",
+                          style: TextStyle(
+                            color: Color.fromRGBO(25, 154, 142, 100),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ]),
+                ),
+              ),
             ),
           ],
         ),
