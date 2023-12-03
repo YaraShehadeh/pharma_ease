@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -82,8 +83,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
-                      backgroundColor: const Color(0xFF199A8E)),
-                  child: const Icon(
+                      backgroundColor: pharmaGreenColor),
+                  child: const  Icon(
                     Icons.arrow_forward,
                     color: Colors.white,
                   )),
@@ -110,7 +111,7 @@ class DotIndicator extends StatelessWidget {
       width: isActive ? 20 : 10,
       decoration: BoxDecoration(
         color:
-            isActive ? const Color(0xFF199A8E) : const Color(0xFF199A8E).withOpacity(0.4),
+            isActive ? pharmaGreenColor : pharmaGreenColor.withOpacity(0.4),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
     );
@@ -159,39 +160,48 @@ class OnBoardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Column(
-      children: [
-        const Spacer(),
-        Image.asset(
-          image,
-          height: 350,
-          width: 450,
-        ),
-        const Spacer(),
-        const SizedBox(
-          height: 16,
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          height: 150,
-          width: 350,
-          padding: const EdgeInsets.all(16),
-          child: Center(
-            child: Text(
-              description,
-              textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                  fontSize: 30),
+    return LayoutBuilder(
+      builder: (context,constraints) {
+        double screenWidth = constraints.maxWidth;
+        return Column(
+          children: [
+            const Spacer(),
+            Image.asset(
+              image,
+              height: screenWidth * 0.7,
+              width: screenWidth * 0.9,
             ),
-          ),
-        ),
-        const Spacer(),
-      ],
+            const Spacer(),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              height: screenWidth * 0.7,
+              width: screenWidth * 0.9,
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                child: Text(
+                  description,
+                  textAlign: TextAlign.start,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      fontSize: screenWidth * 0.04,),
+                ),
+              ),
+            ),
+            const Spacer(),
+          ],
+        );
+      },
     );
   }
 }

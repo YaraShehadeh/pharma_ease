@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 import '../../model/medicine_model.dart';
 
@@ -42,7 +43,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF199A8E)),
+          icon: const Icon(Icons.arrow_back, color:pharmaGreenColor),
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => MedicineListScreen()));
@@ -51,7 +52,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
         title: const Text(''),
         actions: [
           IconButton(
-            icon: const Icon(Icons.home, color: Color(0xFF199A8E)),
+            icon: const Icon(Icons.home, color: pharmaGreenColor),
             onPressed: () {},
           ),
         ],
@@ -193,7 +194,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF199A8E),
+                      color: pharmaGreenColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -256,7 +257,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                   Icon(
                     Icons.arrow_forward_rounded,
-                    color: Color(0xFF199A8E),
+                    color: pharmaGreenColor,
                   ),
                 ],
               ),
@@ -269,7 +270,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF199A8E),
+                      color:pharmaGreenColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Row(

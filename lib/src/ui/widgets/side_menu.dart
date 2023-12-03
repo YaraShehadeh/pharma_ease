@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/medicinesearch/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({super.key});
@@ -8,48 +9,53 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: const Color(0xFF199A8E),
+        color: pharmaGreenColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            // height: 120,
-            SizedBox(
-              height: 140,
-              child: DrawerHeader(
-                padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF199A8E),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'PharmaEase',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium
-                          ?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: 30),
+              // height: 120,
+              Container(
+                height:140,
+                child: DrawerHeader(
+                    padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
+                  decoration: BoxDecoration(
+                    color:pharmaGreenColor,
+                  ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'PharmaEase',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  fontSize: 30),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                              "Helping you every step of the way",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white60,
+                                  fontWeight: FontWeight.w400),
+
+                            ),
+                        ),
+
+
+
+                      ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: Text(
-                        "Helping you every step of the way",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white60,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ],
+
                 ),
               ),
-            ),
             // const Divider(
             //   color: Colors.white,
             // ),
@@ -83,7 +89,6 @@ class SideMenu extends StatelessWidget {
                 );
               },
             ),
-
             const ListTile(
               leading:
                   Icon(Icons.message_outlined, size: 28, color: Colors.white70),
