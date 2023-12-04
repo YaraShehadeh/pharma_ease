@@ -5,7 +5,8 @@ def pharmacistEntity(pharmacist) -> dict:
         "first_name": pharmacist["first_name"],
         "last_name": pharmacist["last_name"],
         "username": pharmacist["username"],
-        "password": pharmacist["password"]
+        "password": pharmacist["password"],
+        "gender":pharmacist["gender"]
     }
 
 def pharmacistsEntity(pharmacists: List[dict]) -> List[dict]:

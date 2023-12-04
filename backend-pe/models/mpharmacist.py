@@ -6,3 +6,4 @@ class Pharmacist(BaseModel):
     last_name: str = Field(..., description="Please enter your last name")
     username: str = Field(...,description= "Please enter your username")
     password: str = Field(..., description="Please enter your password")
+    gender: str =Field (..., description="Please enter your gender")
