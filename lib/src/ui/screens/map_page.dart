@@ -7,7 +7,8 @@ import 'package:pharmaease/src/ui/screens/side_menu.dart';
 import '../widgets/search_bar_widget.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+  const MapPage({Key? key}) : super(key: key);
+
 
   @override
   _MapPageState createState() => _MapPageState();
@@ -15,6 +16,8 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<TextEditingController> listController = [];
+  bool showDynamicSearchBars = false;
 
   // List<Map<String, String>> pharmacyList = [
   //   {"title": "Pharmacy 1", "trailing": "6 mins"},
@@ -29,7 +32,7 @@ class _MapPageState extends State<MapPage> {
 
     Timer(const Duration(seconds: 0), () {
       _scaffoldKey.currentState!.showBottomSheet(
-        (context) => ClipRRect(
+            (context) => ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
           child: Container(
             child: buildBottomSheetContent(context),
@@ -77,7 +80,55 @@ class _MapPageState extends State<MapPage> {
                 child: buildBottomSheetContent(context),
               ),
             ),
+
             searchBar(),
+
+            if (showDynamicSearchBars)
+              ListView.builder(
+                  itemCount: listController.length,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Expanded(child: searchBar()),
+                        index != 0
+                            ? GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    listController[index].clear();
+                                    listController[index].dispose();
+                                    listController.removeAt(index);
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Color(0xFF6B74D6),
+                                  size: 35,
+                                ),
+                              )
+                            : const SizedBox()
+                      ],
+                    );
+                  }),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  listController.add(TextEditingController());
+                  showDynamicSearchBars=true;
+                });
+              },
+              child: Center(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF444C60),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    "Add More",
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -123,25 +174,28 @@ class _MapPageState extends State<MapPage> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       color: Color(0xFF199A8E),
                     ),
-                    child:  ListTile(
+                    child: ListTile(
                       title: Text("title"),
                       trailing: Text("trailing"),
                       leading: Icon(Icons.pin_drop),
-                      onTap:(){ Navigator.push(context,MaterialPageRoute(builder: (context)=>PharmacyDetailsScreen()),
-                      // title: Text(pharmacyList[index]["title"] ?? ""),
-                      // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
-                      // leading: Icon(Icons.pin_drop),
-
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PharmacyDetailsScreen()),
+                          // title: Text(pharmacyList[index]["title"] ?? ""),
+                          // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
+                          // leading: Icon(Icons.pin_drop),
+                        );
+                      },
+                    ),
+                  ),
                 );
-                },
-
-                ),),
-            );},
-          ),),
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-
