@@ -3,7 +3,7 @@ import 'package:pharmaease/src/model/medicine_model.dart';
 import 'package:pharmaease/src/ui/screens/medicine_details_screen.dart';
 
 class MedicineCard extends StatefulWidget {
-  final Medicine medicine;
+  final DrugModel medicine;
 
   const MedicineCard({super.key, required this.medicine});
 
@@ -25,14 +25,18 @@ class _MedicineCardState extends State<MedicineCard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => MedicineDetailsScreen(
-                          medicine: Medicine(
-                              1,
-                              'Paracetamol',
-                              "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.",
-                              "3pcs",
-                              4,
-                              true,
-                              ['assets/images/onboarding_image_1.png']),
+                          medicine: DrugModel(
+                            drugID: 1,
+                            drugName: 'Paracetamol',
+                            drugDescription:
+                                "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.",
+                            drugPerscription: "3pcs",
+                            holdingPharmacies: 4,
+                            drugIsConflicting: true,
+                            drugImages: [
+                              'assets/images/onboarding_image_1.png'
+                            ],
+                          ),
                         )));
           },
           child: Stack(
@@ -43,14 +47,14 @@ class _MedicineCardState extends State<MedicineCard> {
                 children: [
                   Expanded(
                     child: Image.asset(
-                      widget.medicine.images[0],
+                      widget.medicine.drugImages[0],
                       fit: BoxFit.cover,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      widget.medicine.name,
+                      widget.medicine.drugName,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -69,7 +73,7 @@ class _MedicineCardState extends State<MedicineCard> {
                           color: Color(0xFF199A8E),
                         ),
                         Text(
-                          '${widget.medicine.pharmacies.toStringAsFixed(0)} pharmacies near you',
+                          '${widget.medicine.holdingPharmacies.toStringAsFixed(0)} pharmacies near you',
                           style: const TextStyle(fontSize: 10),
                         )
                       ],
@@ -77,7 +81,7 @@ class _MedicineCardState extends State<MedicineCard> {
                   ),
                 ],
               ),
-              if (widget.medicine.isConflicting)
+              if (widget.medicine.drugIsConflicting)
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(

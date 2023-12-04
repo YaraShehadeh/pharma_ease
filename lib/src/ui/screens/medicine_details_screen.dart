@@ -4,7 +4,7 @@ import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.
 import '../../model/medicine_model.dart';
 
 class MedicineDetailsScreen extends StatefulWidget {
-  final Medicine medicine;
+  final DrugModel medicine;
 
   const MedicineDetailsScreen({Key? key, required this.medicine})
       : super(key: key);
@@ -23,7 +23,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    fullText = widget.medicine.description;
+    fullText = widget.medicine.drugDescription;
     updateSummaryText();
   }
 
@@ -61,9 +61,9 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: Column(
             children: [
-              if (widget.medicine.images.length == 1)
+              if (widget.medicine.drugImages.length == 1)
                 Image.asset(
-                  widget.medicine.images[0],
+                  widget.medicine.drugImages[0],
                   height: 350,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -75,7 +75,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       PageView.builder(
-                        itemCount: widget.medicine.images.length,
+                        itemCount: widget.medicine.drugImages.length,
                         controller: PageController(initialPage: currentIndex),
                         onPageChanged: (index) {
                           setState(() {
@@ -84,7 +84,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         },
                         itemBuilder: (context, index) {
                           return Image.asset(
-                            widget.medicine.images[index],
+                            widget.medicine.drugImages[index],
                             height: 150,
                             width: double.infinity,
                             fit: BoxFit.cover,
@@ -95,7 +95,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         bottom: 8,
                         child: Row(
                           children: List.generate(
-                            widget.medicine.images.length,
+                            widget.medicine.drugImages.length,
                             (index) => Container(
                               margin: const EdgeInsets.symmetric(horizontal: 4),
                               width: 8,
@@ -131,7 +131,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    widget.medicine.perscription,
+                    widget.medicine.drugPerscription,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -212,7 +212,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         Row(
                           children: [
                             Text(
-                              "Available in  ${widget.medicine.pharmacies} pharmacies near you",
+                              "Available in  ${widget.medicine.holdingPharmacies} pharmacies near you",
                               style: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.white,
