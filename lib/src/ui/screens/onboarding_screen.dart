@@ -28,64 +28,95 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Column(
-      children: [
-        Expanded(
-          child: PageView.builder(
-              controller: _pageController,
-              itemCount: onboarding_data.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _pageIndex = index;
-                });
-                if (index == onboarding_data.length - 1) {
-                  Future.delayed(const Duration(seconds: 2), () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MapPage()));
-                  });
-                }
-              },
-              itemBuilder: (context, index) => OnBoardContent(
-                    image: onboarding_data[index].image,
-                    description: onboarding_data[index].description,
-                  )),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        child: Column(
           children: [
-            ...List.generate(
-                onboarding_data.length,
-                (index) => Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: DotIndicator(
-                        isActive: index == _pageIndex,
-                      ),
-                    )),
-            const SizedBox(width: 30),
-            SizedBox(
-                height: 100,
-                width: 70,
-                child: TextButton(
-                  child: const Text(
-                    "Skip",
-                    style: TextStyle(fontStyle: FontStyle.italic
-                    ,fontWeight: FontWeight.w500,color: pharmaGreenColor,fontSize:20),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: onboarding_data.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    _pageIndex = index;
+                  });
+                  if (index == onboarding_data.length - 1) {
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MapPage()));
-                  },
-                )
+                          builder: (context) => const MapPage(),
+                        ),
+                      );
+                    });
+                  }
+                },
+                itemBuilder: (context, index) => OnBoardContent(
+                  image: onboarding_data[index].image,
+                  description: onboarding_data[index].description,
                 ),
+              ),
+            ),
+            Builder(
+              builder: (BuildContext stackContext) {
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Container(
+                      width:MediaQuery.of(context).size.width*1.1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(0.0, 1),
+                          end: Alignment(0, 1),
+                          colors: [
+                            Colors.grey.shade100,
+                            Colors.white30,
+                          ],
+                          stops: [3, 7], // Adjust stops for alignment
+                        ),
+                      ),
+                      height: 70, // Adjust the height as needed
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ...List.generate(
+                            onboarding_data.length,
+                                (index) => Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: DotIndicator(
+                                isActive: index == _pageIndex,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 30),
+                          TextButton(
+                            child: const Text(
+                              "Skip",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w500,
+                                color: pharmaGreenColor,
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                stackContext,
+                                MaterialPageRoute(
+                                  builder: (context) => const MapPage(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                );
+              },
+            ),
           ],
-        )
-      ],
-    )));
+        ),
+      ),
+    );
   }
 }
 
@@ -152,50 +183,53 @@ class OnBoardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        double screenWidth = constraints.maxWidth;
-        return Column(
+
+        return Stack(
           children: [
-            const Spacer(),
-            // const SizedBox(height:1),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Image.asset(
-                image,
-                height: screenWidth * 1.1,
-                width: screenWidth * 1.1,
-                fit: BoxFit.contain,
-              ),
+            Image.asset(
+              image,
+              height: screenWidth * 1.1,
+              width: screenWidth * 1.1,
+              fit: BoxFit.fill,
             ),
-            const Spacer(),
-            // const SizedBox(
-            //   height: 50,
-            // ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
+            Positioned(
+              bottom: 0,
+              left: 20,
+              right: 20,
               child: Container(
+                width: screenWidth*1.1,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.0, -0.4),
+                    end: Alignment(0.0, 1.0),
+                    colors: [
+                      Colors.grey.shade200,
+                      Colors.white30,
+                    ],
+                    stops: [0.7, 1.0], // Adjust stops for alignment
+                  ),
                 ),
                 height: screenWidth * 0.4,
-                width: screenWidth * 0.9,
-                padding: const EdgeInsets.all(16),
                 child: Center(
-                  child: Text(
-                    description,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                          fontSize: screenWidth * 0.09,
-                        ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      description,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                        fontSize: screenWidth * 0.09,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-            const Spacer(),
           ],
         );
       },
