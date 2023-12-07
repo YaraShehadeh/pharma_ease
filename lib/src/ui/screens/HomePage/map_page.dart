@@ -86,7 +86,7 @@ class _MapPageState extends State<MapPage> {
 
   Widget buildBottomSheetContent(BuildContext context) {
     return SizedBox(
-      height: 215,
+      height: MediaQuery.of(context).size.height*0.25,
       child: Column(
         children: <Widget>[
           const SizedBox(
@@ -100,10 +100,14 @@ class _MapPageState extends State<MapPage> {
                   "Nearest Pharmacies",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
-                  width: 100,
+                // SizedBox(
+                //   width: 100,
+                // ),
+                const Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text("View all Pharmacies"),
                 ),
-                Text("View all Pharmacies"),
               ],
             ),
           ),

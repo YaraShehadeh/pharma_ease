@@ -64,31 +64,24 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         isActive: index == _pageIndex,
                       ),
                     )),
-            const SizedBox(width: 40),
+            const SizedBox(width: 30),
             SizedBox(
-              height: 100,
-              width: 60,
-              child: ElevatedButton(
+                height: 100,
+                width: 70,
+                child: TextButton(
+                  child: const Text(
+                    "Skip",
+                    style: TextStyle(fontStyle: FontStyle.italic
+                    ,fontWeight: FontWeight.w500,color: pharmaGreenColor,fontSize:20),
+                  ),
                   onPressed: () {
-                    if (_pageIndex == onboarding_data.length - 1) {
-                      Future.delayed(const Duration(milliseconds: 300), () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => const MapPage()));
-                      });
-                    } else {
-                      _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
-                    }
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MapPage()));
                   },
-                  style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: pharmaGreenColor),
-                  child: const  Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                  )),
-            ),
+                )
+                ),
           ],
         )
       ],
@@ -110,8 +103,7 @@ class DotIndicator extends StatelessWidget {
       height: 12,
       width: isActive ? 20 : 10,
       decoration: BoxDecoration(
-        color:
-            isActive ? pharmaGreenColor : pharmaGreenColor.withOpacity(0.4),
+        color: isActive ? pharmaGreenColor : pharmaGreenColor.withOpacity(0.4),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
     );
@@ -161,40 +153,45 @@ class OnBoardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return LayoutBuilder(
-      builder: (context,constraints) {
+      builder: (context, constraints) {
         double screenWidth = constraints.maxWidth;
         return Column(
           children: [
             const Spacer(),
-            Image.asset(
-              image,
-              height: screenWidth * 0.7,
-              width: screenWidth * 0.9,
+            // const SizedBox(height:1),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Image.asset(
+                image,
+                height: screenWidth * 1.1,
+                width: screenWidth * 1.1,
+                fit: BoxFit.contain,
+              ),
             ),
             const Spacer(),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              height: screenWidth * 0.7,
-              width: screenWidth * 0.9,
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Text(
-                  description,
-                  textAlign: TextAlign.start,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      fontSize: screenWidth * 0.04,),
+            // const SizedBox(
+            //   height: 50,
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                height: screenWidth * 0.4,
+                width: screenWidth * 0.9,
+                padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: Text(
+                    description,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                          fontSize: screenWidth * 0.09,
+                        ),
+                  ),
                 ),
               ),
             ),
