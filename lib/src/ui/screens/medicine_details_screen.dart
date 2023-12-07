@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
@@ -43,7 +44,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color:pharmaGreenColor),
+          icon: const Icon(Icons.arrow_back, color: pharmaGreenColor),
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => MedicineListScreen()));
@@ -86,7 +87,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                         itemBuilder: (context, index) {
                           return Image.asset(
                             widget.medicine.images[index],
-                            height: 150,
+                            height: MediaQuery.of(context).size.height * 2,
                             width: double.infinity,
                             fit: BoxFit.cover,
                           );
@@ -115,11 +116,11 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                   ),
                 ),
               const SizedBox(height: 25),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "{widget.medicine.name}",
+                    widget.medicine.name,
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 25),
                   ),
                 ],
@@ -247,20 +248,38 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              const Row(
+              Row(
                 children: [
                   Flexible(
-                    child: Text(
-                      "Using this medicine with any of the following medicines is usually not recommended, but may be required in some cases. If both medicines are prescribed together, your doctor may change the dose or how often you use one or both of the medicines.",
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text:
+                                "Using this medicine with any of the following medicines is usually not recommended, but may be required in some cases. If both medicines are prescribed together, "
+                                "your doctor may change the dose or how often you use one or both of the medicines.",
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                          TextSpan(
+                            text: " View",
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w500,
+                                color: pharmaGreenColor,
+                                fontSize: 12),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                print("View tapped");
+                                // Add your onTap logic here
+                              },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    color: pharmaGreenColor,
                   ),
                 ],
               ),
+
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -270,7 +289,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(
-                      color:pharmaGreenColor,
+                      color: pharmaGreenColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Row(
