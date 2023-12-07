@@ -191,7 +191,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    width: 350,
+                    width: MediaQuery.of(context).size.width*0.9,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(
@@ -285,7 +285,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    width: 350,
+                    width:  MediaQuery.of(context).size.width*0.9,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 17, vertical: 17),
                     decoration: BoxDecoration(

@@ -15,43 +15,43 @@ class SideMenu extends StatelessWidget {
           children: [
               // height: 120,
               Container(
-                height:140,
+                height:MediaQuery.of(context).size.height*0.18,
                 child: DrawerHeader(
                     padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
                   decoration: BoxDecoration(
                     color:pharmaGreenColor,
                   ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'PharmaEase',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium
-                              ?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 30),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                              "Helping you every step of the way",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white60,
-                                  fontWeight: FontWeight.w400),
-
-                            ),
-                        ),
-
-
-
-                      ],
+                    child: Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'PharmaEase',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 30),
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 7.0),
+                            child: Text(
+                                "Helping you every step of the way",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white60,
+                                    fontWeight: FontWeight.w400),
+                      
+                              ),
+                          ),
+                      
+                      
+                      
+                        ],
+                      ),
                     ),
 
                 ),
