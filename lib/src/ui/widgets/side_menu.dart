@@ -56,20 +56,7 @@ class SideMenu extends StatelessWidget {
 
                 ),
               ),
-            // const Divider(
-            //   color: Colors.white,
-            // ),
-            const ListTile(
-              leading: Icon(Icons.home, size: 28, color: Colors.white70),
-              minLeadingWidth: 3,
-              title: Text(
-                'Home',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400),
-              ),
-            ),
+
             ListTile(
               leading: const Icon(Icons.search, size: 28, color: Colors.white70),
               minLeadingWidth: 3,
