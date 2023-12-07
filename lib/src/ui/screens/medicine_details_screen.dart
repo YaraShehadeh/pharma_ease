@@ -251,29 +251,31 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
               Row(
                 children: [
                   Flexible(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text:
-                                "Using this medicine with any of the following medicines is usually not recommended, but may be required in some cases. If both medicines are prescribed together, "
-                                "your doctor may change the dose or how often you use one or both of the medicines.",
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
-                          TextSpan(
-                            text: " View",
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w500,
-                                color: pharmaGreenColor,
-                                fontSize: 12),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                print("View tapped");
-                                // Add your onTap logic here
-                              },
-                          ),
-                        ],
+                    child: SingleChildScrollView(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text:
+                                  "Using this medicine with any of the following medicines is usually not recommended, but may be required in some cases. If both medicines are prescribed together, "
+                                  "your doctor may change the dose or how often you use one or both of the medicines.",
+                              style: TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                            TextSpan(
+                              text: " View",
+                              style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w500,
+                                  color: pharmaGreenColor,
+                                  fontSize: 12),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  print("View tapped");
+                                  // Add your onTap logic here
+                                },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
