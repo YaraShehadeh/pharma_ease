@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 
@@ -54,7 +55,9 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.home, color: pharmaGreenColor),
-            onPressed: () {},
+            onPressed: () { Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => MapPage()));
+            },
           ),
         ],
       ),
