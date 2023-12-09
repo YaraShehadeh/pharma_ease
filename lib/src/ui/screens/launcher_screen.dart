@@ -1,19 +1,20 @@
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class LauncherScreen extends StatefulWidget {
+  const LauncherScreen({super.key});
+
   @override
-  _LauncherScreenState createState() => _LauncherScreenState();
+  State<LauncherScreen> createState() => _LauncherScreenState();
 }
 
 class _LauncherScreenState extends State<LauncherScreen> {
+  @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/second');
     });
   }
@@ -31,7 +32,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
                 width: 250,
                 height: 250,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               Text(
@@ -43,7 +44,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
                   fontSize: 60,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
           ),
         ));

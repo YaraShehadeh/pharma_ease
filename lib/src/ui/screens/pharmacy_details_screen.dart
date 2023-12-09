@@ -1,31 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 
 class PharmacyDetailsScreen extends StatefulWidget {
-  const PharmacyDetailsScreen({super.key});
+  bool showHomeIcon = false;
+    PharmacyDetailsScreen({super.key,required this.showHomeIcon});
 
   @override
   State<StatefulWidget> createState() => _PharmacyDetailsScreenState();
 }
 
 class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back_ios),
-          onPressed: () {Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>MapPage()),);},
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if (widget.showHomeIcon) {
+              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => const AllPharmaciesScreen()));
+            } else {
+              Navigator.pop(context);
+            }
+          },
           color: Colors.black26,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {},
-            color: const Color.fromRGBO(25, 154, 142, 100),
-            iconSize: 30,
-          ),
+          if (widget.showHomeIcon)
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const MapPage()));
+              },
+              color: const Color.fromRGBO(25, 154, 142, 100),
+              iconSize: 30,
+            ),
         ],
         elevation: 0,
       ),
@@ -33,9 +47,10 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-              const Text("Aster Pharmacy", style: TextStyle(
-                fontSize: 30,
-              )),
+              const Text("Aster Pharmacy",
+                  style: TextStyle(
+                    fontSize: 30,
+                  )),
               const SizedBox(height: 30),
               const Image(
                 image: AssetImage('assets/images/aster.png'),
@@ -70,8 +85,8 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                 ],
               ),
               const Divider(
-                  thickness: 0.6,
-                  color: Colors.black,
+                thickness: 0.6,
+                color: Colors.black,
               ),
               Row(
                 children: [
@@ -88,10 +103,7 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                 ],
               ),
               const Text("Amman, example st"),
-              const Divider(
-                thickness: 0.6,
-                color: Colors.black
-              ),
+              const Divider(thickness: 0.6, color: Colors.black),
               const Text("Description"),
             ],
           )),

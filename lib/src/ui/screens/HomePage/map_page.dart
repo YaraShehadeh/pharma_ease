@@ -1,17 +1,18 @@
 import 'dart:async';
+import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
+import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
-
-import '../../widgets/search_bar_widget.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
   @override
-  _MapPageState createState() => _MapPageState();
+  State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
@@ -36,6 +37,7 @@ class _MapPageState extends State<MapPage> {
             child: buildBottomSheetContent(context),
           ),
         ),
+        enableDrag: false,
       );
     });
   }
@@ -68,17 +70,17 @@ class _MapPageState extends State<MapPage> {
       body: Center(
         child: Stack(
           children: <Widget>[
-            Map(),
+            const Map(),
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: Container(
-                color: Colors.transparent,
+                color: Colors.white,
                 child: buildBottomSheetContent(context),
               ),
             ),
-            searchBar(),
+            const searchBar(),
           ],
         ),
       ),
@@ -87,13 +89,13 @@ class _MapPageState extends State<MapPage> {
 
   Widget buildBottomSheetContent(BuildContext context) {
     return SizedBox(
-      height: 215,
+      height: MediaQuery.of(context).size.height*0.25,
       child: Column(
         children: <Widget>[
           const SizedBox(
             height: 15,
           ),
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
               children: [
@@ -101,10 +103,18 @@ class _MapPageState extends State<MapPage> {
                   "Nearest Pharmacies",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
-                  width: 100,
+                // SizedBox(
+                //   width: 100,
+                // ),
+                const Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: TextButton(
+                      child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
+                    onPressed: (){Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
+                  ),
                 ),
-                Text("View all Pharmacies"),
               ],
             ),
           ),
@@ -125,14 +135,15 @@ class _MapPageState extends State<MapPage> {
                       color: pharmaGreenColor,
                     ),
                     child: ListTile(
-                      title: Text("title"),
-                      trailing: Text("trailing"),
-                      leading: Icon(Icons.pin_drop),
+                      title: const Text("title"),
+                      trailing: const Text("trailing"),
+                      leading: const Icon(Icons.pin_drop),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PharmacyDetailsScreen()),
+                              builder: (context) =>
+                                   PharmacyDetailsScreen(showHomeIcon: false,)),
                           // title: Text(pharmacyList[index]["title"] ?? ""),
                           // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
                           // leading: Icon(Icons.pin_drop),

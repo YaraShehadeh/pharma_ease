@@ -28,69 +28,95 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Column(
-      children: [
-        Expanded(
-          child: PageView.builder(
-              controller: _pageController,
-              itemCount: onboarding_data.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _pageIndex = index;
-                });
-                if (index == onboarding_data.length - 1) {
-                  Future.delayed(Duration(seconds: 2), () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => MapPage()));
-                  });
-                }
-              },
-              itemBuilder: (context, index) => OnBoardContent(
-                    image: onboarding_data[index].image,
-                    description: onboarding_data[index].description,
-                  )),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        child: Column(
           children: [
-            ...List.generate(
-                onboarding_data.length,
-                (index) => Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: DotIndicator(
-                        isActive: index == _pageIndex,
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: onboarding_data.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    _pageIndex = index;
+                  });
+                  if (index == onboarding_data.length - 1) {
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MapPage(),
+                        ),
+                      );
+                    });
+                  }
+                },
+                itemBuilder: (context, index) => OnBoardContent(
+                  image: onboarding_data[index].image,
+                  description: onboarding_data[index].description,
+                ),
+              ),
+            ),
+            Builder(
+              builder: (BuildContext stackContext) {
+                return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Container(
+                      width:MediaQuery.of(context).size.width*1.1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(0.0, 1),
+                          end: Alignment(0, 1),
+                          colors: [
+                            Colors.grey.shade100,
+                            Colors.white30,
+                          ],
+                          stops: [3, 7], // Adjust stops for alignment
+                        ),
                       ),
-                    )),
-            SizedBox(width: 40),
-            SizedBox(
-              height: 100,
-              width: 60,
-              child: ElevatedButton(
-                  onPressed: () {
-                    if (_pageIndex == onboarding_data.length - 1) {
-                      Future.delayed(Duration(milliseconds: 300), () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => MapPage()));
-                      });
-                    } else {
-                      _pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.ease);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      backgroundColor: pharmaGreenColor),
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                  )),
+                      height: 70, // Adjust the height as needed
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ...List.generate(
+                            onboarding_data.length,
+                                (index) => Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: DotIndicator(
+                                isActive: index == _pageIndex,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 30),
+                          TextButton(
+                            child: const Text(
+                              "Skip",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w500,
+                                color: pharmaGreenColor,
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                stackContext,
+                                MaterialPageRoute(
+                                  builder: (context) => const MapPage(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                );
+              },
             ),
           ],
-        )
-      ],
-    )));
+        ),
+      ),
+    );
   }
 }
 
@@ -108,9 +134,8 @@ class DotIndicator extends StatelessWidget {
       height: 12,
       width: isActive ? 20 : 10,
       decoration: BoxDecoration(
-        color:
-            isActive ? pharmaGreenColor : pharmaGreenColor.withOpacity(0.4),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        color: isActive ? pharmaGreenColor : pharmaGreenColor.withOpacity(0.4),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
     );
   }
@@ -158,45 +183,53 @@ class OnBoardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
     return LayoutBuilder(
-      builder: (context,constraints) {
-        double screenWidth = constraints.maxWidth;
-        return Column(
+      builder: (context, constraints) {
+
+        return Stack(
           children: [
-            const Spacer(),
             Image.asset(
               image,
-              height: 350,
-              width: 450,
+              height: screenWidth * 1.1,
+              width: screenWidth * 1.1,
+              fit: BoxFit.fill,
             ),
-            const Spacer(),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              height: 150,
-              width: 350,
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Text(
-                  description,
-                  textAlign: TextAlign.start,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      fontSize: 30),
+            Positioned(
+              bottom: 0,
+              left: 20,
+              right: 20,
+              child: Container(
+                width: screenWidth*1.1,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: Alignment(0.0, -0.4),
+                    end: Alignment(0.0, 1.0),
+                    colors: [
+                      Colors.grey.shade200,
+                      Colors.white30,
+                    ],
+                    stops: [0.7, 1.0], // Adjust stops for alignment
+                  ),
+                ),
+                height: screenWidth * 0.4,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      description,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                        fontSize: screenWidth * 0.09,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-            const Spacer(),
           ],
         );
       },

@@ -6,7 +6,7 @@ import 'package:pharmaease/src/ui/theme/colors.dart';
 class MedicineCard extends StatefulWidget {
   final Medicine medicine;
 
-  MedicineCard({required this.medicine});
+  const MedicineCard({super.key, required this.medicine});
 
   @override
   State<MedicineCard> createState() => _MedicineCardState();
@@ -19,7 +19,7 @@ class _MedicineCardState extends State<MedicineCard> {
       padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
       child: Card(
         color: Colors.white,
-        margin: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
         child: InkWell(
           onTap: () {
             Navigator.pushReplacement(
@@ -52,26 +52,26 @@ class _MedicineCardState extends State<MedicineCard> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       widget.medicine.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('${widget.medicine.perscription}'),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('{widget.medicine.perscription}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.local_pharmacy_outlined,
                           color: pharmaGreenColor,
                         ),
                         Text(
                           '${widget.medicine.pharmacies.toStringAsFixed(0)} pharmacies near you',
-                          style: TextStyle(fontSize: 10),
+                          style: const TextStyle(fontSize: 10),
                         )
                       ],
                     ),
@@ -79,8 +79,8 @@ class _MedicineCardState extends State<MedicineCard> {
                 ],
               ),
               if (widget.medicine.isConflicting)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.warning_amber_rounded,
                     color: Colors.red,
