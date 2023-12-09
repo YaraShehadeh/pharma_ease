@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 
 class PharmacyDetailsScreen extends StatefulWidget {
-  const PharmacyDetailsScreen({super.key});
+  bool showHomeIcon = false;
+    PharmacyDetailsScreen({super.key,required this.showHomeIcon});
 
   @override
   State<StatefulWidget> createState() => _PharmacyDetailsScreenState();
 }
 
 class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,20 +21,25 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MapPage()),
-            );
+            if (widget.showHomeIcon) {
+              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => const AllPharmaciesScreen()));
+            } else {
+              Navigator.pop(context);
+            }
           },
           color: Colors.black26,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {},
-            color: const Color.fromRGBO(25, 154, 142, 100),
-            iconSize: 30,
-          ),
+          if (widget.showHomeIcon)
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const MapPage()));
+              },
+              color: const Color.fromRGBO(25, 154, 142, 100),
+              iconSize: 30,
+            ),
         ],
         elevation: 0,
       ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
@@ -35,6 +36,7 @@ class _MapPageState extends State<MapPage> {
             child: buildBottomSheetContent(context),
           ),
         ),
+        enableDrag: false,
       );
     });
   }
@@ -73,7 +75,7 @@ class _MapPageState extends State<MapPage> {
               left: 0,
               right: 0,
               child: Container(
-                color: Colors.transparent,
+                color: Colors.white,
                 child: buildBottomSheetContent(context),
               ),
             ),
@@ -92,7 +94,7 @@ class _MapPageState extends State<MapPage> {
           const SizedBox(
             height: 15,
           ),
-          const Padding(
+           Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
               children: [
@@ -106,7 +108,11 @@ class _MapPageState extends State<MapPage> {
                 const Spacer(),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text("View all Pharmacies"),
+                  child: TextButton(
+                      child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
+                    onPressed: (){Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
+                  ),
                 ),
               ],
             ),
@@ -136,7 +142,7 @@ class _MapPageState extends State<MapPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const PharmacyDetailsScreen()),
+                                   PharmacyDetailsScreen(showHomeIcon: false,)),
                           // title: Text(pharmacyList[index]["title"] ?? ""),
                           // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
                           // leading: Icon(Icons.pin_drop),
