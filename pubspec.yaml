@@ -46,6 +46,7 @@ dependencies:
   barcode_scanner: ^3.6.2
   flutter_barcode_scanner: ^2.0.0
   url_launcher: ^6.2.1
+  build_runner: ^2.4.7
 
 dev_dependencies:
   flutter_test:
