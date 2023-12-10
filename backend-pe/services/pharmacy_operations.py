@@ -24,6 +24,9 @@ def get_all_service(pharmacies):
 
 
 async def search_for_drug_service(drug_name, user_lat, user_lon):
+
+    
+
     """
     Takes three arguments : drug name , user lat and long , then it returns the top 5 pharmacies 
     based on the distance method of the geopy
