@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 
 class MapPage extends StatefulWidget {
@@ -113,10 +112,8 @@ class _MapPageState extends State<MapPage> {
                   child: TextButton(
                       child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
                     onPressed: () {
-                      //       Navigator.pushReplacement(context,
-                      //       MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
-                      //
-                    }
+                            Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
                   ),
                 ),
               ],
