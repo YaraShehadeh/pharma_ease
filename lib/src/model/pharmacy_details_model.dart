@@ -7,34 +7,34 @@ part 'pharmacy_details_model.g.dart';
 
 @JsonSerializable()
 class PharmacyDetailsModel {
-  final String pharmacyId;
-  final String pharmacyName;
-  final String pharmacyEmail;
-  final String pharmacyDescription;
-  final String pharmacyImage;
-  final String pharmacyArea;
-  final String pharmacyDistance;
-  final DateTime pharmacyOpeningHours;
-  final DateTime pharmacyClosingHours;
-  final String pharmacyPhoneNumber;
-  final LocationModel pharmacyLocation;
-  final List<DrugModel> pharmacyDrugs;
-  final List<PharmacistModel> pharmacyPharmacist;
+  final String id;
+  final String name;
+  final String email;
+  final String description;
+  // final String pharmacyImage;
+  // final String pharmacyArea;
+  // final String pharmacyDistance;
+  // final DateTime pharmacyOpeningHours;
+  // final DateTime pharmacyClosingHours;
+  // final String pharmacyPhoneNumber;
+  final LocationModel location;
+  final List<DrugModel> drugs;
+  final List<PharmacistModel> pharmacists;
 
   PharmacyDetailsModel({
-    required this.pharmacyId,
-    required this.pharmacyName,
-    required this.pharmacyEmail,
-    required this.pharmacyDescription,
-    required this.pharmacyImage,
-    required this.pharmacyArea,
-    required this.pharmacyDistance,
-    required this.pharmacyOpeningHours,
-    required this.pharmacyClosingHours,
-    required this.pharmacyPhoneNumber,
-    required this.pharmacyLocation,
-    required this.pharmacyDrugs,
-    required this.pharmacyPharmacist,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.description,
+    // required this.pharmacyImage,
+    // required this.pharmacyArea,
+    // required this.pharmacyDistance,
+    // required this.pharmacyOpeningHours,
+    // required this.pharmacyClosingHours,
+    // required this.pharmacyPhoneNumber,
+    required this.location,
+    required this.drugs,
+    required this.pharmacists,
   });
 
   factory PharmacyDetailsModel.fromJson(Map<String, dynamic> json) {

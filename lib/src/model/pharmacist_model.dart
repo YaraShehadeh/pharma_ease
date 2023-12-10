@@ -3,12 +3,12 @@ part 'pharmacist_model.g.dart';
 
 @JsonSerializable()
 class PharmacistModel {
-  String pharmacistFName;
-  String pharmacistLName;
+  String first_name;
+  String last_name;
 
   PharmacistModel({
-    required this.pharmacistFName,
-    required this.pharmacistLName,
+    required this.first_name,
+    required this.last_name,
   });
 
   factory PharmacistModel.fromJson(Map<String, dynamic> json) {

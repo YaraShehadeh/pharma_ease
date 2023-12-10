@@ -69,12 +69,12 @@ class SideMenu extends StatelessWidget {
                       fontWeight: FontWeight.w400),
                 ),
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            MedicineListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           MedicineListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                  // );
                 },
               ),
             const ListTile(

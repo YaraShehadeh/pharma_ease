@@ -3,8 +3,8 @@ part 'location_model.g.dart';
 
 @JsonSerializable()
 class LocationModel {
-  String latitude;
-  String longitude;
+  double latitude;
+  double longitude;
 
   LocationModel({
     required this.latitude,

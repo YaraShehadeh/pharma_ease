@@ -3,9 +3,8 @@ import 'package:pharmaease/src/model/pharmacy_details_model.dart';
 import 'package:http/http.dart' as http;
 
 class PharmacyDetailsController {
-  PharmacyDetailsModel? pharmacyDetails;
 
-  static const baseUrl = 'http://127.0.0.1:8000/api/pharmacy/all';
+  static const baseUrl = 'http://10.0.2.2:8000/api/pharmacy/all';
 
   Future<dynamic> getPharmacyDetails() async {
     try {
@@ -16,7 +15,7 @@ class PharmacyDetailsController {
             .map((item) => PharmacyDetailsModel.fromJson(item))
             .toList();
         pharmacies.forEach((pharmacy) {
-          print("Pharmacy name: ${pharmacy.pharmacyName}");
+          print("Pharmacy name: ${pharmacy.name}");
         });
         return pharmacies;
       } else {

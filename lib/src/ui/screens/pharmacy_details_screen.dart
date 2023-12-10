@@ -22,11 +22,11 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            if (widget.showHomeIcon) {
-              Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => const AllPharmaciesScreen()));
-            } else {
-              Navigator.pop(context);
-            }
+            // if (widget.showHomeIcon) {
+            //   Navigator.pushReplacement(context,  MaterialPageRoute(builder: (context) => const AllPharmaciesScreen()));
+            // } else {
+            //   Navigator.pop(context);
+            // }
           },
           color: Colors.black26,
         ),
