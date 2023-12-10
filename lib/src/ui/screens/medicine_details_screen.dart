@@ -42,6 +42,7 @@ class _MedicineDetailsScreenState extends State<MedicineDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(

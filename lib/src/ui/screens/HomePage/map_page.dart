@@ -63,9 +63,10 @@ class _MapPageState extends State<MapPage> {
           ],
         ),
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
       ),
       drawer: const Drawer(
-        child: SideMenu(),
+        child: SideMenu(showSearchDrug: true,),
       ),
       body: Center(
         child: Stack(

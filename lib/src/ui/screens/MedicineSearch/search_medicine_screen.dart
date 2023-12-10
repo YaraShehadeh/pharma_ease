@@ -8,7 +8,7 @@ import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class MedicineListScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  static const String routeName = '/medicine_list';
   // Dummy data for medicines
   final List<Medicine> medicines = [
     Medicine(
@@ -93,6 +93,7 @@ class MedicineListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
@@ -117,9 +118,11 @@ class MedicineListScreen extends StatelessWidget {
           ),
         ],
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+
       ),
       drawer: const Drawer(
-        child: SideMenu(),
+        child: SideMenu(showSearchDrug: false,),
       ),
       body: Stack(
         children: [
