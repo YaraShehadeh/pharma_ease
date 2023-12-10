@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/model/location_model.dart';
+import 'package:pharmaease/src/model/medicine_model.dart';
+import 'package:pharmaease/src/model/pharmacist_model.dart';
 import 'package:pharmaease/src/model/pharmacy_details_model.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
@@ -26,55 +29,40 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
       pharmacyDistance: '1.5',
       pharmacyOpeningHours: DateTime(2023, 1, 1, 8, 0),
       pharmacyClosingHours: DateTime(2023, 1, 1, 18, 0),
-      pharmacyPhoneNumber: '0779593314'
+      pharmacyPhoneNumber: '0779593314',
+        pharmacyLocation: LocationModel( latitude: '', longitude: ''),
+      pharmacyDrugs: [DrugModel(drugID: 122, drugName: " jasa", drugDescription: "sjans", drugPerscription: "23", holdingPharmacies: 2, drugIsConflicting: true, drugImages: [" "," "])], pharmacyPharmacist: [PharmacistModel(pharmacistFName: "", pharmacistLName: "")],
+
     ),
     PharmacyDetailsModel(
-      pharmacyId: '2',
-      pharmacyName: 'Pharmacy B',
-      pharmacyEmail: 'pharmacyB@example.com',
-      pharmacyDescription: 'Your trusted neighborhood pharmacy.',
+      pharmacyId: '1',
+      pharmacyName: 'Pharmacy A',
+      pharmacyEmail: 'pharmacyA@example.com',
+      pharmacyDescription: 'Providing quality healthcare services.',
       pharmacyImage: 'assets/images/aster.png',
-      pharmacyArea: 'Amman,Khalda',
-      pharmacyDistance: '2.2',
-      pharmacyOpeningHours: DateTime(2023, 1, 1, 6, 0),
-      pharmacyClosingHours: DateTime(2023, 1, 1, 22, 0),
-        pharmacyPhoneNumber: '0779593314'
+      pharmacyArea: 'Amman,Jubaiha',
+      pharmacyDistance: '1.5',
+      pharmacyOpeningHours: DateTime(2023, 1, 1, 8, 0),
+      pharmacyClosingHours: DateTime(2023, 1, 1, 18, 0),
+      pharmacyPhoneNumber: '0779593314',
+      pharmacyLocation: LocationModel( latitude: '', longitude: ''),
+      pharmacyDrugs: [DrugModel(drugID: 122, drugName: " jasa", drugDescription: "sjans", drugPerscription: "23", holdingPharmacies: 2, drugIsConflicting: true, drugImages: [" "," "])], pharmacyPharmacist: [PharmacistModel(pharmacistFName: "", pharmacistLName: "")],
+
     ),
     PharmacyDetailsModel(
-      pharmacyId: '2',
-      pharmacyName: 'Pharmacy B',
-      pharmacyEmail: 'pharmacyB@example.com',
-      pharmacyDescription: 'Your trusted neighborhood pharmacy.',
+      pharmacyId: '1',
+      pharmacyName: 'Pharmacy A',
+      pharmacyEmail: 'pharmacyA@example.com',
+      pharmacyDescription: 'Providing quality healthcare services.',
       pharmacyImage: 'assets/images/aster.png',
-      pharmacyArea: 'Amman,Khalda',
-      pharmacyDistance: '2.2',
-      pharmacyOpeningHours: DateTime(2023, 1, 1, 6, 0),
-      pharmacyClosingHours: DateTime(2023, 1, 1, 22, 0),
-        pharmacyPhoneNumber: '0779593314'
-    ),
-    PharmacyDetailsModel(
-      pharmacyId: '2',
-      pharmacyName: 'Pharmacy B',
-      pharmacyEmail: 'pharmacyB@example.com',
-      pharmacyDescription: 'Your trusted neighborhood pharmacy.',
-      pharmacyImage: 'assets/images/aster.png',
-      pharmacyArea: 'Amman,Khalda',
-      pharmacyDistance: '2.2',
-      pharmacyOpeningHours: DateTime(2023, 1, 1, 6, 0),
-      pharmacyClosingHours: DateTime(2023, 1, 1, 22, 0),
-        pharmacyPhoneNumber: '0779593314'
-    ),
-    PharmacyDetailsModel(
-      pharmacyId: '2',
-      pharmacyName: 'Pharmacy B',
-      pharmacyEmail: 'pharmacyB@example.com',
-      pharmacyDescription: 'Your trusted neighborhood pharmacy.',
-      pharmacyImage: 'assets/images/aster.png',
-      pharmacyArea: 'Amman,Khalda',
-      pharmacyDistance: '2.2',
-      pharmacyOpeningHours: DateTime(2023, 1, 1, 6, 0),
-      pharmacyClosingHours: DateTime(2023, 1, 1, 22, 0),
-        pharmacyPhoneNumber: '0779593314'
+      pharmacyArea: 'Amman,Jubaiha',
+      pharmacyDistance: '1.5',
+      pharmacyOpeningHours: DateTime(2023, 1, 1, 8, 0),
+      pharmacyClosingHours: DateTime(2023, 1, 1, 18, 0),
+      pharmacyPhoneNumber: '0779593314',
+      pharmacyLocation: LocationModel( latitude: '', longitude: ''),
+      pharmacyDrugs: [DrugModel(drugID: 122, drugName: " jasa", drugDescription: "sjans", drugPerscription: "23", holdingPharmacies: 2, drugIsConflicting: true, drugImages: [" "," "])], pharmacyPharmacist: [PharmacistModel(pharmacistFName: "", pharmacistLName: "")],
+
     ),
     // Add more pharmacies as needed
   ];
