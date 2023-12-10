@@ -1,3 +1,11 @@
+import 'package:pharmaease/src/model/location_model.dart';
+import 'package:pharmaease/src/model/medicine_model.dart';
+import 'package:pharmaease/src/model/pharmacist_model.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'pharmacy_details_model.g.dart';
+
+@JsonSerializable()
 class PharmacyDetailsModel {
   final String pharmacyId;
   final String pharmacyName;
@@ -9,9 +17,9 @@ class PharmacyDetailsModel {
   final DateTime pharmacyOpeningHours;
   final DateTime pharmacyClosingHours;
   final String pharmacyPhoneNumber;
-  // final Location pharmacyLocation;
-  // final List<Drug> pharmacyDrugs;
-  // final Pharmacist pharmacyPharmacist;
+  final LocationModel pharmacyLocation;
+  final List<DrugModel> pharmacyDrugs;
+  final List<PharmacistModel> pharmacyPharmacist;
 
   PharmacyDetailsModel({
     required this.pharmacyId,
@@ -24,8 +32,14 @@ class PharmacyDetailsModel {
     required this.pharmacyOpeningHours,
     required this.pharmacyClosingHours,
     required this.pharmacyPhoneNumber,
-    // required this.pharmacyLocation,
-    // required this.pharmacyDrugs,
-    // required this.pharmacyPharmacist,
+    required this.pharmacyLocation,
+    required this.pharmacyDrugs,
+    required this.pharmacyPharmacist,
   });
+
+  factory PharmacyDetailsModel.fromJson(Map<String, dynamic> json) {
+    return _$PharmacyDetailsModelFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$PharmacyDetailsModelToJson(this);
 }

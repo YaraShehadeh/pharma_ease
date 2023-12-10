@@ -1,12 +1,30 @@
-class Medicine {
-  final int medicineID;
-  final String name;
-  final String description;
-  final String perscription;
-  final int pharmacies;
-  final bool isConflicting;
-  final List<String> images;
+import 'package:json_annotation/json_annotation.dart';
 
-  Medicine(this.medicineID, this.name, this.description, this.perscription,
-      this.pharmacies, this.isConflicting, this.images);
+part 'medicine_model.g.dart';
+
+@JsonSerializable()
+class DrugModel {
+  final int drugID;
+  final String drugName;
+  final String drugDescription;
+  final String drugPerscription;
+  final int holdingPharmacies;
+  final bool drugIsConflicting;
+  final List<String> drugImages;
+
+  DrugModel(
+      {required this.drugID,
+        required this.drugName,
+        required this.drugDescription,
+        required this.drugPerscription,
+        required this.holdingPharmacies,
+        required this.drugIsConflicting,
+        required this.drugImages});
+
+  factory DrugModel.fromJson(Map<String, dynamic> json) {
+    return _$DrugModelFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$DrugModelToJson(this);
 }
+
