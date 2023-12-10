@@ -112,8 +112,11 @@ class _MapPageState extends State<MapPage> {
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: TextButton(
                       child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
-                    onPressed: (){Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
+                    onPressed: () {
+                      //       Navigator.pushReplacement(context,
+                      //       MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
+                      //
+                    }
                   ),
                 ),
               ],

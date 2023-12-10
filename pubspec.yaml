@@ -43,10 +43,12 @@ dependencies:
   readmore: ^2.1.0
   location: ^5.0.3
   google_fonts: ^6.1.0
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
   barcode_scanner: ^3.6.2
   flutter_barcode_scanner: ^2.0.0
   url_launcher: ^6.2.1
-  build_runner: ^2.4.7
 
 dev_dependencies:
   flutter_test:
