@@ -1,9 +1,15 @@
 def pharmacyEntity(item) -> dict:
     return {
         "id": str(item["_id"]),
-        "name": item["name"],
-        "email": item["email"],
-        "description": item.get("description", ""),
+        "pharmacyName": item["pharmacyName"],
+        "pharmacyemail": item["pharmacyemail"],
+        "pharmacyDescription": item.get("pharmacyDescription", ""),
+        "pharmacyImage": item.get("pharmacyImage", ""),
+        "pharmacyArea": item.get("pharmacyArea", ""),
+        "pharmacyDistance": item.get("pharmacyDistance", ""),
+        "pharmacyOpeningHours": item.get("pharmacyOpeningHours", ""),
+        "pharmacyClosingHours": item.get("pharmacyClosingHours", ""),
+        "pharmacyPhoneNumber": item.get("pharmacyPhoneNumber", ""),
         "location": {
             "longitude": float(item["location"]["longitude"]),
             "latitude": float(item["location"]["latitude"])
