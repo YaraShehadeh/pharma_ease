@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/':(context)=> ForgotPasswordScreen(),
+        '/':(context)=> SignUpScreen(),
         '/second':(context)=> OnBoardingScreen(),
       },
     );

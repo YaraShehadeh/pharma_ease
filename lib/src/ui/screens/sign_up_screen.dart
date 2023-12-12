@@ -19,6 +19,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordFocus = FocusNode();
   final _birthDateFocus = FocusNode();
 
+  List<String> allergiesList = <String>[
+    "None",
+    "Pencillin",
+    "Sulfa Drugs",
+    "Acetaminophen"
+  ];
+  String selectedAllergy = "None";
+
   @override
   Widget build(BuildContext build) {
     return Material(
@@ -122,7 +130,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               onSaved: (_) => _password = _,
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
+            Container(
+              width: double.infinity,
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: selectedAllergy,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedAllergy = newValue!;
+                  });
+                },
+                items:
+                    allergiesList.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(color: Colors.black54),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
