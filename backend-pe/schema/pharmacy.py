@@ -14,7 +14,17 @@ def pharmacyEntity(item) -> dict:
             "longitude": float(item["location"]["longitude"]),
             "latitude": float(item["location"]["latitude"])
         },
-        "drugs": [{"name": drug["name"], "description": drug["description"]} for drug in item.get("drugs", [])],
+        "drugs": [
+            {
+                "drugName": drug["drugName"], 
+                "drugDescription": drug["drugDescription"],
+                "drugBarcode": drug["drugBarcode"],
+                "drugPerscription": drug["drugPerscription"],
+                "drugInteractions": drug["drugInteractions"],
+                "drugImage": drug["drugImage"],
+                "conflictingDrugs": drug["conflictingDrugs"]
+            } for drug in item["drugs"]
+        ],
         "pharmacists": [{"first_name": pharmacist["first_name"], "last_name": pharmacist["last_name"],
                          "username": pharmacist["username"], "password": pharmacist["password"]} for pharmacist in item.get("pharmacists", [])]
     }
