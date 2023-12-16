@@ -9,15 +9,15 @@ from models.mlocation import Location
 from typing import List, Optional
 from services.pharmacy_operations import *
 
+from dao.pharmacy_dao import PharmacyDAO
+
 pharmacy = APIRouter()
 
 
 # Return all pharmacies in the mdb
 @pharmacy.get("/all")
 async def get_all_pharmacies():
-    pharmacies = await collection_name.find().to_list(1000)
-    return get_all_service(pharmacies)
-
+    return await PharmacyDAO.get_all_pharmacies2()
 
 # Fetch all pharmacies that have the specified drug
 @pharmacy.get("/search_drug")
@@ -34,9 +34,14 @@ async def add_drug_to_pharmacy(pharmacy_name: str, drug: Drug):
 # create a pharmacy in mdb
 @pharmacy.post("/create")
 async def add_pharmacy(pharmacy: Pharmacy):
-    return await add_pharmacy_service(pharmacy)
+    # return await add_pharmacy_service(pharmacy)
+    try:
+        result = await PharmacyDAO.create_pharmacy(pharmacy=pharmacy)
+        return result 
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-
+ 
 # get pharmacy by id
 @pharmacy.get("/{pharmacy_id}")
 async def get_pharmacy(pharmacy_id: str):
@@ -53,7 +58,6 @@ async def get_pharmacy_by_name(pharmacy_name: str):
     pharmacy = await collection_name.find_one({"name":pharmacy_name})
     if pharmacy:
         return pharmacyEntity(pharmacy)
-
     else:
         raise HTTPException(status_code=404, detail="Pharmacy not found")
 
@@ -61,10 +65,15 @@ async def get_pharmacy_by_name(pharmacy_name: str):
 
 @pharmacy.delete("/{pharmacy_id}")
 async def delete_pharmacy(pharmacy_id: str):
-    result = await collection_name.delete_one({"_id": ObjectId(pharmacy_id)})
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Pharmacy not found")
-    return {"status": "success", "message": "Pharmacy deleted successfully"}
+    try:
+        result = await PharmacyDAO.delete_pharmacy(pharmacy_id=pharmacy_id)
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail= "Pharmacy not found")
+        
+        return {"status": "success", "message": f"Pharmacy with id {pharmacy_id} deleted successfully"}
+    
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @pharmacy.put("/{pharmacy_id}")
 async def update_pharmacy(pharmacy_id: str, updated_pharmacy: Pharmacy):

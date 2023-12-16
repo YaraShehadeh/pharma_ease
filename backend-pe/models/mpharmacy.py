@@ -4,6 +4,8 @@ from models.mdrugs import Drug
 from models.mlocation import Location
 from models.mpharmacist import Pharmacist
 
+from config.database import collection_name
+
 class Pharmacy(BaseModel):
     pharmacyName: str = Field(..., description="Please add the pharmacy name", unique=True)
     pharmacyemail: str = Field(..., description="Please add the pharamcy email", unique=True)
@@ -45,5 +47,4 @@ class Pharmacy(BaseModel):
             pharmacyPhoneNumber=pharmacyPhoneNumber,
             location=location,
             drugs=drugs,
-            pharmacists=pharmacists
-        )
+            pharmacists=pharmacists)
