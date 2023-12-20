@@ -19,10 +19,15 @@ pharmacy = APIRouter()
 async def get_all_pharmacies():
     return await PharmacyDAO.get_all_pharmacies2()
 
-# Fetch all pharmacies that have the specified drug
-@pharmacy.get("/search_drug")
-async def search_drug(drug_name: str, user_lat: float, user_lon: float):
-    return await search_for_drug_service(drug_name, user_lat, user_lon)
+# # Fetch all pharmacies that have the specified drug
+# @pharmacy.get("/search_drug")
+# async def search_drug(drug_name: str, user_lat: float, user_lon: float):
+#     return await search_for_drug_service(drug_name, user_lat, user_lon)
+
+# Endpoint to search for multiple drugs
+@pharmacy.post("/search_drugs")
+async def search_drugs(drug_names: List[str], user_lat: float, user_lon: float):
+    return await search_for_drugs_service(drug_names, user_lat, user_lon)
 
 
 # add a drug to the pharmacy
