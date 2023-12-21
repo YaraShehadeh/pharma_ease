@@ -14,7 +14,7 @@ pharmacy = APIRouter()
 
 # Return all pharmacies in the mdb
 @pharmacy.get("/all")
-async def get_all_pharmacies():
+async def get_all_pharmacies() -> list[Pharmacy]:
     pharmacies = await collection_name.find().to_list(1000)
     return get_all_service(pharmacies)
 

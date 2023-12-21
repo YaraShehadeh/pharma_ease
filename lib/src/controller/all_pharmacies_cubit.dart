@@ -1,31 +1,42 @@
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:pharmaease/src/model/pharmacy_details_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+
+import 'package:pharmaease_api/pharmaease_api.dart';
+
 
 class AllPharmaciesCubit extends Cubit<AllPharmaciesState> {
-  AllPharmaciesCubit() : super(InitialAllPharmaciesState());
+  AllPharmaciesCubit() : super(InitialAllPharmaciesState()) {
+    getPharmacyDetails();
+  }
 
-  static const baseUrl = 'http://10.0.2.2:8000/api/pharmacy/all';
+  String? PharmacyName;
+  String? PharmacyDescription;
+  int? pharmacyCount;
+
+  final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   Future<dynamic> getPharmacyDetails() async {
-    emit(LoadingAllPharmaciesState());
     try {
-      final response = await http.get(Uri.parse('$baseUrl'));
-      if (response.statusCode == 200) {
-        final List<dynamic> jsonResponse = json.decode(response.body);
-        final List<PharmacyDetailsModel> pharmacies = jsonResponse
-            .map((item) => PharmacyDetailsModel.fromJson(item))
-            .toList();
-        pharmacies.forEach((pharmacy) {
-          print("Pharmacy name: ${pharmacy.name}");
-        });
-        emit(LoadedAllPharmaciesState());
-        return pharmacies;
+      emit(LoadingAllPharmaciesState());
+      List<Pharmacy>? result = (await _api.getPharmacyApi()
+          .getAllPharmaciesApiPharmacyAllGet()).data!.toList();
+      if (result == null) {
+        emit(ErrorAllPharmaciesState());
+        return;
       } else {
-        print("Failed to load pharmacies. Status code: ${response.statusCode}");
-        print("Response body: ${response.body}");
-        throw Exception("Failed to load pharmacies");
+        for (int i = 0; i < result.length; i++) {
+          PharmacyName = result[i].name;
+          PharmacyDescription = result[i].description;
+          pharmacyCount = result.length;
+        }
+        emit(LoadedAllPharmaciesState());
+        return;
+      }
+    } on DioException catch (e) {
+      if (e.response!.statusCode == 401) {
+        emit(ErrorAllPharmaciesState());
+        return;
       }
     } catch (e) {
       emit(ErrorAllPharmaciesState());
