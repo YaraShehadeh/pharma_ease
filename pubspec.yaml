@@ -37,7 +37,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   smooth_page_indicator: ^1.0.0+2
+  dio: ^5.3.3
+  flutter_polyline_points: ^2.0.0
   google_maps_flutter: ^2.5.0
+  readmore: ^2.1.0
+  location: ^5.0.3
+  google_fonts: ^6.1.0
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
+  barcode_scanner: ^3.6.2
+  flutter_barcode_scanner: ^2.0.0
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:
