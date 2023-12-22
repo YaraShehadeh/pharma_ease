@@ -13,6 +13,6 @@ class Drug(BaseModel):
 
     @validator('drugBarcode', always=True)
     def check_at_least_one_field_is_provided(cls, v, values, **kwargs):
-        if not v and not values.get('drug_name'):
-            raise ValueError('Either drug_name or drug_barcode must be provided')
+        if not v and not values.get('drugName'):
+            raise ValueError('Either drugName or drugBarcode must be provided')
         return v

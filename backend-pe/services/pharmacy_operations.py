@@ -10,7 +10,7 @@ from config.database import collection_name
 from schema.pharmacy import pharmacyEntity, pharmaciesEntity
 from bson import ObjectId
 from models.mlocation import Location
-from typing import List, Optional
+from typing import List, Optional , Union
 import re
 
 
@@ -48,26 +48,63 @@ def get_all_service(pharmacies):
 
 
 
-# Function to search for multiple drugs
-async def search_for_drugs_service(drug_names: List[str], user_lat: float, user_lon: float):
+# # Function to search for multiple drugs
+# async def search_for_drugs_service(drug_names: List[str], drug_barcode,user_lat: float, user_lon: float):
+#     """
+#     Takes a list of drug names along with user's latitude and longitude,
+#     then returns the top 5 pharmacies based on the distance.
+#     """
+#     flag = False
+
+#     if drug_names 
+
+#     if not drug_names:
+#         raise HTTPException(status_code=400, detail="No drug names provided")
+
+#     # Find pharmacies that have any of the specified drugs
+#     query = {"drugs.drugName": {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}}
+#     # query = {"drugs.drugName": {"$in": drug_names}}
+#     pharmacies = await collection_name.find(query).to_list(1000)
+
+    
+#     if not pharmacies:
+#         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs")
+
+    
+#     for pharmacy in pharmacies:
+#         pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
+#         user_loc = (user_lat, user_lon)
+#         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
+
+#     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
+
+#     return pharmaciesEntity(sorted_pharmacies)
+
+
+
+async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float):
     """
-    Takes a list of drug names along with user's latitude and longitude,
+    Takes a list of drug names or a drug barcode along with user's latitude and longitude,
     then returns the top 5 pharmacies based on the distance.
     """
-    
-    if not drug_names:
-        raise HTTPException(status_code=400, detail="No drug names provided")
+    if not drug_names and not drug_barcode:
+        raise HTTPException(status_code=400, detail="No drug names or barcode provided")
 
-    # Find pharmacies that have any of the specified drugs
-    query = {"drugs.drugName": {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}}
-    # query = {"drugs.drugName": {"$in": drug_names}}
+    
+    query = {}
+
+    
+    if drug_names:
+        query["drugs.drugName"] = {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}
+    elif drug_barcode:
+        print("barcode is provided")
+        query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
+
     pharmacies = await collection_name.find(query).to_list(1000)
 
-    
     if not pharmacies:
-        raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs")
+        raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
 
-    
     for pharmacy in pharmacies:
         pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
         user_loc = (user_lat, user_lon)
@@ -76,9 +113,6 @@ async def search_for_drugs_service(drug_names: List[str], user_lat: float, user_
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
 
     return pharmaciesEntity(sorted_pharmacies)
-
-
-
 
 
 async def add_drug_service(pharmacy_name, drug):
