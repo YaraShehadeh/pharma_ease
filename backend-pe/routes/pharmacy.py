@@ -25,7 +25,7 @@ async def get_all_pharmacies():
 #     return await search_for_drug_service(drug_name, user_lat, user_lon)
 
 # Endpoint to search for multiple drugs
-@pharmacy.post("/search_drugs")
+@pharmacy.post("/searchHoldingPharmacies")
 async def search_drugs(drug_names: List[str], user_lat: float, user_lon: float):
     return await search_for_drugs_service(drug_names, user_lat, user_lon)
 
