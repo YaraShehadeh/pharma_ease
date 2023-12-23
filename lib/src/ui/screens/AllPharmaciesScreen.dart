@@ -44,7 +44,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
           builder: (context, state) {
         AllPharmaciesCubit cubit = context.read<AllPharmaciesCubit>();
         return ListView.builder(
-            itemCount: cubit.pharmacyCount,
+            itemCount: cubit.pharmacies.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
@@ -72,13 +72,13 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
+                               Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0, vertical: 15),
                                 child: CircleAvatar(
                                   radius: 35,
-                                  backgroundImage: AssetImage(
-                                    'assets/images/aster.png',
+                                  backgroundImage: NetworkImage(
+                                    cubit.pharmacies[index].pharmacyImage
                                   ),
                                 ),
                               ),
@@ -90,31 +90,31 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 8.0),
                                       child: Text(
-                                        cubit.PharmacyName ?? '',
+                                        cubit.pharmacies[index].pharmacyName,
                                         style: const TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
-                                    // Column(
-                                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                                    //   children: [
-                                    //     // Text(
-                                    //     //   pharmacy.pharmacyArea,
-                                    //     //   style: TextStyle(
-                                    //     //       fontWeight: FontWeight.w400,
-                                    //     //       fontSize: 13,
-                                    //     //       color: Colors.grey),
-                                    //     // ),
-                                    //     // Text(
-                                    //     //   '${pharmacy.pharmacyDistance}KM away',
-                                    //     //   style: TextStyle(
-                                    //     //       fontWeight: FontWeight.w400,
-                                    //     //       fontSize: 13,
-                                    //     //       color: Colors.grey),
-                                    //     // ),
-                                    //   ],
-                                    // ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          cubit.pharmacies[index].pharmacyArea,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 13,
+                                              color: Colors.grey),
+                                        ),
+                                        // Text(
+                                        //   '${pharmacy.pharmacyDistance}KM away',
+                                        //   style: TextStyle(
+                                        //       fontWeight: FontWeight.w400,
+                                        //       fontSize: 13,
+                                        //       color: Colors.grey),
+                                        // ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -169,7 +169,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                           height: screenWidth * 0.09,
                                           child: GestureDetector(
                                             onTap: () {
-                                               // _launchPhone(cubit.);
+                                               _launchPhone(cubit.pharmacies[index].pharmacyPhoneNumber);
                                             },
                                             child: Row(
                                               children: [

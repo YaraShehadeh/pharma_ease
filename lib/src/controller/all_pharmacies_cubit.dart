@@ -4,14 +4,11 @@ import 'package:get_it/get_it.dart';
 
 import 'package:pharmaease_api/pharmaease_api.dart';
 
-
 class AllPharmaciesCubit extends Cubit<AllPharmaciesState> {
   AllPharmaciesCubit() : super(InitialAllPharmaciesState()) {
     getPharmacyDetails();
   }
-
-  String? PharmacyName;
-  String? PharmacyDescription;
+  List<Pharmacy> pharmacies = [];
   int? pharmacyCount;
 
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
@@ -19,17 +16,16 @@ class AllPharmaciesCubit extends Cubit<AllPharmaciesState> {
   Future<dynamic> getPharmacyDetails() async {
     try {
       emit(LoadingAllPharmaciesState());
-      List<Pharmacy>? result = (await _api.getPharmacyApi()
-          .getAllPharmaciesApiPharmacyAllGet()).data!.toList();
+      List<Pharmacy>? result =
+          (await _api.getPharmacyApi().getAllPharmaciesApiPharmacyAllGet())
+              .data!
+              .toList();
       if (result == null) {
         emit(ErrorAllPharmaciesState());
         return;
       } else {
-        for (int i = 0; i < result.length; i++) {
-          PharmacyName = result[i].name;
-          PharmacyDescription = result[i].description;
-          pharmacyCount = result.length;
-        }
+        pharmacies = result;
+        pharmacyCount = result.length;
         emit(LoadedAllPharmaciesState());
         return;
       }
