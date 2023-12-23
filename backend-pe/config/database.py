@@ -17,7 +17,7 @@ users_collection = db["users"]
 
 async def setup_indexes():
     # Create unique indexes
-    await collection_name.create_index("name", unique=True)
-    await collection_name.create_index("email", unique=True)
+    await collection_name.create_index("pharmacyName", unique=True)
+    await collection_name.create_index("pharmacyemail", unique=True)
     await collection_name.create_index("location", unique=True)
     await collection_name.create_index("pharmacists.username", unique=True)

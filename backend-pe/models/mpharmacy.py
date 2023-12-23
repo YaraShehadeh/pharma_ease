@@ -3,6 +3,9 @@ from typing import List
 from models.mdrugs import Drug
 from models.mlocation import Location
 from models.mpharmacist import Pharmacist
+from datetime import datetime
+
+from config.database import collection_name
 
 class Pharmacy(BaseModel):
     pharmacyName: str = Field(..., description="Please add the pharmacy name", unique=True)
@@ -11,8 +14,8 @@ class Pharmacy(BaseModel):
     pharmacyImage: str = Field(..., description="Please add the pharamcy image")
     pharmacyArea: str = Field(..., description="Please add the pharamcy area")
     pharmacyDistance: str = Field(..., description="Please add the pharamcy distance")
-    pharmacyOpeningHours: str = Field(..., description="Please add the pharamcy opening hours")
-    pharmacyClosingHours: str = Field(..., description="Please add the pharamcy closing hours")
+    pharmacyOpeningHours: datetime = Field(..., description="Please add the pharamcy opening hours")
+    pharmacyClosingHours: datetime = Field(..., description="Please add the pharamcy closing hours")
     pharmacyPhoneNumber: str = Field(..., description="Please add the pharamcy phone number")
     location: Location = Field(..., description="Please add the pharamcy location", unique=True)
     drugs: List[Drug] = Field(..., description="Please add drugs to the pharmacy")
@@ -45,5 +48,4 @@ class Pharmacy(BaseModel):
             pharmacyPhoneNumber=pharmacyPhoneNumber,
             location=location,
             drugs=drugs,
-            pharmacists=pharmacists
-        )
+            pharmacists=pharmacists)
