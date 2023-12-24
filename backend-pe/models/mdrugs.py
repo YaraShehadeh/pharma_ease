@@ -10,6 +10,7 @@ class Drug(BaseModel):
     drugInteractions: str
     drugImage: List[str]
     holdingPharmacies: List[str]
+    drugAlternatives: List[str]
     Allergies: List[str]
 
     @validator('drugBarcode', always=True)

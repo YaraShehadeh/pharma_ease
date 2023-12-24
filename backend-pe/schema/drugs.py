@@ -10,6 +10,7 @@ def drugEntity(item: dict) -> DrugModel:
         drugInteractions = item["drugInteractions"],
         drugImage = item["drugImage"],
         holdingPharmacies = item["holdingPharmacies"],
+        drugAlternatives = item["drugAlternatives"],
         Allergies = item["Allergies"]
     )
 
