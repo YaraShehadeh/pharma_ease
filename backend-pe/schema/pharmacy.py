@@ -1,7 +1,7 @@
 from datetime import datetime
 from models.mpharmacy import Pharmacy
 from models.mlocation import Location
-from models.mdrugs import Drug
+from models.mdrugs import Drug as DrugModel
 from models.mpharmacist import Pharmacist
 
 def pharmacyEntity(item) -> Pharmacy:
@@ -13,6 +13,7 @@ def pharmacyEntity(item) -> Pharmacy:
     closing_hours = item.get("pharmacyClosingHours", "")
     if closing_hours:
         closing_hours = closing_hours.strftime('%Y-%m-%dT%H:%M:%SZ') if isinstance(closing_hours, datetime) else closing_hours
+
     return Pharmacy(
         # id: str(item["_id"]),
         pharmacyName = item["pharmacyName"],
@@ -29,20 +30,22 @@ def pharmacyEntity(item) -> Pharmacy:
             latitude = item["location"]["latitude"]
         ),
         drugs = [
-            Drug(
-                drugName = drug["drugName"], 
+            DrugModel(
+                drugName = drug.get("drugName"), 
                 drugDescription = drug["drugDescription"],
-                drugBarcode = drug["drugBarcode"],
+                drugBarcode = drug.get("drugBarcode"),
                 drugPerscription = drug["drugPerscription"],
                 drugInteractions = drug["drugInteractions"],
-                drugImage = drug["drugImage"],
-                conflictingDrugs = drug["conflictingDrugs"]
-             ) for drug in item["drugs"]
+                drugImage = drug.get("drugImage", []),
+                holdingPharmacies = drug.get("holdingPharmacies", []),
+                drugAlternatives = drug.get("drugAlternatives", []),
+                Allergies = drug.get("Allergies", [])
+             ) for drug in item.get("drugs", [])
         ],
         pharmacists = [
-            Pharmacist (first_name = pharmacist["first_name"], last_name = pharmacist["last_name"],
-                         username = pharmacist["username"], password = pharmacist["password"] )
-                         for pharmacist in item.get("pharmacists", [])],
+            Pharmacist(first_name = pharmacist["first_name"], last_name = pharmacist["last_name"],
+                        username = pharmacist["username"], password = pharmacist["password"] )
+                        for pharmacist in item.get("pharmacists", [])],
     )
 
 def pharmaciesEntity(entity) -> list[Pharmacy]:

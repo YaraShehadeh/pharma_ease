@@ -33,6 +33,10 @@ async def search_drugs(user_lat: float, user_lon: float, drug_names: List[str] =
     return await search_for_drugs_service(drug_names, drug_barcode, user_lat, user_lon)
 
 
+@pharmacy.get("/searchNearestPharmacies")
+async def search_nearest_pharmacies(user_lat: float, user_lon: float):
+    return await search_for_nearest_pharmacies_service(user_lat, user_lon)
+
 
 # add a drug to the pharmacy
 @pharmacy.post("/{pharmacy_name}/add_drug")

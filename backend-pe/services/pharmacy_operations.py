@@ -115,6 +115,25 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
     return pharmaciesEntity(sorted_pharmacies)
 
 
+async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float):
+    """
+    Takes user's latitude and longitude and returns the top 5 nearest pharmacies based on the distance.
+    """
+    pharmacies = await collection_name.find().to_list(1000)
+
+    if not pharmacies:
+        raise HTTPException(status_code=404, detail="No pharmacies found")
+
+    for pharmacy in pharmacies:
+        pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
+        user_loc = (user_lat, user_lon)
+        pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
+
+    sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
+
+    return pharmaciesEntity(sorted_pharmacies)
+
+
 async def add_drug_service(pharmacy_name, drug):
       # Fetch the pharmacy document by its name
     pharmacy = await collection_name.find_one({"name": pharmacy_name})
