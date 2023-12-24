@@ -13,6 +13,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(uri)
 db = client.pharmacy_db
 collection_name = db["pharmacy"]
 users_collection = db["users"]
+drugs_collection = db["drugs"]
 
 
 async def setup_indexes():

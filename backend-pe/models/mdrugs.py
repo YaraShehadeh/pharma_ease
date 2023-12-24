@@ -9,7 +9,8 @@ class Drug(BaseModel):
     drugPerscription: str
     drugInteractions: str
     drugImage: List[str]
-    conflictingDrugs: List[str]
+    holdingPharmacies: List[str]
+    Allergies: List[str]
 
     @validator('drugBarcode', always=True)
     def check_at_least_one_field_is_provided(cls, v, values, **kwargs):

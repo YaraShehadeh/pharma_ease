@@ -1,6 +1,6 @@
 from fastapi import FastAPI 
 from contextlib import asynccontextmanager
-from routes import pharmacy, pharmacist , users 
+from routes import pharmacy, pharmacist , users , drugs
 # from middleware.errorHandler import error_handler
 from config.database import setup_indexes
 import uvicorn 
@@ -23,6 +23,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(pharmacy.pharmacy, prefix="/api/pharmacy", tags=["pharmacy"])
 app.include_router(users.user_router, prefix= "/api/user", tags=["user"])
+app.include_router(drugs.drug , prefix= "/api/drug" , tags=["drug"])
 # app.include_router(pharmacist.pharmacist_router , prefix= "/api/pharmacist" , tags=["Pharmacist"])
 # app.middleware("http")(error_handler)
 
