@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
@@ -67,22 +69,29 @@ class _MapPageState extends State<MapPage> {
       drawer: const Drawer(
         child: SideMenu(showSearchDrug: true,),
       ),
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            const Map(),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                color: Colors.white,
-                child: buildBottomSheetContent(context),
-              ),
+      body: BlocConsumer<AllHoldingPharmaciesCubit,AllHoldingPharmaciesState>(
+        builder: (context,state) {
+          AllHoldingPharmaciesCubit cubit= context.read<AllHoldingPharmaciesCubit>();
+          return Center(
+            child: Stack(
+              children: <Widget>[
+                const Map(),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    color: Colors.white,
+                    child: buildBottomSheetContent(context),
+                  ),
+                ),
+                const searchBar(),
+              ],
             ),
-            const searchBar(),
-          ],
-        ),
+          );
+        }, listener: ( context, state) {
+          const Text("Loading");
+      },
       ),
     );
   }

@@ -78,7 +78,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                 child: CircleAvatar(
                                   radius: 35,
                                   backgroundImage: NetworkImage(
-                                    cubit.pharmacies[index].pharmacyImage
+                                    cubit.pharmacies[index].pharmacyImage.toString()
                                   ),
                                 ),
                               ),
@@ -90,7 +90,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 8.0),
                                       child: Text(
-                                        cubit.pharmacies[index].pharmacyName,
+                                        cubit.pharmacies[index].pharmacyName.toString(),
                                         style: const TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.w500),
@@ -100,7 +100,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          cubit.pharmacies[index].pharmacyArea,
+                                          cubit.pharmacies[index].pharmacyArea.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 13,
@@ -122,7 +122,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                           ),
                           Row(
                             children: [
-                              const Padding(
+                               Padding(
                                 padding:
                                     EdgeInsets.only(left: 15.0, bottom: 20),
                                 child: Column(
@@ -138,17 +138,17 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                             color: Colors.grey),
                                       ),
                                     ),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(top: 4.0, left: 3),
-                                    //   child: Text(
-                                    //     formatHours(pharmacy.pharmacyOpeningHours,
-                                    //         pharmacy.pharmacyClosingHours),
-                                    //     style: TextStyle(
-                                    //         fontWeight: FontWeight.w400,
-                                    //         fontSize: 14,
-                                    //         color: Colors.black),
-                                    //   ),
-                                    // )
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4.0, left: 3),
+                                      child: Text(
+                                        formatHours(DateTime.parse(cubit.pharmacies[index].pharmacyOpeningHours.toString()),
+                                          DateTime.parse(cubit.pharmacies[index].pharmacyClosingHours.toString())),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14,
+                                            color: Colors.black),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -169,7 +169,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                           height: screenWidth * 0.09,
                                           child: GestureDetector(
                                             onTap: () {
-                                               _launchPhone(cubit.pharmacies[index].pharmacyPhoneNumber);
+                                               _launchPhone(cubit.pharmacies[index].pharmacyPhoneNumber as String );
                                             },
                                             child: Row(
                                               children: [
