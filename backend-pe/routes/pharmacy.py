@@ -57,7 +57,7 @@ async def add_pharmacy(pharmacy: Pharmacy):
 
 # get pharmacy by id
 @pharmacy.get("/{pharmacy_id}")
-async def get_pharmacy(pharmacy_id: str):
+async def get_pharmacy(pharmacy_id: str) -> Pharmacy:
     pharmacy = await collection_name.find_one({"_id": ObjectId(pharmacy_id)})
     if pharmacy:
         return pharmacyEntity(pharmacy)
@@ -67,8 +67,8 @@ async def get_pharmacy(pharmacy_id: str):
 
 
 @pharmacy.get("/name/{pharmacy_name}")
-async def get_pharmacy_by_name(pharmacy_name: str):
-    pharmacy = await collection_name.find_one({"name":pharmacy_name})
+async def get_pharmacy_by_name(pharmacy_name: str) -> Pharmacy:
+    pharmacy = await collection_name.find_one({"pharmacyName":pharmacy_name})
     if pharmacy:
         return pharmacyEntity(pharmacy)
 

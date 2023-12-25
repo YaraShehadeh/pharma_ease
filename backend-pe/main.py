@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from routes import pharmacy, pharmacist , users , drugs
 # from middleware.errorHandler import error_handler
 from config.database import setup_indexes
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn 
 
 
@@ -20,6 +21,14 @@ async def lifespan(app:FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(pharmacy.pharmacy, prefix="/api/pharmacy", tags=["pharmacy"])
 app.include_router(users.user_router, prefix= "/api/user", tags=["user"])
