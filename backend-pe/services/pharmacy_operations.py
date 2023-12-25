@@ -82,7 +82,7 @@ def get_all_service(pharmacies):
 
 
 
-async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float):
+async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float) -> list[Pharmacy]:
     """
     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
     then returns the top 5 pharmacies based on the distance.
