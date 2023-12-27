@@ -115,7 +115,7 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
     return pharmaciesEntity(sorted_pharmacies)
 
 
-async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float):
+async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float) -> list[Pharmacy]:
     """
     Takes user's latitude and longitude and returns the top 5 nearest pharmacies based on the distance.
     """

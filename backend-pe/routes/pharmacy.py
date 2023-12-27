@@ -34,7 +34,7 @@ async def search_drugs(user_lat: float, user_lon: float, drug_names: List[str] =
 
 
 @pharmacy.get("/searchNearestPharmacies")
-async def search_nearest_pharmacies(user_lat: float, user_lon: float):
+async def search_nearest_pharmacies(user_lat: float, user_lon: float) -> list[Pharmacy]:
     return await search_for_nearest_pharmacies_service(user_lat, user_lon)
 
 
