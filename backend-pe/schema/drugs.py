@@ -14,5 +14,5 @@ def drugEntity(item: dict) -> DrugModel:
         Allergies = item["Allergies"]
     )
 
-def drugsEntity(entity: List[dict]) -> List[DrugModel]:
+def drugsEntity(entity: List[dict]) -> list[DrugModel]:
     return [drugEntity(item) for item in entity]
