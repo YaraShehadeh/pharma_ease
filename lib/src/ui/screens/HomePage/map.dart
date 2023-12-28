@@ -1,23 +1,30 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as location;
+import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease_api/pharmaease_api.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key});
 
   @override
-  State<Map> createState() => _MapState();
+  State<Map> createState() => MapState();
 }
 
-class _MapState extends State<Map> {
+class MapState extends State<Map> {
+  late Set<Marker> markers;
+  
   static const _initialCameraPosition =
       CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
   late GoogleMapController _googleMapController;
-  final Location _locationController = Location();
+  final location.Location _locationController = location.Location();
 
   @override
   void initState() {
     super.initState();
+    markers=Set<Marker>();
     getLocationUpdates();
   }
 
@@ -27,6 +34,34 @@ class _MapState extends State<Map> {
     super.dispose();
   }
 
+
+  void updateMarkers(List<Pharmacy>pharmacies){
+    // print("Updating markers for pharmacies: ${pharmacies.length}");
+     setState(() {
+       int markerId=0;
+       markers=pharmacies.map((pharmacy){
+         markerId++;
+         String uniqueId="pharmacy_${markerId}";
+        // var test=  double.parse( pharmacy.location.latitude.toString());
+         // print("RUNTIME TYPE OF LATITUDE");
+         // print(test.runtimeType);
+         // pharmacies.forEach((pharmacy) {
+         //   print("Latitude: ${pharmacy.location.latitude}, longitude ${pharmacy.location.longitude}");
+         // });
+           return Marker(markerId: MarkerId(uniqueId),
+             position: LatLng(
+               double.parse( pharmacy.location.latitude.toString()),
+               double.parse(pharmacy.location.longitude.toString()),),
+             //position: LatLng(32.0006533,35.8879917),
+             infoWindow: InfoWindow(title: pharmacy.pharmacyName.toString()),
+             icon: BitmapDescriptor.defaultMarker,
+           );
+         }).toSet();
+         });
+     _updateCameraPosition(pharmacies);
+       }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,13 +69,14 @@ class _MapState extends State<Map> {
         myLocationEnabled: true,
         initialCameraPosition: _initialCameraPosition,
         onMapCreated: (controller) => _googleMapController = controller,
+        markers: Set.from(markers),
       ),
     );
   }
 
   Future<void> getLocationUpdates() async {
     bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
+    location.PermissionStatus _permissionGranted;
     _serviceEnabled = await _locationController.serviceEnabled();
     if (_serviceEnabled) {
       _serviceEnabled = await _locationController.requestService();
@@ -48,14 +84,14 @@ class _MapState extends State<Map> {
       return;
     }
     _permissionGranted = await _locationController.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
+    if (_permissionGranted == location.PermissionStatus.denied) {
       _permissionGranted = await _locationController.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+      if (_permissionGranted != location.PermissionStatus.granted) {
         return;
       }
     }
     _locationController.onLocationChanged
-        .listen((LocationData currentLocation) {
+        .listen((location.LocationData currentLocation) {
       if (currentLocation.latitude != null &&
           currentLocation.longitude != null) {
         setState(() {
@@ -67,5 +103,26 @@ class _MapState extends State<Map> {
         });
       }
     });
+  }
+
+  //MODIFY THIS MAKE SURE IT WORKS
+  void _updateCameraPosition(List<Pharmacy> pharmacies){
+    if(pharmacies.isEmpty) return;
+    double minLat = pharmacies.first.location.latitude as double;
+    double maxLat = pharmacies.first.location.latitude as double;
+    double minLong = pharmacies.first.location.longitude as double;
+    double maxLong = pharmacies.first.location.longitude as double;
+
+    for (var pharmacy in pharmacies) {
+      minLat = min(minLat, pharmacy.location.latitude as double);
+      maxLat = max(maxLat, pharmacy.location.latitude as double);
+      minLong = min(minLong, pharmacy.location.longitude as double);
+      maxLong = max(maxLong, pharmacy.location.longitude as double);
+    }
+    _googleMapController.animateCamera(
+      CameraUpdate.newLatLngBounds(
+      LatLngBounds(southwest: LatLng(minLat,minLong), northeast: LatLng(maxLat,maxLong),),
+      150.0),
+    );
   }
 }
