@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/all_pharmacies_cubit.dart';
 import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pharmaease/src/controller/pharmacy_services.dart';
 
 import 'HomePage/map_page.dart';
 
@@ -15,6 +15,7 @@ class AllPharmaciesScreen extends StatefulWidget {
 }
 
 class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
+  final PharmacyService _pharmacyService=PharmacyService();
   @override
   void initState() {
     super.initState();
@@ -31,9 +32,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MapPage()),
+            Navigator.pop(context
             );
           },
           color: Colors.black26,
@@ -53,6 +52,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                     MaterialPageRoute(
                       builder: (context) => PharmacyDetailsScreen(
                         showHomeIcon: true,
+                        pharmacyName: cubit.pharmacies[index].pharmacyName.toString(),
                       ),
                     ),
                   );
@@ -91,8 +91,8 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                       padding: const EdgeInsets.only(left: 8.0),
                                       child: Text(
                                         cubit.pharmacies[index].pharmacyName.toString(),
-                                        style: const TextStyle(
-                                            fontSize: 24,
+                                        style:  TextStyle(
+                                            fontSize: screenWidth*0.05,
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
@@ -106,13 +106,6 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                               fontSize: 13,
                                               color: Colors.grey),
                                         ),
-                                        // Text(
-                                        //   '${pharmacy.pharmacyDistance}KM away',
-                                        //   style: TextStyle(
-                                        //       fontWeight: FontWeight.w400,
-                                        //       fontSize: 13,
-                                        //       color: Colors.grey),
-                                        // ),
                                       ],
                                     ),
                                   ],
@@ -169,7 +162,7 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                                           height: screenWidth * 0.09,
                                           child: GestureDetector(
                                             onTap: () {
-                                               _launchPhone(cubit.pharmacies[index].pharmacyPhoneNumber as String );
+                                               _pharmacyService.launchPhone(cubit.pharmacies[index].pharmacyPhoneNumber as String );
                                             },
                                             child: Row(
                                               children: [
@@ -232,10 +225,6 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
                           ),
                         ],
                       ),
-                      // onTap: (){
-                      //   Navigator.pushReplacement(context,
-                      //     MaterialPageRoute(builder: (context) => PharmacyDetailsScreen()));
-                      // },
                     ),
                   ),
                 ),
@@ -256,14 +245,4 @@ String formatHours(DateTime openingTime, DateTime closingTime) {
       ? '${closingTime.hour - 12}PM'
       : '${closingTime.hour}AM';
   return '$formattedOpeningTime - $formattedClosingTime';
-}
-
-void _launchPhone(String phoneNumber) async {
-  final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
-  final String url = phoneUri.toString();
-  if (await canLaunchUrl(phoneUri)) {
-    await launchUrl(phoneUri);
-  } else {
-    throw 'could not launch $url';
-  }
 }

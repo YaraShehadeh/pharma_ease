@@ -22,12 +22,10 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   @override
   void initState() {
     super.initState();
     context.read<NearestPharmaciesAtStartupCubit>().getUserLocationAutomaticallyAtStartup();
-
     // Timer(const Duration(seconds: 0), () {
     //   _scaffoldKey.currentState!.showBottomSheet(
     //     (context) => ClipRRect(
@@ -147,7 +145,7 @@ class _MapPageState extends State<MapPage> {
                   child: TextButton(
                       child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
                     onPressed: () {
-                            Navigator.pushReplacement(context,
+                            Navigator.push(context,
                             MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
                   ),
                 ),
@@ -180,7 +178,7 @@ class _MapPageState extends State<MapPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                   PharmacyDetailsScreen(showHomeIcon: false,)),
+                                   PharmacyDetailsScreen(showHomeIcon: false,pharmacyName: pharmacy.pharmacyName.toString(),)),
                           // title: Text(pharmacyList[index]["title"] ?? ""),
                           // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
                           // leading: Icon(Icons.pin_drop),

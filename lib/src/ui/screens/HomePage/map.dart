@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
-import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class Map extends StatefulWidget {
@@ -15,7 +15,6 @@ class Map extends StatefulWidget {
 
 class MapState extends State<Map> {
   late Set<Marker> markers;
-  
   static const _initialCameraPosition =
       CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
   late GoogleMapController _googleMapController;
@@ -36,18 +35,11 @@ class MapState extends State<Map> {
 
 
   void updateMarkers(List<Pharmacy>pharmacies){
-    // print("Updating markers for pharmacies: ${pharmacies.length}");
      setState(() {
        int markerId=0;
        markers=pharmacies.map((pharmacy){
          markerId++;
          String uniqueId="pharmacy_${markerId}";
-        // var test=  double.parse( pharmacy.location.latitude.toString());
-         // print("RUNTIME TYPE OF LATITUDE");
-         // print(test.runtimeType);
-         // pharmacies.forEach((pharmacy) {
-         //   print("Latitude: ${pharmacy.location.latitude}, longitude ${pharmacy.location.longitude}");
-         // });
            return Marker(markerId: MarkerId(uniqueId),
              position: LatLng(
                double.parse( pharmacy.location.latitude.toString()),
