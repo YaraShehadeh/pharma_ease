@@ -4,14 +4,14 @@ import 'package:get_it/get_it.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class DrugDetailsCubit extends Cubit<DrugDetailsState> {
-  Drug drug = Drug();
+  Drug drugs = Drug();
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   DrugDetailsCubit(String drugName) : super(InitialDrugDetailsState()) {
-    getMedicineCard(drugName);
+    getDrugDetails(drugName);
   }
 
-  Future<void> getMedicineCard(String drugName) async {
+  Future<void> getDrugDetails(String drugName) async {
     try {
       emit(LoadingDrugDetailsState());
       Drug? result = (await _api
@@ -21,7 +21,7 @@ class DrugDetailsCubit extends Cubit<DrugDetailsState> {
       if (result == null) {
         emit(ErrorDrugDetailsState());
       } else {
-        drug = result;
+        drugs = result;
         emit(LoadedDrugDetailsState());
       }
     } on DioException catch (e) {
