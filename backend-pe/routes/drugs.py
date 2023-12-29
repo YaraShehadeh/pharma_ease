@@ -18,7 +18,7 @@ async def create_drug(drug: Drug):
 
 
 @drug.get("/drugname/{drug_name}")
-async def get_drug_by_name(drug_name: str) -> list[Drug]:
+async def get_drug_by_name(drug_name: str) -> Drug:
     regex_pattern = f".*{drug_name}.*"  
     drug_cursor = drugs_collection.find({"drugName": {"$regex": regex_pattern, "$options": "i"}}) 
     drugs = await drug_cursor.to_list(length=None)

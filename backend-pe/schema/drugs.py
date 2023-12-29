@@ -10,9 +10,8 @@ def drugEntity(item: dict) -> DrugModel:
         drugInteractions = item["drugInteractions"],
         drugImage = item["drugImage"],
         holdingPharmacies = item["holdingPharmacies"],
-        drugAlternatives = item["drugAlternatives"],
         Allergies = item["Allergies"]
     )
 
-def drugsEntity(entity: List[dict]) -> list[DrugModel]:
+def drugsEntity(entity: List[dict]) -> DrugModel:
     return [drugEntity(item) for item in entity]
