@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:built_collection/src/list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
@@ -37,8 +38,8 @@ class _MapPageState extends State<MapPage> {
     //     enableDrag: false,
     //   );
     // });
-
   }
+
   void _showBottomSheet(BuildContext context, List<Pharmacy> pharmacies) {
     var state = context.read<NearestPharmaciesAtStartupCubit>().state;
     if (state is LoadedNearestPharmaciesAtStartupState) {
@@ -83,7 +84,6 @@ class _MapPageState extends State<MapPage> {
       body: BlocConsumer<NearestPharmaciesAtStartupCubit,NearestPharmaciesAtStartupState>(
         builder: (context, state) {
           List<Pharmacy> pharmacies = [];
-
           if (state is LoadedNearestPharmaciesAtStartupState) {
             pharmacies = state.pharmacies;
           }

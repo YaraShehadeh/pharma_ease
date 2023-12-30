@@ -1,11 +1,23 @@
-import'package:flutter/material.dart';
+import 'package:built_collection/src/list.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 
-class searchBar extends StatelessWidget {
-  const searchBar({
-    super.key,
-  });
+class searchBar extends StatefulWidget {
+  const searchBar({Key? key}) : super(key: key);
+
+  @override
+  State<searchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<searchBar> {
+  TextEditingController _searchController = TextEditingController();
+
+  void sendBarcodeOrName(String? barcode, BuiltList<String>? drugName) {
+    AllHoldingPharmaciesCubit cubit = AllHoldingPharmaciesCubit();
+    cubit.getBarcodeOrDrugName(barcode, drugName);
+  }
 
   Future<void> scanBarcode(BuildContext context) async {
     try {
@@ -15,25 +27,10 @@ class searchBar extends StatelessWidget {
         true,
         ScanMode.BARCODE,
       );
-      if (scanningResult == '-1') {
-        return;
-      }
-      // You can use the scanningResult to perform further actions, e.g., search for the scanned medicine.
-      print("Scanned barcode: $scanningResult");
-      // You can navigate to a new screen or perform any other action based on the scanned result.
-      // For example, you can search for the scanned medicine in your medicines list.
-      // Medicine? scannedMedicine = medicines.firstWhereOrNull((medicine) => medicine.barcode == scanningResult);
-      // if (scannedMedicine != null) {
-      //   // Medicine found, you can navigate to a details screen or perform any other action.
-      //   // For now, let's just print the details.
-      //   print("Scanned Medicine Details: ${scannedMedicine.name}");
-      // } else {
-      //   // Medicine not found.
-      //   print("Medicine not found");
-      // }
+      print("==scanningResult");
+      print(scanningResult);
+      sendBarcodeOrName(scanningResult, null);
     } catch (e) {
-      print("Error scanning barcode: $e");
-      // Handle errors, e.g., show a snackbar to the user.
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error scanning barcode: $e"),
       ));
@@ -49,24 +46,29 @@ class searchBar extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.white
+            borderRadius: BorderRadius.circular(25),
+            color: Colors.white,
           ),
-          child:  Row(
+          child: Row(
             children: [
-              const Expanded(
-                child:  TextField(
-                  decoration: InputDecoration(
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
                     hintText: "Search...",
                     prefixIcon: Icon(Icons.search),
                     border: InputBorder.none,
                   ),
-
+                  onSubmitted: (value) {
+                    sendBarcodeOrName(null, value as BuiltList<String>?);
+                  },
                 ),
-
               ),
               IconButton(
-                icon: const Icon(Icons.camera_alt , color:pharmaGreenColor ,),
+                icon: const Icon(
+                  Icons.camera_alt,
+                  color: pharmaGreenColor,
+                ),
                 onPressed: () {
                   scanBarcode(context);
                 },

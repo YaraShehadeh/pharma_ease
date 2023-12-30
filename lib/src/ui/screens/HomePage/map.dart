@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
+import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class Map extends StatefulWidget {
@@ -16,14 +16,14 @@ class Map extends StatefulWidget {
 class MapState extends State<Map> {
   late Set<Marker> markers;
   static const _initialCameraPosition =
-      CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
+  CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
   late GoogleMapController _googleMapController;
   final location.Location _locationController = location.Location();
 
   @override
   void initState() {
     super.initState();
-    markers=Set<Marker>();
+    markers = Set<Marker>();
     getLocationUpdates();
   }
 
@@ -98,8 +98,8 @@ class MapState extends State<Map> {
   }
 
   //MODIFY THIS MAKE SURE IT WORKS
-  void _updateCameraPosition(List<Pharmacy> pharmacies){
-    if(pharmacies.isEmpty) return;
+  void _updateCameraPosition(List<Pharmacy> pharmacies) {
+    if (pharmacies.isEmpty) return;
     double minLat = pharmacies.first.location.latitude as double;
     double maxLat = pharmacies.first.location.latitude as double;
     double minLong = pharmacies.first.location.longitude as double;
@@ -113,8 +113,9 @@ class MapState extends State<Map> {
     }
     _googleMapController.animateCamera(
       CameraUpdate.newLatLngBounds(
-      LatLngBounds(southwest: LatLng(minLat,minLong), northeast: LatLng(maxLat,maxLong),),
-      150.0),
+          LatLngBounds(southwest: LatLng(minLat, minLong),
+            northeast: LatLng(maxLat, maxLong),),
+          150.0),
     );
   }
 }

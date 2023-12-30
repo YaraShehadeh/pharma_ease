@@ -28,10 +28,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AllPharmaciesCubit()),
         BlocProvider(create: (_)=> NearestPharmaciesAtStartupCubit()),
-        BlocProvider(create: (_)=> PharmacyDetailsCubit()),
-        BlocProvider(
-            create: (_) => AllHoldingPharmaciesCubit(
-                41, 41, "", BuiltList<String>(["panadol"])))
+        BlocProvider(create: (_) => PharmacyDetailsCubit()),
+        BlocProvider(create: (_) => AllHoldingPharmaciesCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
