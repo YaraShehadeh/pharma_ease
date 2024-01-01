@@ -1,99 +1,106 @@
 // import 'package:flutter/material.dart';
-// import 'package:pharmaease/src/model/medicine_model.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:pharmaease/src/controller/medicine_card_cubit.dart';
 // import 'package:pharmaease/src/ui/screens/medicine_details_screen.dart';
 // import 'package:pharmaease/src/ui/theme/colors.dart';
 //
 // class MedicineCard extends StatefulWidget {
-//   final DrugModel medicine;
-//
-//   const MedicineCard({super.key, required this.medicine});
+//   const MedicineCard({super.key});
 //
 //   @override
-//   State<MedicineCard> createState() => _MedicineCardState();
+//   State<MedicineCard> createState() => _DrugState();
 // }
 //
-// class _MedicineCardState extends State<MedicineCard> {
+// class _DrugState extends State<MedicineCard> {
 //   @override
 //   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
-//       child: Card(
-//         color: Colors.white,
-//         margin: const EdgeInsets.all(8.0),
-//         child: InkWell(
-//           onTap: () {
-//             Navigator.pushReplacement(
-//                 context,
-//                 MaterialPageRoute(
-//                     builder: (context) => MedicineDetailsScreen(
-//                           medicine: DrugModel(
-//                             drugID: 1,
-//                             drugName: 'Paracetamol',
-//                             drugDescription:
-//                                 "OBH COMBI is a cough medicine containing, Paracetamol, Ephedrine HCl, and Chlorphenamine maleate which is used to relieve coughs accompanied by flu symptoms such as fever, headache, and sneezing.",
-//                             drugPerscription: "3pcs",
-//                             holdingPharmacies: 4,
-//                             drugIsConflicting: true,
-//                             drugImages: [
-//                               'assets/images/onboarding_image_1.png'
-//                             ],
-//                           ),
-//                         )));
-//           },
-//           child: Stack(
-//             alignment: Alignment.topRight,
-//             children: [
-//               Column(
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: [
-//                   Expanded(
-//                     child: Image.asset(
-//                       widget.medicine.drugImages[0],
-//                       fit: BoxFit.cover,
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Text(
-//                       widget.medicine.drugName,
-//                       style: const TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
-//                   const Padding(
-//                     padding: EdgeInsets.all(8.0),
-//                     child: Text('{widget.medicine.perscription}'),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Row(
+//     double screenWidth = MediaQuery.of(context).size.width;
+//     double screenHeight = MediaQuery.of(context).size.height;
+//
+//     return BlocBuilder<DrugCubit, DrugState>(
+//         builder: (context, state) {
+//           DrugCubit cubit = context.read<DrugCubit>();
+//           return GridView.builder(
+//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//                 crossAxisCount: 2,
+//                 crossAxisSpacing: 8.0,
+//                 mainAxisSpacing: 8.0,
+//               ),
+//             itemCount: cubit.drugs.length,
+//             itemBuilder: (context, index) {
+//               return Padding(
+//                 padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
+//                 child: Card(
+//                   color: Colors.white,
+//                   margin: const EdgeInsets.all(8.0),
+//                   child: InkWell(
+//                     onTap: () {
+//                       Navigator.pushReplacement(
+//                           context,
+//                           MaterialPageRoute(
+//                               builder: (context) => MedicineDetailsScreen()
+//                           )
+//                       );
+//                     },
+//                     child: Stack(
+//                       alignment: Alignment.topRight,
 //                       children: [
-//                         const Icon(
-//                           Icons.local_pharmacy_outlined,
-//                           color: pharmaGreenColor,
+//                         Column(
+//                           crossAxisAlignment: CrossAxisAlignment.stretch,
+//                           children: [
+//                             Expanded(
+//                               child: NetworkImage(
+//                                 cubit.drugs.drugImage.toString(),
+//                                 fit: BoxFit.cover,
+//                               ),
+//                             ),
+//                             Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Text(
+//                                 cubit.drugs.drugName.toString(),
+//                                 style: const TextStyle(
+//                                   fontWeight: FontWeight.bold,
+//                                 ),
+//                               ),
+//                             ),
+//                             const Padding(
+//                               padding: EdgeInsets.all(8.0),
+//                               child: Text('{widget.medicine.perscription}'),
+//                             ),
+//                             Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Row(
+//                                 children: [
+//                                   const Icon(
+//                                     Icons.local_pharmacy_outlined,
+//                                     color: pharmaGreenColor,
+//                                   ),
+//                                   Text(
+//                                     '${cubit.drugs.holdingPharmacies
+//                                         .toString()} pharmacies near you',
+//                                     style: const TextStyle(fontSize: 10),
+//                                   )
+//                                 ],
+//                               ),
+//                             ),
+//                           ],
 //                         ),
-//                         Text(
-//                           '${widget.medicine.holdingPharmacies.toStringAsFixed(0)} pharmacies near you',
-//                           style: const TextStyle(fontSize: 10),
-//                         )
+//                         // if (widget.medicine.drugIsConflicting)
+//                         //   const Padding(
+//                         //     padding: EdgeInsets.all(8.0),
+//                         //     child: Icon(
+//                         //       Icons.warning_amber_rounded,
+//                         //       color: Colors.red,
+//                         //     ),
+//                         //   ),
 //                       ],
 //                     ),
 //                   ),
-//                 ],
-//               ),
-//               if (widget.medicine.drugIsConflicting)
-//                 const Padding(
-//                   padding: EdgeInsets.all(8.0),
-//                   child: Icon(
-//                     Icons.warning_amber_rounded,
-//                     color: Colors.red,
-//                   ),
 //                 ),
-//             ],
-//           ),
-//         ),
-//       ),
+//               );
+//             }
+//           );
+//         }
 //     );
 //   }
-// }
+//   }

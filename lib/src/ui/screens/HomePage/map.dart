@@ -15,16 +15,15 @@ class Map extends StatefulWidget {
 
 class MapState extends State<Map> {
   late Set<Marker> markers;
-  
   static const _initialCameraPosition =
-      CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
+  CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
   late GoogleMapController _googleMapController;
   final location.Location _locationController = location.Location();
 
   @override
   void initState() {
     super.initState();
-    markers=Set<Marker>();
+    markers = Set<Marker>();
     getLocationUpdates();
   }
 
@@ -36,18 +35,11 @@ class MapState extends State<Map> {
 
 
   void updateMarkers(List<Pharmacy>pharmacies){
-    // print("Updating markers for pharmacies: ${pharmacies.length}");
      setState(() {
        int markerId=0;
        markers=pharmacies.map((pharmacy){
          markerId++;
          String uniqueId="pharmacy_${markerId}";
-        // var test=  double.parse( pharmacy.location.latitude.toString());
-         // print("RUNTIME TYPE OF LATITUDE");
-         // print(test.runtimeType);
-         // pharmacies.forEach((pharmacy) {
-         //   print("Latitude: ${pharmacy.location.latitude}, longitude ${pharmacy.location.longitude}");
-         // });
            return Marker(markerId: MarkerId(uniqueId),
              position: LatLng(
                double.parse( pharmacy.location.latitude.toString()),
@@ -106,8 +98,8 @@ class MapState extends State<Map> {
   }
 
   //MODIFY THIS MAKE SURE IT WORKS
-  void _updateCameraPosition(List<Pharmacy> pharmacies){
-    if(pharmacies.isEmpty) return;
+  void _updateCameraPosition(List<Pharmacy> pharmacies) {
+    if (pharmacies.isEmpty) return;
     double minLat = pharmacies.first.location.latitude as double;
     double maxLat = pharmacies.first.location.latitude as double;
     double minLong = pharmacies.first.location.longitude as double;
@@ -121,8 +113,9 @@ class MapState extends State<Map> {
     }
     _googleMapController.animateCamera(
       CameraUpdate.newLatLngBounds(
-      LatLngBounds(southwest: LatLng(minLat,minLong), northeast: LatLng(maxLat,maxLong),),
-      150.0),
+          LatLngBounds(southwest: LatLng(minLat, minLong),
+            northeast: LatLng(maxLat, maxLong),),
+          150.0),
     );
   }
 }

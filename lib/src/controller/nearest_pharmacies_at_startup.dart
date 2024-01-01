@@ -1,23 +1,24 @@
 import 'package:bloc/bloc.dart';
+
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location/location.dart' as location;
 import 'package:pharmaease_api/pharmaease_api.dart';
+
 
 class NearestPharmaciesAtStartupCubit
     extends Cubit<NearestPharmaciesAtStartupState> {
   NearestPharmaciesAtStartupCubit()
       : super(InitialNearestPharmaciesAtStartupState());
 
-  final location.Location _locationController=location.Location();
+  final location.Location _locationController = location.Location();
 
   List<Pharmacy> pharmacies = [];
   int? pharmacyCount;
 
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
-
-  Future<void> getUserLocationAutomaticallyAtStartup() async{
+  Future<void> getUserLocationAutomaticallyAtStartup() async {
     location.LocationData? currentUserLocation;
     try {
       bool _serviceEnabled;
@@ -29,16 +30,16 @@ class NearestPharmaciesAtStartupCubit
         return;
       }
       _permissionGranted = await _locationController.hasPermission();
-      if (_permissionGranted ==  location.PermissionStatus.denied) {
+      if (_permissionGranted == location.PermissionStatus.denied) {
         _permissionGranted = await _locationController.requestPermission();
-        if (_permissionGranted !=  location.PermissionStatus.granted) {
+        if (_permissionGranted != location.PermissionStatus.granted) {
           return;
         }
       }
-      currentUserLocation=await _locationController.getLocation();
-      getNearestPharmaciesAtStartup(currentUserLocation.latitude as num, currentUserLocation.longitude as num);
-
-    } catch(e){
+      currentUserLocation = await _locationController.getLocation();
+      getNearestPharmaciesAtStartup(currentUserLocation.latitude as num,
+          currentUserLocation.longitude as num);
+    } catch (e) {
       emit(ErrorNearestPharmaciesAtStartupState());
       print("Error fetching Location: $e");
     }
@@ -52,8 +53,8 @@ class NearestPharmaciesAtStartupCubit
               .getPharmacyApi()
               .searchNearestPharmaciesApiPharmacySearchNearestPharmaciesGet(
                   userLat: userLat, userLon: userLon))
-          .data!
-          .toList();
+          .data
+          ?.toList();
 
       if (result == null) {
         emit(ErrorNearestPharmaciesAtStartupState());
@@ -86,6 +87,7 @@ class LoadingNearestPharmaciesAtStartupState
 class LoadedNearestPharmaciesAtStartupState
     extends NearestPharmaciesAtStartupState {
   final List<Pharmacy> pharmacies;
+
   LoadedNearestPharmaciesAtStartupState({required this.pharmacies});
 }
 

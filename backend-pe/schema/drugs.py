@@ -7,7 +7,7 @@ def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]],filte
     filtered_medicines = []  
 
     for sublist in medicines:
-        sublist_filtered = []  
+        sublist_filtered = []
         for drug in sublist:
             drug_dict = drug.dict()  
             if re.findall(f"^{medicine}", drug_dict[f"{filter_type}"].lower()):
@@ -30,5 +30,5 @@ def drugEntity(item: dict) -> DrugModel:
         Allergies=item["Allergies"]
     )
 
-def drugsEntity(entity: List[dict]) -> List[DrugModel]:
+def drugsEntity(entity: List[dict]) -> DrugModel:
     return [drugEntity(item) for item in entity]

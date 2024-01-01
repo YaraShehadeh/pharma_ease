@@ -4,7 +4,7 @@ from routes import pharmacy, pharmacist , users , drugs
 # from middleware.errorHandler import error_handler
 from config.database import setup_indexes
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn 
+import uvicorn
 
 
 @asynccontextmanager

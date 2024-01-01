@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:built_collection/src/list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
@@ -22,12 +23,10 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   @override
   void initState() {
     super.initState();
     context.read<NearestPharmaciesAtStartupCubit>().getUserLocationAutomaticallyAtStartup();
-
     // Timer(const Duration(seconds: 0), () {
     //   _scaffoldKey.currentState!.showBottomSheet(
     //     (context) => ClipRRect(
@@ -39,8 +38,8 @@ class _MapPageState extends State<MapPage> {
     //     enableDrag: false,
     //   );
     // });
-
   }
+
   void _showBottomSheet(BuildContext context, List<Pharmacy> pharmacies) {
     var state = context.read<NearestPharmaciesAtStartupCubit>().state;
     if (state is LoadedNearestPharmaciesAtStartupState) {
@@ -85,7 +84,6 @@ class _MapPageState extends State<MapPage> {
       body: BlocConsumer<NearestPharmaciesAtStartupCubit,NearestPharmaciesAtStartupState>(
         builder: (context, state) {
           List<Pharmacy> pharmacies = [];
-
           if (state is LoadedNearestPharmaciesAtStartupState) {
             pharmacies = state.pharmacies;
           }
@@ -147,7 +145,7 @@ class _MapPageState extends State<MapPage> {
                   child: TextButton(
                       child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
                     onPressed: () {
-                            Navigator.pushReplacement(context,
+                            Navigator.push(context,
                             MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
                   ),
                 ),
@@ -180,7 +178,7 @@ class _MapPageState extends State<MapPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                   PharmacyDetailsScreen(showHomeIcon: false,)),
+                                   PharmacyDetailsScreen(showHomeIcon: false,pharmacyName: pharmacy.pharmacyName.toString(),)),
                           // title: Text(pharmacyList[index]["title"] ?? ""),
                           // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
                           // leading: Icon(Icons.pin_drop),
