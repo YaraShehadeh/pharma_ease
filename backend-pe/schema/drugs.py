@@ -2,7 +2,7 @@ from models.mdrugs import Drug as DrugModel
 from typing import List
 import re
 
-def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]]) -> List[List[DrugModel]]:
+def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]],filter_type) -> List[List[DrugModel]]:
     medicine = medicine.lower()  
     filtered_medicines = []  
 
@@ -10,7 +10,7 @@ def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]]) -> L
         sublist_filtered = []  
         for drug in sublist:
             drug_dict = drug.dict()  
-            if re.findall(f"^{medicine}", drug_dict["drugName"].lower()):
+            if re.findall(f"^{medicine}", drug_dict[f"{filter_type}"].lower()):
                 sublist_filtered.append(drug) 
         if sublist_filtered:  
             filtered_medicines.append(sublist_filtered)
