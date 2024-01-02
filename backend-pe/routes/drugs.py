@@ -91,7 +91,7 @@ async def get_drug_info(drug_name: str):
             if drugs:
                 pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
                 post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs, "drugName")
-                return post_processed_drugs
+                return post_processed_drugs[0]
             else:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
         except Exception as e:
