@@ -16,6 +16,7 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   Future<void> getBarcodeOrDrugName(String? barcode, BuiltList<String>? drugName) async {
+    print("getBarcodeOrDrugName called with barcode: $barcode, drugName: $drugName ");
     try {
       emit(LoadingAllHoldingPharmaciesState());
 
@@ -55,28 +56,35 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
       BuiltList<String>? drugName,
       ) async {
     try {
-      List<Pharmacy>? result = (await _api
+      List<Pharmacy> result  = (await _api
           .getPharmacyApi()
           .searchDrugsApiPharmacySearchHoldingPharmaciesPost(
         userLat: userLat,
         userLon: userLon,
         drugBarcode: barcode,
         requestBody: drugName,
-      ))
-          .data!
-          .toList();
+      )).data!.toList();
 
+
+      print("ALL HOLDING PHARMACIES");
+      print(result);
       if (result == null) {
         emit(ErrorAllHoldingPharmaciesState());
         return;
       } else {
         pharmacies = result;
-        emit(LoadedAllHoldingPharmaciesState());
+        emit(LoadedAllHoldingPharmaciesState(pharmacies: pharmacies));
         return;
       }
     } on DioException catch (e) {
       if (e.response!.statusCode == 401) {
         emit(ErrorAllHoldingPharmaciesState());
+        print("Error: $e");
+        throw Exception("Failed to load all holding pharmacies");
+      }
+      if (e.response!.statusCode == 404) {
+        emit(NoHoldingPharmaciesFoundState());
+        print("NO PHARMACIES  RETURNED");
         print("Error: $e");
         throw Exception("Failed to load all holding pharmacies");
       }
@@ -91,6 +99,11 @@ class InitialAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
 
 class LoadingAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
 
-class LoadedAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
+class LoadedAllHoldingPharmaciesState extends AllHoldingPharmaciesState {
+  final List<Pharmacy> pharmacies;
+  LoadedAllHoldingPharmaciesState({required this.pharmacies});
+}
 
 class ErrorAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
+
+class NoHoldingPharmaciesFoundState extends AllHoldingPharmaciesState{}
