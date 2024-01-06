@@ -41,37 +41,35 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
       }
 
       currentUserLocation = await _locationController.getLocation();
-      getAllHoldingPharmacies(currentUserLocation.latitude as num,
-          currentUserLocation.longitude as num, barcode, drugName);
+      getAllHoldingPharmacies(currentUserLocation.latitude as double,
+          currentUserLocation.longitude as double, barcode, drugName);
     } catch (e) {
       emit(ErrorAllHoldingPharmaciesState());
     }
   }
 
   Future<dynamic> getAllHoldingPharmacies(
-      num userLat,
-      num userLon,
+      double userLat,
+      double userLon,
       String? barcode,
       BuiltList<String>? drugName,
       ) async {
     try {
-      List<Pharmacy>? result = (await _api
+      List<Pharmacy>? result  = (await _api
           .getPharmacyApi()
           .searchDrugsApiPharmacySearchHoldingPharmaciesPost(
         userLat: userLat,
         userLon: userLon,
         drugBarcode: barcode,
         requestBody: drugName,
-      ))
-          .data!
-          .toList();
+      )).data!.toList();
 
       if (result == null) {
         emit(ErrorAllHoldingPharmaciesState());
         return;
       } else {
         pharmacies = result;
-        emit(LoadedAllHoldingPharmaciesState());
+        emit(LoadedAllHoldingPharmaciesState(pharmacies: pharmacies));
         return;
       }
     } on DioException catch (e) {
@@ -91,6 +89,11 @@ class InitialAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
 
 class LoadingAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
 
-class LoadedAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
+class LoadedAllHoldingPharmaciesState extends AllHoldingPharmaciesState {
+  final List<Pharmacy> pharmacies;
+  LoadedAllHoldingPharmaciesState({required this.pharmacies});
+}
 
 class ErrorAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
+
+class NoHoldingPharmaciesFoundState extends AllHoldingPharmaciesState{}

@@ -37,8 +37,8 @@ class NearestPharmaciesAtStartupCubit
         }
       }
       currentUserLocation = await _locationController.getLocation();
-      getNearestPharmaciesAtStartup(currentUserLocation.latitude as num,
-          currentUserLocation.longitude as num);
+      getNearestPharmaciesAtStartup(currentUserLocation.latitude!,
+          currentUserLocation.longitude!);
     } catch (e) {
       emit(ErrorNearestPharmaciesAtStartupState());
       print("Error fetching Location: $e");
@@ -46,12 +46,11 @@ class NearestPharmaciesAtStartupCubit
   }
 
   Future<dynamic> getNearestPharmaciesAtStartup(
-      num userLat, num userLon) async {
+      double userLat, double userLon) async {
     try {
       emit(LoadingNearestPharmaciesAtStartupState());
-      List<Pharmacy>? result = (await _api
-              .getPharmacyApi()
-              .searchNearestPharmaciesApiPharmacySearchNearestPharmaciesGet(
+      List<Pharmacy>? result = (await _api.getPharmacyApi().
+              searchNearestPharmaciesApiPharmacySearchNearestPharmaciesGet(
                   userLat: userLat, userLon: userLon))
           .data
           ?.toList();

@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:built_collection/src/list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
@@ -12,7 +10,8 @@ import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
-GlobalKey<MapState> mapKey=GlobalKey();
+GlobalKey<MapState> mapKey = GlobalKey();
+
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -22,37 +21,41 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<MapState> mapKey = GlobalKey();
+  List<Pharmacy> activePharmacies = [];
+  bool _showBottomSheetFlag = true;
 
   @override
   void initState() {
     super.initState();
-    context.read<NearestPharmaciesAtStartupCubit>().getUserLocationAutomaticallyAtStartup();
-    // Timer(const Duration(seconds: 0), () {
-    //   _scaffoldKey.currentState!.showBottomSheet(
-    //     (context) => ClipRRect(
-    //       borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-    //       child: Container(
-    //         child: buildBottomSheetContent(context),
-    //       ),
-    //     ),
-    //     enableDrag: false,
-    //   );
-    // });
+    _setShowBottomSheet(false);
+    context.read<NearestPharmaciesAtStartupCubit>().getUserLocationAutomaticallyAtStartup().then((_) {
+      _setShowBottomSheet(true);
+    });
   }
 
+  // Timer(const Duration(seconds: 0), () {
+  //   _scaffoldKey.currentState!.showBottomSheet(
+  //     (context) => ClipRRect(
+  //       borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+  //       child: Container(
+  //         child: buildBottomSheetContent(context),
+  //       ),
+  //     ),
+  //     enableDrag: false,
+  //   );
+  // });
+
   void _showBottomSheet(BuildContext context, List<Pharmacy> pharmacies) {
-    var state = context.read<NearestPharmaciesAtStartupCubit>().state;
-    if (state is LoadedNearestPharmaciesAtStartupState) {
-      _scaffoldKey.currentState!.showBottomSheet(
-            (context) => ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-          child: Container(
-            child: buildBottomSheetContent(context, state.pharmacies),
-          ),
+    _scaffoldKey.currentState!.showBottomSheet(
+          (context) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+        child: Container(
+          child: buildBottomSheetContent(context, pharmacies),
         ),
-        enableDrag: false,
-      );
-    }
+      ),
+      enableDrag: false,
+    );
   }
 
   @override
@@ -79,60 +82,114 @@ class _MapPageState extends State<MapPage> {
         surfaceTintColor: Colors.white,
       ),
       drawer: const Drawer(
-        child: SideMenu(showSearchDrug: true,),
+        child: SideMenu(
+          showSearchDrug: true,
+        ),
       ),
-      body: BlocConsumer<NearestPharmaciesAtStartupCubit,NearestPharmaciesAtStartupState>(
-        builder: (context, state) {
-          List<Pharmacy> pharmacies = [];
-          if (state is LoadedNearestPharmaciesAtStartupState) {
-            pharmacies = state.pharmacies;
-          }
-          return Center(
-            child: Stack(
-              children: <Widget>[
-                 Map(key: mapKey,),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    color: Colors.white,
-                    child: buildBottomSheetContent(context,pharmacies),
-                  ),
-                ),
-                const searchBar(),
-              ],
-            ),
-          );
-        }, listener: ( context, state) {
-          if(state is LoadedNearestPharmaciesAtStartupState){
-            _showBottomSheet(context,state.pharmacies);
-            final _mapState = mapKey.currentState;
-            if(_mapState!=null){
-            _mapState?.updateMarkers(state.pharmacies);
-          }
-            else{
-            print("MapState not found");}
-          }
-          const Text("Loading");
-      },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<NearestPharmaciesAtStartupCubit,
+              NearestPharmaciesAtStartupState>(
+            listener: (context, state) {
+              if (state is LoadedNearestPharmaciesAtStartupState) {
+                setState(() {
+                  activePharmacies = state.pharmacies;
+                });
+                final _mapState = mapKey.currentState;
+                if (_mapState != null) {
+                  _mapState.updateMarkers(activePharmacies);
+                } else {
+                  print("MapState not found");
+                }
+                if (_showBottomSheetFlag)
+                  _showBottomSheet(context, activePharmacies);
+              }
+              if (state is LoadingNearestPharmaciesAtStartupState) {
+                print("LOADINGGGGG");
+              }
+              const Text("Loading");
+            },
+          ),
+          BlocListener<AllHoldingPharmaciesCubit, AllHoldingPharmaciesState>(
+              listener: (context, state) {
+                if (state is LoadedAllHoldingPharmaciesState) {
+                  setState(() {
+                    activePharmacies = state.pharmacies;
+                  });
+                  _showBottomSheet(context, activePharmacies);
+                  final _mapState = mapKey.currentState;
+                  if (_mapState != null) {
+                    _mapState.updateMarkers(activePharmacies);
+                  }
+                }
+                if (state is NoHoldingPharmaciesFoundState) {
+                  setState(() {
+                    activePharmacies = [];
+                  });
+                  if (_showBottomSheetFlag)
+                    _showBottomSheet(context, activePharmacies);
+                  final _mapState = mapKey.currentState;
+                  if (_mapState != null) {
+                    _mapState.updateMarkers([]);
+                  }
+                }
+              })
+        ],
+        child: buildUIWithPharmacies(activePharmacies),
       ),
     );
   }
 
-  Widget buildBottomSheetContent(BuildContext context,List<Pharmacy>pharmacies) {
+  Widget buildUIWithPharmacies(List<Pharmacy> pharmacies) {
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          Map(
+            key: mapKey,
+          ),
+          if (_showBottomSheetFlag)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.white,
+                child: buildBottomSheetContent(context, pharmacies),
+              ),
+            ),
+          const SearchBarWidget(),
+        ],
+      ),
+    );
+  }
+
+  void _setShowBottomSheet(bool value) {
+    setState(() {
+      _showBottomSheetFlag = value;
+    });
+  }
+
+  Widget buildBottomSheetContent(
+      BuildContext context, List<Pharmacy> pharmacies) {
+    print("BOTTOM SHEET PHARMACIES");
+    print(pharmacies);
+    print("${pharmacies.length}");
     return SizedBox(
-      height: MediaQuery.of(context).size.height*0.25,
+      height: pharmacies.isNotEmpty
+          ? MediaQuery.of(context).size.height * 0.25
+          : MediaQuery.of(context).size.height * 0.19,
       child: Column(
         children: <Widget>[
           const SizedBox(
             height: 15,
           ),
-           Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: pharmacies.isNotEmpty
+                ? const EdgeInsets.all(8.0)
+                : const EdgeInsets.only(left: 8, bottom: 2),
             child: Row(
               children: [
-                Text(
+                const Text(
                   "Nearest Pharmacies",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
@@ -141,12 +198,16 @@ class _MapPageState extends State<MapPage> {
                 // ),
                 const Spacer(),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: TextButton(
-                      child:Text("View all Pharmacies",style:TextStyle(color: Colors.black)),
+                    child: const Text("View all Pharmacies",
+                        style: TextStyle(color: Colors.black)),
                     onPressed: () {
-                            Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AllPharmaciesScreen()));},
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllPharmaciesScreen()));
+                    },
                   ),
                 ),
               ],
@@ -155,41 +216,54 @@ class _MapPageState extends State<MapPage> {
           const SizedBox(
             height: 20,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: pharmacies.length,
-              // pharmacyList.length,
-              itemBuilder: (context, index) {
-                Pharmacy pharmacy=pharmacies[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: pharmaGreenColor,
-                    ),
-                    child: ListTile(
-                      title:  Text(pharmacy.pharmacyName.toString()),
-                      trailing: const Text("trailing"),
-                      leading: const Icon(Icons.pin_drop),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                   PharmacyDetailsScreen(showHomeIcon: false,pharmacyName: pharmacy.pharmacyName.toString(),)),
-                          // title: Text(pharmacyList[index]["title"] ?? ""),
-                          // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
-                          // leading: Icon(Icons.pin_drop),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
+          if (pharmacies.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: pharmacies.length,
+                itemBuilder: (context, index) {
+                  Pharmacy pharmacy = pharmacies[index];
+                  if (pharmacies.isNotEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          color: pharmaGreenColor,
+                        ),
+                        child: ListTile(
+                          title: Text(pharmacy.pharmacyName.toString()),
+                          trailing: const Text("trailing"),
+                          leading: const Icon(Icons.pin_drop),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PharmacyDetailsScreen(
+                                    showHomeIcon: false,
+                                    pharmacyName:
+                                    pharmacy.pharmacyName.toString(),
+                                  )),
+                              // title: Text(pharmacyList[index]["title"] ?? ""),
+                              // trailing: Text(pharmacyList[index]["trailing"] ?? ""),
+                              // leading: Icon(Icons.pin_drop),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
-          ),
+          if (pharmacies.isEmpty)
+            Container(
+                height: 25,
+                child: const Center(
+                  child: Text("No Pharmacies holding that drug",
+                      style:
+                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                ))
         ],
       ),
     );
