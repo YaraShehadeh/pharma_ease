@@ -8,6 +8,7 @@ class SearchedDrugCubit extends Cubit<SearchedDrugState> {
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   List<Drug>? drugs=[];
+ // Drug ?drug;
 
 
   Future<dynamic> getSearchedDrug(String drugName) async {

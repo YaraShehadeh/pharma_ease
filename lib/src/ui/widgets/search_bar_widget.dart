@@ -96,4 +96,4 @@ class _SearchBarState extends State<SearchBarWidget> {
         ),
       ),
     );
-  }
+  }}

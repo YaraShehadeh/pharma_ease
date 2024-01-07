@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/drug_details_cubit.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
-import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_screen.dart';
+import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_list_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 
 
