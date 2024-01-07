@@ -32,4 +32,3 @@ def drugEntity(item: dict) -> DrugModel:
 
 def drugsEntity(entity: List[dict]) -> DrugModel:
     return [drugEntity(item) for item in entity]
-

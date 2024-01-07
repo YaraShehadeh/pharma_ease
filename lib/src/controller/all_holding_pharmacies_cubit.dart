@@ -16,6 +16,7 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   Future<void> getBarcodeOrDrugName(String? barcode, BuiltList<String>? drugName) async {
+    print("getBarcodeOrDrugName called with barcode: $barcode, drugName: $drugName ");
     try {
       emit(LoadingAllHoldingPharmaciesState());
 
@@ -64,6 +65,9 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
         requestBody: drugName,
       )).data!.toList();
 
+
+      print("ALL HOLDING PHARMACIES");
+      print(result);
       if (result == null) {
         emit(ErrorAllHoldingPharmaciesState());
         return;
@@ -75,6 +79,12 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
     } on DioException catch (e) {
       if (e.response!.statusCode == 401) {
         emit(ErrorAllHoldingPharmaciesState());
+        print("Error: $e");
+        throw Exception("Failed to load all holding pharmacies");
+      }
+      if (e.response!.statusCode == 404) {
+        emit(NoHoldingPharmaciesFoundState());
+        print("NO PHARMACIES  RETURNED");
         print("Error: $e");
         throw Exception("Failed to load all holding pharmacies");
       }

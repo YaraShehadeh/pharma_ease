@@ -16,7 +16,7 @@ class Map extends StatefulWidget {
 class MapState extends State<Map> {
   late Set<Marker> markers;
   static const _initialCameraPosition =
-  CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 16);
+  CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 10);
   late GoogleMapController _googleMapController;
   final location.Location _locationController = location.Location();
 
@@ -35,21 +35,26 @@ class MapState extends State<Map> {
 
 
   void updateMarkers(List<Pharmacy>pharmacies){
-     setState(() {
-       int markerId=0;
-       markers=pharmacies.map((pharmacy){
-         markerId++;
-         String uniqueId="pharmacy_${markerId}";
-           return Marker(markerId: MarkerId(uniqueId),
-             position: LatLng(
-               double.parse( pharmacy.location.latitude.toString()),
-               double.parse(pharmacy.location.longitude.toString()),),
-             //position: LatLng(32.0006533,35.8879917),
-             infoWindow: InfoWindow(title: pharmacy.pharmacyName.toString()),
-             icon: BitmapDescriptor.defaultMarker,
-           );
-         }).toSet();
+      setState(() {
+        markers.clear();
+        if(pharmacies.isNotEmpty) {
+          int markerId = 0;
+          markers = pharmacies.map((pharmacy) {
+            markerId++;
+            String uniqueId = "pharmacy_${markerId}";
+            return Marker(
+              markerId: MarkerId(uniqueId),
+              position: LatLng(
+                double.parse(pharmacy.location.latitude.toString()),
+                double.parse(pharmacy.location.longitude.toString()),),
+              //position: LatLng(32.0006533,35.8879917),
+              infoWindow: InfoWindow(title: pharmacy.pharmacyName.toString()),
+              icon: BitmapDescriptor.defaultMarker,
+            );
+          }).toSet();
+        }
          });
+
      _updateCameraPosition(pharmacies);
        }
 
@@ -100,6 +105,7 @@ class MapState extends State<Map> {
   //MODIFY THIS MAKE SURE IT WORKS
   void _updateCameraPosition(List<Pharmacy> pharmacies) {
     if (pharmacies.isEmpty) return;
+
     double minLat = pharmacies.first.location.latitude as double;
     double maxLat = pharmacies.first.location.latitude as double;
     double minLong = pharmacies.first.location.longitude as double;
@@ -115,7 +121,7 @@ class MapState extends State<Map> {
       CameraUpdate.newLatLngBounds(
           LatLngBounds(southwest: LatLng(minLat, minLong),
             northeast: LatLng(maxLat, maxLong),),
-          150.0),
+          100.0),
     );
   }
 }

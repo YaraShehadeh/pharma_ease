@@ -10,6 +10,7 @@ import 'package:pharmaease/src/ui/theme/colors.dart';
 class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({Key? key}) : super(key: key);
 
+
   @override
   State<SearchBarWidget> createState() => _SearchBarState();
 }
@@ -96,4 +97,3 @@ class _SearchBarState extends State<SearchBarWidget> {
       ),
     );
   }
-}
