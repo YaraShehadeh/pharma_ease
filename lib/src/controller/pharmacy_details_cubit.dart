@@ -17,7 +17,7 @@ class PharmacyDetailsCubit extends Cubit<PharmacyDetailsState> {
       emit(LoadingPharmacyDetailsState());
       Pharmacy? result = (await _api.getPharmacyApi()
           .getPharmacyByNameApiPharmacyNamePharmacyNameGet(
-          pharmacyName: JsonObject(pharmacyName))).data;
+          pharmacyName:pharmacyName)).data;
 
       print("!!!!!!!!!!!!!!");
       print(result);

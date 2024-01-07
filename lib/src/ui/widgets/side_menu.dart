@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/MedicineSearch/search_medicine_screen.dart';
+import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_list_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
@@ -69,12 +69,12 @@ class SideMenu extends StatelessWidget {
                       fontWeight: FontWeight.w400),
                 ),
                 onTap: () {
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) =>
-                  //           MedicineListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
-                  // );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                        DrugsListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                  );
                 },
               ),
             const ListTile(

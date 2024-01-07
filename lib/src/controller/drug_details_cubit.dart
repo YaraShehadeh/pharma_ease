@@ -4,25 +4,24 @@ import 'package:get_it/get_it.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class DrugDetailsCubit extends Cubit<DrugDetailsState> {
-  Drug drugs = Drug();
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
-  DrugDetailsCubit(String drugName) : super(InitialDrugDetailsState()) {
-    getDrugDetails(drugName);
-  }
+  DrugDetailsCubit() : super(InitialDrugDetailsState()) {}
+  Drug? drug;
 
-  Future<void> getDrugDetails(String drugName) async {
+  Future<dynamic> getDrugDetails(String drugName) async {
     try {
       emit(LoadingDrugDetailsState());
       Drug? result = (await _api
-          .getDrugApi()
-          .getDrugByNameApiDrugDrugnameDrugNameGet(drugName: drugName))
+              .getDrugApi()
+              .getDrugByNameOrBarcodeApiDrugDrugGet(drugName: drugName))
           .data;
       if (result == null) {
         emit(ErrorDrugDetailsState());
       } else {
-        drugs = result;
-        emit(LoadedDrugDetailsState());
+        drug = result;
+
+        emit(LoadedDrugDetailsState(drug));
       }
     } on DioException catch (e) {
       if (e.response!.statusCode == 401) {
@@ -40,6 +39,10 @@ class InitialDrugDetailsState extends DrugDetailsState {}
 
 class LoadingDrugDetailsState extends DrugDetailsState {}
 
-class LoadedDrugDetailsState extends DrugDetailsState {}
+class LoadedDrugDetailsState extends DrugDetailsState {
+  final Drug? drug;
+
+  LoadedDrugDetailsState(this.drug);
+}
 
 class ErrorDrugDetailsState extends DrugDetailsState {}
