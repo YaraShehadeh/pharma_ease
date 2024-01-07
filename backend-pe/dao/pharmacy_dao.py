@@ -22,6 +22,16 @@ class PharmacyDAO:
         """Delete pharmacy from the database based on the ID of the mongodb id of the pharmacy"""
         result = await collection_name.delete_one({"_id": ObjectId(pharmacy_id)})
         return result
+    
+    @staticmethod
+    async def pharmacy_exists(pharmacy_name):
+        result = await collection_name.find_one({"pharmacyName": f"{pharmacy_name}"})
+        if result:
+            return True
+        else:
+            return False
+        
+    
 
     
 

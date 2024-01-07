@@ -47,8 +47,10 @@ async def add_drug_to_pharmacy(pharmacy_name: str, drug: Drug):
 # create a pharmacy in mdb
 @pharmacy.post("/create")
 async def add_pharmacy(pharmacy: Pharmacy):
-    # return await add_pharmacy_service(pharmacy)
     try:
+        result = await PharmacyDAO.pharmacy_exists(pharmacy.pharmacyName)
+        if result :
+            return {"message": "Pharmacy already exists"}
         result = await PharmacyDAO.create_pharmacy(pharmacy=pharmacy)
         return result
     except Exception as e:
