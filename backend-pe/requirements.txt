@@ -9,10 +9,10 @@ passlib[bcrypt]
 geopy
 pydantic[email]
 pytest
-mongomock
 bson
 requests
 openai
+langchain_openai
 langchain
 docx2txt
 pypdf
@@ -20,6 +20,5 @@ streamlit
 chromadb
 tiktoken
 pinecone-client
-langchain_openai
 python-dotenv
 PyPDF2
