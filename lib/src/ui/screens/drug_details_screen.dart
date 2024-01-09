@@ -25,7 +25,8 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    DrugDetailsCubit cubit = context.read<DrugDetailsCubit>().getDrugDetails(widget.drugName) as DrugDetailsCubit;
+     DrugDetailsCubit cubit=
+     context.read<DrugDetailsCubit>().getDrugDetails(widget.drugName) as DrugDetailsCubit;
     fullText = cubit.drug?.drugDescription as String;
     updateSummaryText();
   }
@@ -67,7 +68,7 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
           if(state is LoadingDrugDetailsState){
             return const Center(child: CircularProgressIndicator());
           }
-          if(state is LoadedDrugDetailsState){
+          else if(state is LoadedDrugDetailsState){
             final drug= state.drug;
             if(drug!=null){
               return SingleChildScrollView(
@@ -348,7 +349,9 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
           } else {
             return const Center(child: Text("No data"));
           }
-        }, listener: (context,state) {
+          return const Text("No data");
+        },
+        listener: (context,state) {
         const Text("Loading");
       },
       ),

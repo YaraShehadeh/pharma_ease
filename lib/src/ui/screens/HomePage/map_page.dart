@@ -23,6 +23,7 @@ class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<MapState> mapKey = GlobalKey();
   List<Pharmacy> activePharmacies = [];
+  Pharmacy? selectedPharmacy;
 
   @override
   void initState() {
@@ -127,6 +128,11 @@ class _MapPageState extends State<MapPage> {
         children: <Widget>[
           Map(
             key: mapKey,
+            onPharmacySelected:(pharmacy){
+              setState(() {
+                selectedPharmacy=pharmacy;
+              });
+            }
           ),
           Positioned(
             bottom: 0,
@@ -137,7 +143,7 @@ class _MapPageState extends State<MapPage> {
               child: PharmaciesBottomSheet(),
             ),
           ),
-          const SearchBarWidget(),
+          const SearchBarWidget(isFromSearchDrugScreen: false,),
         ],
       ),
     );
@@ -176,13 +182,14 @@ class _MapPageState extends State<MapPage> {
               itemCount: activePharmacies.length,
               itemBuilder: (context, index) {
                 Pharmacy p = activePharmacies[index];
+                bool isSelected  = selectedPharmacy!=null &&selectedPharmacy==p;
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration:  BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: pharmaGreenColor,
+                      color: isSelected?Colors.blue:pharmaGreenColor,
                     ),
                     child: ListTile(
                         title: Text(

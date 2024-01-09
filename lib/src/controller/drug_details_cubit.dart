@@ -13,8 +13,7 @@ class DrugDetailsCubit extends Cubit<DrugDetailsState> {
     try {
       emit(LoadingDrugDetailsState());
       Drug? result = (await _api
-              .getDrugApi()
-              .getDrugByNameOrBarcodeApiDrugDrugGet(drugName: drugName))
+              .getDrugApi().getDrugInfoApiDrugDrugDrugInformationGet(drugName: drugName))
           .data;
       if (result == null) {
         emit(ErrorDrugDetailsState());
