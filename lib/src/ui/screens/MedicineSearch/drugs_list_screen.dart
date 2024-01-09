@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmaease/src/controller/searched_drug_cubit.dart';
 import 'package:pharmaease/src/ui/screens/MedicineSearch/drug_card.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease_api/pharmaease_api.dart';
 
 class DrugsListScreen extends StatefulWidget {
-
   static const String routeName = '/medicine_list';
 
   DrugsListScreen({super.key});
@@ -17,6 +19,12 @@ class DrugsListScreen extends StatefulWidget {
 
 class _DrugsListScreenState extends State<DrugsListScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool hasSearched = false;
+  List<Drug>? drugs;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,23 +55,42 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
         ],
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-
       ),
       drawer: const Drawer(
-        child: SideMenu(showSearchDrug: false,),
+        child: SideMenu(
+          showSearchDrug: false,
+        ),
       ),
       body: Stack(
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 60.0),
-            child: DrugCard(),
+            child: BlocConsumer<SearchedDrugCubit, SearchedDrugState>(
+                builder: (context, state) {
+              if (state is LoadingSearchedDrugState) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is LoadedSearchedDrugState) {
+                setState(() {
+                  drugs=state.drugs;
+                });
+                return DrugCard( drugs: drugs,);
+              }
+              else if(state is ErrorSearchedDrugState){
+                return Text("Drug does not exist");
+              }
+              return const Center(child:Text("No Drugs returned"));
+            }, listener: (context, state) {
+              const Text("Loading");
+            }),
           ),
           const Positioned(
             left: 10,
             right: 10,
             child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: SearchBar(),
+              child: SearchBarWidget(
+                isFromSearchDrugScreen: true,
+              ),
             ),
           ),
         ],
