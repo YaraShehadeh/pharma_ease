@@ -82,7 +82,7 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
 
 
 @drug.get("/drug/drug_information")
-async def get_drug_info(drug_name: str):
+async def get_drug_info(drug_name: str) -> list[Drug]:
     if drug_name:
         regex_pattern = f"^{drug_name}$"
         drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})

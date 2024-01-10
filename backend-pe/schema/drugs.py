@@ -1,8 +1,8 @@
-from models.mdrugs import Drug as DrugModel
+from models.mdrugs import Drug 
 from typing import List
 import re
 
-def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]],filter_type) -> List[List[DrugModel]]:
+def filter_wrong_medicines(medicine: str, medicines: List[List[Drug]],filter_type) -> List[List[Drug]]:
     medicine = medicine.lower()  
     filtered_medicines = []  
 
@@ -17,8 +17,8 @@ def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]],filte
 
     return filtered_medicines
 
-def drugEntity(item: dict) -> DrugModel:
-    return DrugModel(
+def drugEntity(item: dict) -> Drug:
+    return  Drug(
         drugName=item.get("drugName"),
         drugDescription=item["drugDescription"],
         drugBarcode=item["drugBarcode"],
@@ -29,6 +29,7 @@ def drugEntity(item: dict) -> DrugModel:
         drugAlternatives=item["drugAlternatives"],
         Allergies=item["Allergies"]
     )
+    
 
-def drugsEntity(entity: List[dict]) -> DrugModel:
+def drugsEntity(entity: List[dict]) -> Drug:
     return [drugEntity(item) for item in entity]
