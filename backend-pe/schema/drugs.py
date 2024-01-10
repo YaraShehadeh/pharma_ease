@@ -31,5 +31,5 @@ def drugEntity(item: dict) -> Drug:
     )
     
 
-def drugsEntity(entity: List[dict]) -> Drug:
+def drugsEntity(entity: List[dict]) -> list[Drug]:
     return [drugEntity(item) for item in entity]

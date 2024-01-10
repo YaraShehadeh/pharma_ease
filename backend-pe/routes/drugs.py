@@ -45,7 +45,7 @@ async def create_drug(drug: Drug):
 
 
 @drug.get("/drug")
-async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None):
+async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None) -> list[list[Drug]]:
     if drug_name:
         regex_pattern = f"^{drug_name}.*"
         drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
