@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/sign_in_form.dart';
 
+//ADD AUTHENTICATION CUBIT HEREEE
 class SignInScreen extends StatefulWidget {
   const SignInScreen({
     Key? key,
@@ -10,11 +12,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  String? _email;
-  String? _password;
-  final _emailFocus = FocusNode();
-  final _passwordFocus = FocusNode();
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -35,37 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontSize: 30,
                 )),
             const SizedBox(height: 20),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              focusNode: _emailFocus,
-              autofillHints: const [
-                AutofillHints.username,
-                AutofillHints.telephoneNumber,
-                AutofillHints.email
-              ],
-              onFieldSubmitted: (_) {
-                _emailFocus.unfocus();
-              },
-              autofocus: false,
-              decoration: const InputDecoration(
-                hintText: "Your email",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
-              ),
-              onSaved: (_) => _email = _,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              textInputAction: TextInputAction.done,
-              focusNode: _passwordFocus,
-              autofillHints: const [AutofillHints.password],
-              onFieldSubmitted: (_) {
-                _passwordFocus.unfocus();
-              },
-              autofocus: false,
-              decoration: const InputDecoration(hintText: "Your password"),
-              onSaved: (_) => _password = _,
-            ),
+            SignInForm(),
             const SizedBox(height: 20),
             GestureDetector(
                 onTap: () {},
@@ -75,27 +42,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       color: Color.fromRGBO(25, 154, 142, 100),
                       fontWeight: FontWeight.bold),
                 )),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(25, 154, 142, 100),
-                  fixedSize: const Size(500, 40)),
-              child: const Text("Continue"),
-            ),
-            const SizedBox(height: 15),
-            const Row(
-              children: [
-                Expanded(child: Divider(thickness: 0.6)),
-                SizedBox(width: 30),
-                Text(
-                  "Or",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                SizedBox(width: 30),
-                Expanded(child: Divider(thickness: 0.6)),
-              ],
-            ),
           ],
         ),
       ),

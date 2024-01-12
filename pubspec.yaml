@@ -54,6 +54,10 @@ dependencies:
   built_collection: ^5.1.1
   built_value: ^8.8.1
   geolocator: ^10.1.0
+  formz: ^0.6.1
+  equatable: ^2.0.5
+  flutter_secure_storage: ^9.0.0
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:
