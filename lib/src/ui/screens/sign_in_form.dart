@@ -14,35 +14,33 @@ class SignInForm extends StatelessWidget {
       key: cubit.formKey,
       child: AutofillGroup(
         child: Column(children: [
-          BlocBuilder<SignInCubit, SignInState>(
-            builder: (context, state) {
-              return TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  autofillHints: const [AutofillHints.email],
-                  autofocus: false,
-                  decoration: const InputDecoration(
-                    hintText: "Your email",
-                    focusColor: pharmaGreenColor,
-                    prefixIcon: Icon(Icons.person_outline),
-                    prefixIconColor: pharmaGreenColor,
-                  ),
-                  controller: cubit.emailController,
-                  onFieldSubmitted: (value) {
-                    cubit.passwordFocuseNode.requestFocus();
-                  },
-                  validator: (value) {
-                    if (value == null || value == "") {
-                      return "Please enter your email";
-                    } else if (!RegExp(
-                            r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
-                        .hasMatch(value)) {
-                      return "Please enter a valid email address";
-                    }
-                    return null;
-                  });
-            }
-          ),
+          BlocBuilder<SignInCubit, SignInState>(builder: (context, state) {
+            return TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                autofillHints: const [AutofillHints.email],
+                autofocus: false,
+                decoration: const InputDecoration(
+                  hintText: "Your email",
+                  focusColor: pharmaGreenColor,
+                  prefixIcon: Icon(Icons.person_outline),
+                  prefixIconColor: pharmaGreenColor,
+                ),
+                controller: cubit.emailController,
+                onFieldSubmitted: (value) {
+                  cubit.passwordFocuseNode.requestFocus();
+                },
+                validator: (value) {
+                  if (value == null || value == "") {
+                    return "Please enter your email";
+                  } else if (!RegExp(
+                          r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+                      .hasMatch(value)) {
+                    return "Please enter a valid email address";
+                  }
+                  return null;
+                });
+          }),
           const SizedBox(height: 20),
           TextFormField(
             textInputAction: TextInputAction.done,
@@ -51,7 +49,7 @@ class SignInForm extends StatelessWidget {
             decoration: InputDecoration(
               hintText: "Your password",
               focusColor: pharmaGreenColor,
-              prefixIcon: const Icon(Icons.lock),
+              prefixIcon: const Icon(Icons.lock_outlined),
               prefixIconColor: pharmaGreenColor,
               suffixIcon: IconButton(
                 icon: Icon((cubit.state is SignInFormUpdate)
@@ -84,7 +82,9 @@ class SignInForm extends StatelessWidget {
               return null;
             },
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             onPressed: () {
               onSubmit(
@@ -99,7 +99,8 @@ class SignInForm extends StatelessWidget {
             style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromRGBO(25, 154, 142, 100),
                 fixedSize: const Size(500, 40)),
-            child: const Text("Continue"),
+            child:
+                const Text("Continue", style: TextStyle(color: Colors.white)),
           ),
         ]),
       ),
@@ -112,11 +113,11 @@ class SignInForm extends StatelessWidget {
   }
 
   bool containsLowerCase(String value) {
-    return value.contains( RegExp(r'[a-z]') );
+    return value.contains(RegExp(r'[a-z]'));
   }
 
   bool containsUpperCase(String value) {
-    return value.contains( RegExp(r'[A-Z]') );
+    return value.contains(RegExp(r'[A-Z]'));
   }
 
   void onSubmit(

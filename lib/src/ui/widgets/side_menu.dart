@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_list_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
 
 class SideMenu extends StatelessWidget {
   final bool showSearchDrug;
@@ -69,14 +67,14 @@ class SideMenu extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w400),
                 ),
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                        DrugsListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
-                  );
-                },
+                // onTap: () {
+                //   Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) =>
+                //         DrugsListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                //   );
+                // },
               ),
             const ListTile(
               leading:
@@ -102,18 +100,24 @@ class SideMenu extends StatelessWidget {
                     fontWeight: FontWeight.w400),
               ),
             ),
-            const ListTile(
-              leading: Icon(Icons.person, size: 28, color: Colors.white70),
+             ListTile(
+              leading: const Icon(Icons.person, size: 28, color: Colors.white70),
               minLeadingWidth: 3,
-              title: Text(
+              title: const Text(
                 'Sign in',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w400),
               ),
-              // ADD ROUTING TO SIGN IN PAGE
-              // onTap: Navigator.pushReplacement(context, OnBoardingScreen()),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                      SignInScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                );
+              },
             ),
             const SizedBox(
               height: 290,
