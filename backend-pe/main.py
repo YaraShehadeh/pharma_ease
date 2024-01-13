@@ -31,7 +31,7 @@ app.add_middleware(
 )
 
 app.include_router(pharmacy.pharmacy, prefix="/api/pharmacy", tags=["pharmacy"])
-app.include_router(users.user, prefix= "/api/user", tags=["user"])
+app.include_router(users.user)
 app.include_router(drugs.drug , prefix= "/api/drug" , tags=["drug"])
 app.include_router(llm.bot , prefix="/api/chatbot" , tags=["chatbot"])
 # app.include_router(pharmacist.pharmacist_router , prefix= "/api/pharmacist" , tags=["Pharmacist"])
