@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException , status
-from config.database import drugs_collection , collection_name
-from schema.drugs import drugEntity , drugsEntity , filter_wrong_medicines
+from fastapi import APIRouter, HTTPException, status
+from config.database import drugs_collection, collection_name
+from schema.drugs import drugEntity, drugsEntity, filter_wrong_medicines
 from models.mlocation import Location
-from typing import List, Optional , Union
+from typing import List, Optional, Union
 from models.mdrugs import Drug
 import re
 
@@ -83,20 +83,24 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
 
 @drug.get("/drug/drug_information")
 async def get_drug_info(drug_name: str) -> list[Drug]:
-    if drug_name:
-        regex_pattern = f"^{drug_name}$"
-        drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
-        try:
-            drugs = await drug_cursor.to_list(length=None)
-            if drugs:
-                pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
-                post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs, "drugName")
-                return post_processed_drugs[0]
-            else:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
-        except Exception as e:
-            print(e)
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+    # Validate drug_name format
+    if not re.match("^[A-Za-z ]+$", drug_name):
+        raise HTTPException(status_code=400, detail="Invalid drug name format")
+
+    # Existing logic for drug information retrieval
+    regex_pattern = f"^{drug_name}$"
+    drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
+    try:
+        drugs = await drug_cursor.to_list(length=None)
+        if drugs:
+            pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+            post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs, "drugName")
+            return post_processed_drugs[0]
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
 
 
         
