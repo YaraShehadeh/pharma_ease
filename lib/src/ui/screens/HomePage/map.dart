@@ -26,6 +26,7 @@ class MapState extends State<Map> {
   void _onMarkerTapped(Pharmacy pharmacy){
     widget.onPharmacySelected?.call(pharmacy);
   }
+
   @override
   void initState() {
     super.initState();

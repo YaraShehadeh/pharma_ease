@@ -48,7 +48,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
           IconButton(
             icon: const Icon(Icons.home, color: pharmaGreenColor),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context, MaterialPageRoute(builder: (context) => MapPage()));
             },
           ),

@@ -9,6 +9,7 @@ import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
 import 'package:pharmaease/src/ui/widgets/side_menu.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 GlobalKey<MapState> mapKey = GlobalKey();
 
@@ -24,6 +25,7 @@ class _MapPageState extends State<MapPage> {
   final GlobalKey<MapState> mapKey = GlobalKey();
   List<Pharmacy> activePharmacies = [];
   Pharmacy? selectedPharmacy;
+  final AutoScrollController scrollController= AutoScrollController();
 
   @override
   void initState() {
@@ -33,18 +35,15 @@ class _MapPageState extends State<MapPage> {
         .getUserLocationAutomaticallyAtStartup();
   }
 
-  // Timer(const Duration(seconds: 0), () {
-  //   _scaffoldKey.currentState!.showBottomSheet(
-  //     (context) => ClipRRect(
-  //       borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-  //       child: Container(
-  //         child: buildBottomSheetContent(context),
-  //       ),
-  //     ),
-  //     enableDrag: false,
-  //   );
-  // });
-
+  void onPharmacySelected(Pharmacy pharmacy){
+    int index=activePharmacies.indexOf(pharmacy);
+    if(index!=-1){
+      setState(() {
+        selectedPharmacy=pharmacy;
+      });
+      scrollController.scrollToIndex(index*100000000,preferPosition: AutoScrollPosition.middle);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,11 +127,7 @@ class _MapPageState extends State<MapPage> {
         children: <Widget>[
           Map(
             key: mapKey,
-            onPharmacySelected:(pharmacy){
-              setState(() {
-                selectedPharmacy=pharmacy;
-              });
-            }
+            onPharmacySelected:onPharmacySelected,
           ),
           Positioned(
             bottom: 0,
@@ -181,41 +176,50 @@ class _MapPageState extends State<MapPage> {
             child: ListView.builder(
               itemCount: activePharmacies.length,
               itemBuilder: (context, index) {
-                Pharmacy p = activePharmacies[index];
-                bool isSelected  = selectedPharmacy!=null &&selectedPharmacy==p;
-                return Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration:  BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: isSelected?Colors.blue:pharmaGreenColor,
-                    ),
-                    child: ListTile(
-                        title: Text(
-                          p.pharmacyName.toString(),
-                          style: const TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        leading:
-                            const Icon(Icons.pin_drop, color: Colors.white),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PharmacyDetailsScreen(
-                                      showHomeIcon: false,
-                                      pharmacyName: p.pharmacyName.toString(),
-                                    )),
-                          );
-                        }),
-                  ),
-                );
+                Pharmacy pharmacy = activePharmacies[index];
+                bool isSelected  = selectedPharmacy!=null &&selectedPharmacy==pharmacy;
+
+                return AutoScrollTag(
+                    key: ValueKey(index),
+                    controller: scrollController,
+                    index: index*10,
+                    child: PharmacyListItem(pharmacy, isSelected));
               },
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget PharmacyListItem(Pharmacy p,  bool isSelected) {
+    return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                  decoration:  BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    color: isSelected?Colors.blue:pharmaGreenColor,
+                  ),
+                  child: ListTile(
+                      title: Text(
+                        p.pharmacyName.toString(),
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      leading:
+                          const Icon(Icons.pin_drop, color: Colors.white),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PharmacyDetailsScreen(
+                                    showHomeIcon: false,
+                                    pharmacyName: p.pharmacyName.toString(),
+                                  )),
+                        );
+                      }),
+                ),
+              );
   }
 }
