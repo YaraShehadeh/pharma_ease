@@ -14,9 +14,10 @@ def pharmacyEntity(item) -> Pharmacy:
     if closing_hours:
         closing_hours = closing_hours.strftime('%Y-%m-%dT%H:%M:%SZ') if isinstance(closing_hours, datetime) else closing_hours
 
+
     return Pharmacy(
-        pharmacyName = item["pharmacyName"],
-        pharmacyemail = item["pharmacyemail"],
+        pharmacyName = item.get("pharmacyName"),
+        pharmacyemail = item.get("pharmacyemail"),
         pharmacyDescription = item.get("pharmacyDescription", ""),
         pharmacyImage = item.get("pharmacyImage", ""),
         pharmacyArea = item.get("pharmacyArea", ""),

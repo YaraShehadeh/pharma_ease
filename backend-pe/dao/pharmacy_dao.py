@@ -7,7 +7,7 @@ class PharmacyDAO:
     @staticmethod
     async def get_all_pharmacies2() -> list[Pharmacy]:
         pharmacies = await collection_name.find().to_list(1000)
-        print(pharmaciesEntity(pharmacies))
+        print(pharmacies)
         return pharmaciesEntity(pharmacies)
     
     @staticmethod

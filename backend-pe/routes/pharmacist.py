@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from models.mpharmacist import Pharmacist
+from dao.pharmacist import PharmacistDAO
+from models.mdrugs import Drug
 from config.database import collection_name
 from bson import ObjectId
 from schema.pharmacist import pharmacistEntity
@@ -40,3 +42,20 @@ async def get_pharmacist_pharmacy(pharmacist_name: str):
 async def add_pharmacist(pharmacist: Pharmacist):
     pharmacist_dict = pharmacist.dict()
     await collection_name.append("pharmacists", pharmacist_dict)
+
+
+
+@pharmacist_router.post("/add_drug_pharmacy")
+async def add_drug_pharmacy(drug: Drug, pharmacy_name: str):
+    try:
+        result = await PharmacistDAO.drug_exists(drug,pharmacy_name)
+        if result == 1:
+            return {"The drug you are trying to add already exists in the pharmacy"}
+        
+        result = await PharmacistDAO.add_drug_pharmacy(drug,pharmacy_name)
+        return result
+    
+
+    except Exception as e:
+        raise HTTPException(status_code=400 , detail=str(e))
+    
