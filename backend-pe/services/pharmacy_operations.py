@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 from models.mpharmacy import Pharmacy
 from models.mpharmacist import Pharmacist
 from models.mdrugs import Drug
-from config.database import collection_name
+from config.database import collection_name, pharmacy_test , drugs_collection
 from schema.pharmacy import pharmacyEntity, pharmaciesEntity
 from bson import ObjectId
 from models.mlocation import Location
@@ -83,7 +83,55 @@ def get_all_service(pharmacies):
 
 
 
-async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float, current_user: Optional[User] = None) -> dict:
+# async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float, current_user: Optional[User] = None) -> dict:
+#     """
+#     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
+#     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
+#     """
+#     if not drug_names and not drug_barcode:
+#         raise HTTPException(status_code=400, detail="No drug names or barcode provided")
+
+#     query = {}
+#     if drug_names:
+#         query["drugs.drugName"] = {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}
+#     elif drug_barcode:
+#         query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
+
+#     pharmacies = await collection_name.find(query).to_list(1000)
+#     allergy_warning = "Warning: Some drugs in this pharmacy contain ingredients you are allergic to."
+
+#     if current_user:
+#         for pharmacy in pharmacies:
+#             for drug in pharmacy["drugs"]:
+#                 if any(allergy.type in drug["Allergies"] for allergy in current_user.allergies):
+#                     allergy_warning = "Warning: The drug you are searching for contain ingredients you are allergic to."
+#                     break  # Break the inner loop if any allergy is found
+#             if allergy_warning:
+#                 break  # Break the outer loop if any allergy is found
+
+#     if not pharmacies:
+#         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
+
+#     # Calculate distance and sort pharmacies
+#     for pharmacy in pharmacies:
+#         pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
+#         user_loc = (user_lat, user_lon)
+#         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
+
+#     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
+
+#     return {
+#         "pharmacies": pharmaciesEntity(sorted_pharmacies),
+#         "allergy_warning": allergy_warning
+#     }
+
+
+
+async def search_for_drugs_service(drug_names: Union[List[str], None], 
+                                   drug_barcode: Union[str, None], 
+                                   user_lat: float, 
+                                   user_lon: float, 
+                                   current_user: Optional[User] = None) -> dict:
     """
     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
@@ -91,26 +139,31 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
     if not drug_names and not drug_barcode:
         raise HTTPException(status_code=400, detail="No drug names or barcode provided")
 
-    query = {}
-    if drug_names:
-        query["drugs.drugName"] = {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}
-    elif drug_barcode:
-        query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
+    matching_drug_names = []
+    if drug_barcode:
+        # Search for drug by barcode
+        drug = await drugs_collection.find_one({"drugBarcode": drug_barcode})
+        if drug:
+            matching_drug_names.append(drug['drugName'])
+    elif drug_names:
+        # Search for drugs by name
+        for name in drug_names:
+            drug = await drugs_collection.find_one({"drugName": re.compile(r'^{}$'.format(name), re.IGNORECASE)})
+            if drug:
+                matching_drug_names.append(drug['drugName'])
 
-    pharmacies = await collection_name.find(query).to_list(1000)
-    allergy_warning = "Warning: Some drugs in this pharmacy contain ingredients you are allergic to."
+    if not matching_drug_names:
+        raise HTTPException(status_code=404, detail="No matching drugs found")
 
-    if current_user:
-        for pharmacy in pharmacies:
-            for drug in pharmacy["drugs"]:
-                if any(allergy.type in drug["Allergies"] for allergy in current_user.allergies):
-                    allergy_warning = "Warning: The drug you are searching for contain ingredients you are allergic to."
-                    break  # Break the inner loop if any allergy is found
-            if allergy_warning:
-                break  # Break the outer loop if any allergy is found
-
+    # Query pharmacies that have these drugs
+    pharmacies = await pharmacy_test.find({"drugs": {"$in": matching_drug_names}}).to_list(1000)
     if not pharmacies:
-        raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
+        raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs")
+
+    allergy_warning = None
+    if current_user:
+        # Check for allergies
+        allergy_warning = await check_allergies(current_user, matching_drug_names)
 
     # Calculate distance and sort pharmacies
     for pharmacy in pharmacies:
@@ -125,6 +178,25 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
         "allergy_warning": allergy_warning
     }
 
+
+
+async def check_allergies(current_user: User, drug_names: List[str]) -> Optional[str]:
+    """
+    Checks if any of the drugs (by name) contain ingredients the user is allergic to.
+    Returns an allergy warning message if applicable, otherwise None.
+    """
+    for drug_name in drug_names:
+        # Find the drug by name
+        drug = await drugs_collection.find_one({"drugName": drug_name})
+        if not drug:
+            continue
+
+        # Check if there's an overlap between user allergies and drug allergies
+        if any(allergy in drug.get("Allergies", []) for allergy in current_user.allergies):
+            return f"Warning: The drug {drug_name} contains ingredients you are allergic to."
+
+    # No allergies found
+    return None
 
 
 async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float) -> list[Pharmacy]:

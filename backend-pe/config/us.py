@@ -8,4 +8,4 @@ client = motor_asyncio.AsyncIOMotorClient(url)
 
 
 db = client.test_users
-collection_name = db["users"]
+test_pharmacy = db["test_pharmacy"]

@@ -54,8 +54,6 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
             if drugs:
                 pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
                 post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
-                print(type(pre_processed_drugs))
-                print(Drug(pre_processed_drugs[0][0]))
                 return post_processed_drugs
             else:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")

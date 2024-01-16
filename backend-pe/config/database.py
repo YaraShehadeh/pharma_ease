@@ -14,6 +14,7 @@ db = client.pharmacy_db
 collection_name = db["pharmacy"]
 users_collection = db["users"]
 drugs_collection = db["drugs"]
+pharmacy_test = db["pharmacy_test"]
 
 
 async def setup_indexes():

@@ -60,7 +60,7 @@
 from datetime import timedelta
 from fastapi import APIRouter, HTTPException , Depends
 from models.muser import User
-from config.us import collection_name
+# from config.us import collection_name
 from config.database import users_collection
 from utility.hash_util import hash_password, verify_password
 from utility.token_gen import create_access_token, get_current_user

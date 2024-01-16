@@ -18,7 +18,8 @@ class Pharmacy(BaseModel):
     pharmacyClosingHours: datetime = Field(..., description="Please add the pharmacy closing hours")
     pharmacyPhoneNumber: str = Field(..., description="Please add the pharmacy phone number")
     location: Location = Field(..., description="Please add the pharmacy location")
-    drugs: List[Drug] = Field(..., description="Please add drugs to the pharmacy")
+    # drugs: List[Drug] = Field(..., description="Please add drugs to the pharmacy")
+    drugs: List[str] = Field(..., description="Please add drug names to the pharmacy")
     pharmacists: List[Pharmacist] = Field(..., description="Please enter pharmacist details")
 
     @validator('pharmacyOpeningHours', 'pharmacyClosingHours', pre=True)
@@ -45,6 +46,7 @@ class Pharmacy(BaseModel):
         pharmacyClosingHours: str,
         pharmacyPhoneNumber: str,
         location: Location,
+        # drugs: List[str],
         drugs: List[Drug],
         pharmacists: List[Pharmacist]
     ):
