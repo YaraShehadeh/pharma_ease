@@ -21,6 +21,17 @@ class SearchBarWidget extends StatefulWidget {
 class _SearchBarState extends State<SearchBarWidget> {
   TextEditingController _searchController = TextEditingController();
 
+  @override
+  void initState(){
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+  void _onSearchChanged(){
+    String searchedDrug=_searchController.text;
+    if(searchedDrug.isNotEmpty){
+      context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,"");
+    }
+  }
   void sendBarcodeOrName(
       String? barcode, BuiltList<String>? drugName) {
     if (widget.isFromSearchDrugScreen) {
@@ -29,7 +40,7 @@ class _SearchBarState extends State<SearchBarWidget> {
       String searchedDrug=_searchController.text;
       print("!!!!!! $searchedDrug");
       if(searchedDrug.isNotEmpty){
-      context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug!);}
+      context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,barcode);}
     } else {
       if (_searchController.text.isEmpty && barcode == null) {
         context
@@ -148,7 +159,7 @@ class _SearchBarState extends State<SearchBarWidget> {
                           border: InputBorder.none,
                         ),
                         onSubmitted: (value) {
-                          sendBarcodeOrName(null, null);
+                        _onSearchChanged();
                         },
                       ),
                     ),

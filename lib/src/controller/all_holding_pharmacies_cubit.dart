@@ -63,7 +63,7 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
         userLon: userLon,
         drugBarcode: barcode,
         requestBody: drugName,
-      )).data!.toList();
+      )).data as List<Pharmacy>?;
 
 
       print("ALL HOLDING PHARMACIES");

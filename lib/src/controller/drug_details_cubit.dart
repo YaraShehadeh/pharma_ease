@@ -13,8 +13,10 @@ class DrugDetailsCubit extends Cubit<DrugDetailsState> {
     try {
       emit(LoadingDrugDetailsState());
      List< Drug>? result = (await _api
-              .getDrugApi().getDrugInfoApiDrugDrugDrugInformationGet(drugName: drugName))
+              .getDrugApi().getDrugInfoApiDrugDrugDrugInformationGet(drugName: "panadol"))
           .data?.toList();
+     print("DRUG INFO");
+     print(result);
       if (result == null) {
         emit(ErrorDrugDetailsState());
       } else {
@@ -28,6 +30,8 @@ class DrugDetailsCubit extends Cubit<DrugDetailsState> {
         print("Error: $e");
         throw Exception("Drug not found");
       }
+      print("DRUG INFO ERROR");
+      print("ERRORRR $e");
     }
   }
 }

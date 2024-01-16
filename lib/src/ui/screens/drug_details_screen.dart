@@ -25,10 +25,8 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
   @override
   void initState() {
     super.initState();
-     DrugDetailsCubit cubit=
-     context.read<DrugDetailsCubit>().getDrugDetails(widget.drugName) as DrugDetailsCubit;
-    fullText = cubit.drug?.drugDescription as String;
-    updateSummaryText();
+      context.read<DrugDetailsCubit>().getDrugDetails(widget.drugName);
+
   }
 
   void updateSummaryText() {
@@ -71,6 +69,8 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
           else if(state is LoadedDrugDetailsState){
             final drug= state.drug;
             if(drug!=null){
+              fullText = drug?.drugDescription as String;
+              updateSummaryText();
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),

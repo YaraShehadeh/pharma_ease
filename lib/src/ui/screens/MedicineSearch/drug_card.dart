@@ -19,11 +19,16 @@ class _DrugState extends State<DrugCard> {
   @override
   void initState(){
     super.initState();
-    Future.delayed(Duration.zero,(){
-      context.read<SearchedDrugCubit>().getSearchedDrug("panadol");
-    });
+    // Future.delayed(Duration.zero,(){
+    //   context.read<SearchedDrugCubit>().getSearchedDrug("panadol");
+    // });
 
   }
+  String extractUrl(String imageUrl) {
+    imageUrl = imageUrl.replaceAll('[', '').replaceAll(']', '').replaceAll("'", "");
+    return imageUrl.trim();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -38,6 +43,8 @@ class _DrugState extends State<DrugCard> {
                 ),
                 itemCount: widget.drugs?.length,
                 itemBuilder: (context, index) {
+                  String imageUrl = extractUrl(widget.drugs![index].drugImage.toString());
+                  print("Image URL: $imageUrl");
                   return Padding(
                     padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
                     child: Card(
@@ -59,12 +66,13 @@ class _DrugState extends State<DrugCard> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // Expanded(
-                                //   child: NetworkImage(
-                                //     cubit.drugs![index].drugImage.toString(),
-                                //     fit: BoxFit.cover,
-                                //   ),
-                                // ),
+                                Expanded(
+                                  child: Image.network(
+                                   imageUrl,
+                                    fit: BoxFit.cover,
+
+                                  ),
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -74,10 +82,10 @@ class _DrugState extends State<DrugCard> {
                                     ),
                                   ),
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text('{widget.medicine.perscription}'),
-                                ),
+                                //  Padding(
+                                //   padding: EdgeInsets.all(8.0),
+                                //   child: Text(widget.drugs![index].drugPerscription.toString()),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
@@ -87,7 +95,7 @@ class _DrugState extends State<DrugCard> {
                                         color: pharmaGreenColor,
                                       ),
                                       Text(
-                                        '${widget.drugs![index].holdingPharmacies
+                                        '${widget.drugs![index].holdingPharmacies.length
                                             .toString()} pharmacies near you',
                                         style: const TextStyle(fontSize: 10),
                                       )

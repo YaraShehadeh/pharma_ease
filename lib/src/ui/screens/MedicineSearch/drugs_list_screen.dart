@@ -70,15 +70,13 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
               if (state is LoadingSearchedDrugState) {
                 return Center(child: CircularProgressIndicator());
               } else if (state is LoadedSearchedDrugState) {
-                setState(() {
                   drugs=state.drugs;
-                });
                 return DrugCard( drugs: drugs,);
               }
               else if(state is ErrorSearchedDrugState){
                 return Text("Drug does not exist");
               }
-              return const Center(child:Text("No Drugs returned"));
+              return const Center(child:Text("No drugs searched"));
             }, listener: (context, state) {
               const Text("Loading");
             }),

@@ -45,7 +45,7 @@ async def create_drug(drug: Drug):
 
 
 @drug.get("/drug")
-async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None):
+async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None)->List[Drug]:
     if drug_name:
         regex_pattern = f"^{drug_name}.*"
         drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
@@ -69,7 +69,7 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
             if drugs:
                 pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
                 post_processed_drugs = filter_wrong_medicines(drug_barcode, pre_processed_drugs, "drugBarcode")
-                return post_processed_drugs
+                return post_processed_drugs[0]
             else:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given barcode")
         except Exception as e:
@@ -82,7 +82,7 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
 
 
 @drug.get("/drug/drug_information")
-async def get_drug_info(drug_name: str):
+async def get_drug_info(drug_name: str)-> Drug:
     if drug_name:
         regex_pattern = f"^{drug_name}$"
         drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})

@@ -13,19 +13,19 @@ class SearchedDrugCubit extends Cubit<SearchedDrugState> {
   // Drug ?drug;
 
 
-  Future<dynamic> getSearchedDrug(String drugName) async {
+  Future<dynamic> getSearchedDrug(String? drugName,String? drugBarcode) async {
     try {
       emit(LoadingSearchedDrugState());
-      BuiltList<BuiltList<Drug>>? result = (await _api
-          .getDrugApi().getDrugByNameOrBarcodeApiDrugDrugGet(drugName: "panadol",drugBarcode: ""))
-          .data!.toBuiltList().toBuiltList();
+    List<Drug>? result = (await _api
+          .getDrugApi().getDrugByNameOrBarcodeApiDrugDrugGet(drugName: drugName,drugBarcode: drugBarcode))
+          .data!.toList();
 
       print("AHHHHHHHH");
       print(result);
       if (result == null) {
         emit(ErrorSearchedDrugState());
       } else {
-        drugs = result[0] as List<Drug>?;
+        drugs = result;
         emit(LoadedSearchedDrugState(drugs));
       }
     } on DioException catch (e) {
