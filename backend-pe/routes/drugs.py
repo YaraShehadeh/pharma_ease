@@ -49,16 +49,19 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
     if drug_name:
         regex_pattern = f"^{drug_name}.*"
         drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
+        
         try:
             drugs = await drug_cursor.to_list(length=None)
-            if drugs:
-                pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
-                post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
-                print(type(pre_processed_drugs))
-                print(Drug(pre_processed_drugs[0][0]))
-                return post_processed_drugs
-            else:
+            # Check if any drugs were found
+            print(drugs)
+            if not drugs:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
+            
+            # Process the drugs if found
+            pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+            post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
+            return post_processed_drugs
+
         except Exception as e:
             print(e)
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
@@ -68,19 +71,21 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
         drug_cursor = collection_name.find(query)
         try:
             drugs = await drug_cursor.to_list(length=None)
-            if drugs:
-                pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
-                post_processed_drugs = filter_wrong_medicines(drug_barcode, pre_processed_drugs, "drugBarcode")
-                return post_processed_drugs
-            else:
+            # Check if any drugs were found
+            if not drugs:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given barcode")
+            
+            # Process the drugs if found
+            pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+            post_processed_drugs = filter_wrong_medicines(drug_barcode, pre_processed_drugs, "drugBarcode")
+            return post_processed_drugs
+
         except Exception as e:
             print(e)
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
 
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Either drug name or drug barcode must be provided")
-
 
 
 @drug.get("/drug/drug_information")
