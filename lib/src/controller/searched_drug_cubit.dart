@@ -19,7 +19,7 @@ class SearchedDrugCubit extends Cubit<SearchedDrugState> {
       BuiltList<BuiltList<Drug>>? result = (await _api
           .getDrugApi().getDrugByNameOrBarcodeApiDrugDrugGet(drugName: "panadol",drugBarcode: ""))
           .data!.toBuiltList().toBuiltList();
-
+   print("commit");
       print("AHHHHHHHH");
       print(result);
       if (result == null) {
