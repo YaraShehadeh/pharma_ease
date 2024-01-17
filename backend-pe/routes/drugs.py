@@ -49,22 +49,26 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
     if drug_name:
         regex_pattern = f"^{drug_name}.*"
         drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
-        
-        try:
-            drugs = await drug_cursor.to_list(length=None)
-            # Check if any drugs were found
-            print(drugs)
-            if not drugs:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
-            
-            # Process the drugs if found
-            pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
-            post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
-            return post_processed_drugs
+        drugs = await drug_cursor.to_list(length=None)
+        if drugs:  
+            try:
+                # Check if any drugs were found
+                print(drugs)
+                if not drugs:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
+                
+                # Process the drugs if found
+                pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+                post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
+                if not post_processed_drugs:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No drugs found after processing")
+                return post_processed_drugs
 
-        except Exception as e:
-            print(e)
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+            except Exception as e:
+                print(e)
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+        else: 
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
 
     elif drug_barcode:
         query = {"drugs.drugBarcode": re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)}
