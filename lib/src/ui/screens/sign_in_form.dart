@@ -23,7 +23,7 @@ class SignInForm extends StatelessWidget {
                 decoration: const InputDecoration(
                   hintText: "Your email",
                   focusColor: pharmaGreenColor,
-                  prefixIcon: Icon(Icons.person_outline),
+                  prefixIcon: Icon(Icons.email_outlined),
                   prefixIconColor: pharmaGreenColor,
                 ),
                 controller: cubit.emailController,
@@ -34,7 +34,7 @@ class SignInForm extends StatelessWidget {
                   if (value == null || value == "") {
                     return "Please enter your email";
                   } else if (!RegExp(
-                          r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+                          r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.com+$")
                       .hasMatch(value)) {
                     return "Please enter a valid email address";
                   }

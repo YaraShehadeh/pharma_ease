@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmaease/src/ui/screens/sign_in_form.dart';
+import 'package:pharmaease/src/ui/screens/sign_up_screen.dart';
 
 //ADD AUTHENTICATION CUBIT HEREEE
 class SignInScreen extends StatefulWidget {
@@ -32,16 +33,26 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontSize: 30,
                 )),
             const SizedBox(height: 20),
-            SignInForm(),
+            const SignInForm(),
             const SizedBox(height: 20),
-            GestureDetector(
-                onTap: () {},
-                child: const Text(
-                  "Forgot password?",
-                  style: TextStyle(
-                      color: Color.fromRGBO(25, 154, 142, 100),
-                      fontWeight: FontWeight.bold),
-                )),
+            Row(children: [
+              const Text("Don't have an account? "),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                const SignUpScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                          );
+                  },
+                  child: const Text(
+                    "Create one!",
+                    style: TextStyle(
+                        color: Color.fromRGBO(25, 154, 142, 100),
+                        fontWeight: FontWeight.bold),
+                  )),
+            ]),
           ],
         ),
       ),

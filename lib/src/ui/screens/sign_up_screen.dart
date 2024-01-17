@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
+import 'package:pharmaease/src/ui/screens/sign_up_form.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -8,17 +10,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String? _name;
-  String? _email;
-  String? _phoneNumber;
-  String? _password;
-  String? _birthDate;
-  final _nameFocus = FocusNode();
-  final _emailFocus = FocusNode();
-  final _phoneNumberFocus = FocusNode();
-  final _passwordFocus = FocusNode();
-  final _birthDateFocus = FocusNode();
-
   @override
   Widget build(BuildContext build) {
     return Material(
@@ -39,82 +30,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fontSize: 30,
                 )),
             const SizedBox(height: 20),
-            TextFormField(
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.next,
-              focusNode: _nameFocus,
-              autofillHints: const [
-                AutofillHints.name,
-                AutofillHints.middleName,
-                AutofillHints.familyName
-              ],
-              onFieldSubmitted: (_) {
-                _nameFocus.unfocus();
-              },
-              autofocus: false,
-              decoration: const InputDecoration(
-                hintText: "Your name",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
-              ),
-              onSaved: (_) => _name = _,
-            ),
+            SignUpForm(),
             const SizedBox(height: 20),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              focusNode: _emailFocus,
-              autofillHints: const [
-                AutofillHints.username,
-                AutofillHints.email
-              ],
-              onFieldSubmitted: (_) {
-                _emailFocus.unfocus();
-              },
-              autofocus: false,
-              decoration: const InputDecoration(
-                hintText: "Your email",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
-              ),
-              onSaved: (_) => _email = _,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              keyboardType: TextInputType.phone,
-              textInputAction: TextInputAction.next,
-              focusNode: _phoneNumberFocus,
-              autofillHints: const [
-                AutofillHints.telephoneNumber,
-              ],
-              onFieldSubmitted: (_) {
-                _phoneNumberFocus.unfocus();
-              },
-              autofocus: false,
-              decoration: const InputDecoration(
-                hintText: "Your phone number",
-                focusColor: Color.fromRGBO(25, 154, 142, 100),
-              ),
-              onSaved: (_) => _phoneNumber = _,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              textInputAction: TextInputAction.done,
-              focusNode: _passwordFocus,
-              autofillHints: const [AutofillHints.password],
-              onFieldSubmitted: (_) {
-                _passwordFocus.unfocus();
-              },
-              autofocus: false,
-              decoration: const InputDecoration(hintText: "Your password"),
-              onSaved: (_) => _password = _,
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(25, 154, 142, 100),
-                  fixedSize: const Size(500, 40)),
-              child: const Text("Continue"),
-            ),
+            Row(children: [
+              const Text("Already have an account? "),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          const SignInScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                    );
+                  },
+                  child: const Text(
+                    "Sign In",
+                    style: TextStyle(
+                        color: Color.fromRGBO(25, 154, 142, 100),
+                        fontWeight: FontWeight.bold),
+                  )),
+            ]),
           ],
         ),
       ),
