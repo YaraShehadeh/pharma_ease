@@ -25,6 +25,17 @@ def filter_wrong_medicines(medicine: str, medicines: List[List[Drug]], filter_ty
     return unique_medicines
 
 
+def filter_exact_medicines(medicine: str, medicines: List[Drug]):
+    right_drugs = []
+    for drug in medicines:
+        if drug.drugNmae.lower() == medicine.lower():
+            right_drugs.append(drug)
+
+    print("\n right drugs are", right_drugs)
+
+    return right_drugs
+
+
 def drugEntity(item: dict) -> Drug:
     return  Drug(
         drugName=item.get("drugName"),

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models.mpharmacist import Pharmacist
-from dao.pharmacist import PharmacistDAO
+from dao.pharmacist_dao import PharmacistDAO
 from models.mdrugs import Drug
 from config.database import collection_name
 from bson import ObjectId
