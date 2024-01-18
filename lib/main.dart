@@ -8,8 +8,8 @@ import 'package:pharmaease/src/controller/cubits/nearest_pharmacies_at_startup_c
 import 'package:pharmaease/src/controller/cubits/pharmacy_details_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/sign_in_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/sign_up_cubit.dart';
-import 'package:pharmaease/src/view/screens/launcher_screen.dart';
-import 'package:pharmaease/src/view/screens/onboarding_screen.dart';
+import 'package:pharmaease/src/view/screens/OnboardingPages/launcher_screen.dart';
+import 'package:pharmaease/src/view/screens/OnboardingPages/onboarding_screen.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 void main() {
