@@ -15,7 +15,7 @@ import 'package:pharmaease_api/pharmaease_api.dart';
 void main() {
   final api = PharmaeaseApi(
     // base connection with FastAPI
-    basePathOverride: "http://10.0.2.2:8000",
+    basePathOverride: "http://192.168.100.12:8000",
   );
   final getIt = GetIt.instance;
   // create a single instance of the model project [Client side library]

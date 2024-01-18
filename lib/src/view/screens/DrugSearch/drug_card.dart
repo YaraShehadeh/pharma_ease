@@ -4,7 +4,7 @@ import 'package:pharmaease/src/controller/cubits/drug_details_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/searched_drug_cubit.dart';
 import 'package:pharmaease/src/controller/states/drug_details_state.dart';
 import 'package:pharmaease/src/controller/states/searched_drug_state.dart';
-import 'package:pharmaease/src/view/screens/drug_details_screen.dart';
+import 'package:pharmaease/src/view/screens/DrugSearch/drug_details_screen.dart';
 import 'package:pharmaease/src/view/theme/colors.dart';
 
 class DrugCard extends StatefulWidget {

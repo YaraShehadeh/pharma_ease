@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/view/screens/MedicineSearch/drugs_list_screen.dart';
+import 'package:pharmaease/src/view/screens/DrugSearch/drugs_list_screen.dart';
 import 'package:pharmaease/src/view/theme/colors.dart';
 import 'package:pharmaease/src/view/screens/onboarding_screen.dart';
-import 'package:pharmaease/src/view/screens/sign_in_screen.dart';
+import 'package:pharmaease/src/view/screens/SignIn/sign_in_screen.dart';
 
 class SideMenu extends StatelessWidget {
   final bool showSearchDrug;

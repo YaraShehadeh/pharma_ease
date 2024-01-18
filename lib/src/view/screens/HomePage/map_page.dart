@@ -3,10 +3,10 @@ import 'package:pharmaease/src/controller/cubits/all_holding_pharmacies_cubit.da
 import 'package:pharmaease/src/controller/cubits/nearest_pharmacies_at_startup_cubit.dart';
 import 'package:pharmaease/src/controller/states/all_holding_pharmacies_state.dart';
 import 'package:pharmaease/src/controller/states/nearest_pharmacies_at_startup_state.dart';
-import 'package:pharmaease/src/view/screens/AllPharmaciesScreen.dart';
+import 'package:pharmaease/src/view/screens/PharmacyScreens/all_pharmacies_screen.dart';
 import 'package:pharmaease/src/view/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/view/screens/pharmacy_details_screen.dart';
+import 'package:pharmaease/src/view/screens/PharmacyScreens/pharmacy_details_screen.dart';
 import 'package:pharmaease/src/view/theme/colors.dart';
 import 'package:pharmaease/src/view/widgets/search_bar_widget.dart';
 import 'package:pharmaease/src/view/widgets/side_menu.dart';
@@ -29,8 +29,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<NearestPharmaciesAtStartupCubit>()
+    context.read<NearestPharmaciesAtStartupCubit>()
         .getUserLocationAutomaticallyAtStartup();
   }
 

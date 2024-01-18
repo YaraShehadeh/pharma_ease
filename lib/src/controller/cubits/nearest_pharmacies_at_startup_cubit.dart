@@ -26,6 +26,8 @@ class NearestPharmaciesAtStartupCubit
       if (_serviceEnabled) {
         _serviceEnabled = await _locationController.requestService();
       } else {
+        getNearestPharmaciesAtStartup(32,
+           33);
         return;
       }
       _permissionGranted = await _locationController.hasPermission();

@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/cubits/all_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/services/pharmacy_service.dart';
 import 'package:pharmaease/src/controller/states/all_pharmacies_state.dart';
-import 'package:pharmaease/src/view/screens/pharmacy_details_screen.dart';
+import 'package:pharmaease/src/view/screens/PharmacyScreens/pharmacy_details_screen.dart';
 import 'package:pharmaease/src/view/theme/colors.dart';
 
-import 'HomePage/map_page.dart';
+import '../HomePage/map_page.dart';
 
 class AllPharmaciesScreen extends StatefulWidget {
   const AllPharmaciesScreen({Key? key}) : super(key: key);

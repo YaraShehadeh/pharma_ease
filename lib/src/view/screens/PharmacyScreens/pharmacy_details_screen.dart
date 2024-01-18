@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/cubits/pharmacy_details_cubit.dart';
 import 'package:pharmaease/src/controller/services/pharmacy_service.dart';
 import 'package:pharmaease/src/controller/states/pharmacy_details_state.dart';
-import 'package:pharmaease/src/view/screens/AllPharmaciesScreen.dart';
+import 'package:pharmaease/src/view/screens/PharmacyScreens/all_pharmacies_screen.dart';
 import 'package:pharmaease/src/view/screens/HomePage/map.dart';
 import 'package:pharmaease/src/view/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/view/theme/colors.dart';
