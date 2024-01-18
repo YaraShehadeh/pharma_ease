@@ -83,7 +83,7 @@ def get_all_service(pharmacies):
 
 
 
-async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float, current_user: Optional[User] = None) -> dict:
+async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float) -> dict:
     """
     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
@@ -98,16 +98,6 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
         query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
 
     pharmacies = await collection_name.find(query).to_list(1000)
-    allergy_warning = "Warning: Some drugs in this pharmacy contain ingredients you are allergic to."
-
-    if current_user:
-        for pharmacy in pharmacies:
-            for drug in pharmacy["drugs"]:
-                if any(allergy.type in drug["Allergies"] for allergy in current_user.allergies):
-                    allergy_warning = "Warning: The drug you are searching for contain ingredients you are allergic to."
-                    break  # Break the inner loop if any allergy is found
-            if allergy_warning:
-                break  # Break the outer loop if any allergy is found
 
     if not pharmacies:
         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
@@ -119,10 +109,11 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
 
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
+    print("here we go")
+    print(sorted_pharmacies)
 
     return {
-        "pharmacies": pharmaciesEntity(sorted_pharmacies),
-        "allergy_warning": allergy_warning
+        "pharmacies": pharmaciesEntity(sorted_pharmacies)
     }
 
 
@@ -144,6 +135,55 @@ async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
 
     return pharmaciesEntity(sorted_pharmacies)
+
+
+# search drug with authentication
+# async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float, current_user: Optional[User] = None) -> dict:
+#     """
+#     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
+#     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
+#     """
+#     if not drug_names and not drug_barcode:
+#         raise HTTPException(status_code=400, detail="No drug names or barcode provided")
+
+#     query = {}
+#     if drug_names:
+#         query["drugs.drugName"] = {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}
+#     elif drug_barcode:
+#         query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
+
+#     pharmacies = await collection_name.find(query).to_list(1000)
+#     allergy_warning = "Warning: Some drugs in this pharmacy contain ingredients you are allergic to."
+
+#     if current_user:
+#         for pharmacy in pharmacies:
+#             for drug in pharmacy["drugs"]:
+#                 if any(allergy.type in drug["Allergies"] for allergy in current_user.allergies):
+#                     allergy_warning = "Warning: The drug you are searching for contain ingredients you are allergic to."
+#                     break  # Break the inner loop if any allergy is found
+#             if allergy_warning:
+#                 break  # Break the outer loop if any allergy is found
+
+#     if not pharmacies:
+#         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
+
+#     # Calculate distance and sort pharmacies
+#     for pharmacy in pharmacies:
+#         pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
+#         user_loc = (user_lat, user_lon)
+#         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
+
+#     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
+
+#     return {
+#         "pharmacies": pharmaciesEntity(sorted_pharmacies),
+#         "allergy_warning": allergy_warning
+#     }
+
+
+
+
+
 
 
 async def add_drug_service(pharmacy_name, drug):
