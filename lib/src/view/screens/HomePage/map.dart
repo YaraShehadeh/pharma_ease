@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class Map extends StatefulWidget {

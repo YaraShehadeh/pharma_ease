@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/view/screens/HomePage/map_page.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);

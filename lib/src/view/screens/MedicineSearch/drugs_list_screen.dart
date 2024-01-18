@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/MedicineSearch/drug_card.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
-import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
-import 'package:pharmaease/src/ui/widgets/side_menu.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/view/screens/MedicineSearch/drug_card.dart';
+import 'package:pharmaease/src/view/screens/HomePage/map_page.dart';
+import 'package:pharmaease/src/view/widgets/search_bar_widget.dart';
+import 'package:pharmaease/src/view/widgets/side_menu.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 
 class DrugsListScreen extends StatefulWidget {
 

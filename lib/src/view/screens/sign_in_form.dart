@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmaease/src/controller/sign_in_cubit.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/controller/cubits/sign_in_cubit.dart';
+import 'package:pharmaease/src/controller/states/sign_in_state.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 
 class SignInForm extends StatelessWidget {
   const SignInForm({super.key});
@@ -34,8 +35,11 @@ class SignInForm extends StatelessWidget {
                   if (value == null || value == "") {
                     return "Please enter your email";
                   } else if (!RegExp(
-                          r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.com+$")
+                          r"^[a-zA-Z0-9_.+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$")
                       .hasMatch(value)) {
+                    return "Please enter a valid email address";
+                  }
+                  else if (value.length < 8){
                     return "Please enter a valid email address";
                   }
                   return null;
@@ -68,16 +72,18 @@ class SignInForm extends StatelessWidget {
                 ? (cubit.state as SignInFormUpdate).hidePassword
                 : true,
             validator: (value) {
-              if (value == null || value == "") {
+              if (value == null || value.isEmpty) {
                 return "Please enter your password";
               } else if (value.length < 6) {
                 return "Password must be at least 6 characters long";
-              } else if (!containsSpecialChar(value)) {
-                return "Password must contain at least one special character";
-              } else if (!containsLowerCase(value)) {
-                return "Password must contain at least one lowercase letter";
-              } else if (!containsUpperCase(value)) {
+              } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
                 return "Password must contain at least one uppercase letter";
+              } else if (!RegExp(r'[a-z]').hasMatch(value)) {
+                return "Password must contain at least one lowercase letter";
+              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                return "Password must contain at least one digit";
+              } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                return "Password must contain at least one special character";
               }
               return null;
             },
@@ -107,18 +113,6 @@ class SignInForm extends StatelessWidget {
     );
   }
 
-  bool containsSpecialChar(String value) {
-    RegExp specialCharRegex = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
-    return specialCharRegex.hasMatch(value);
-  }
-
-  bool containsLowerCase(String value) {
-    return value.contains(RegExp(r'[a-z]'));
-  }
-
-  bool containsUpperCase(String value) {
-    return value.contains(RegExp(r'[A-Z]'));
-  }
 
   void onSubmit(
       GlobalKey<FormState> formKey,

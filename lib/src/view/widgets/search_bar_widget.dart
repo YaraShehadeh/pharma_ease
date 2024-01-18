@@ -3,13 +3,13 @@ import 'package:built_collection/src/list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
-import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/controller/cubits/all_holding_pharmacies_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/nearest_pharmacies_at_startup_cubit.dart';
+import 'package:pharmaease/src/controller/states/all_holding_pharmacies_state.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 
 class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({Key? key}) : super(key: key);
-
 
   @override
   State<SearchBarWidget> createState() => _SearchBarState();

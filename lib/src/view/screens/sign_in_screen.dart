@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
-import 'package:pharmaease/src/ui/screens/sign_up_form.dart';
+import 'package:pharmaease/src/view/screens/sign_in_form.dart';
+import 'package:pharmaease/src/view/screens/sign_up_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+//ADD AUTHENTICATION CUBIT HEREEE
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   @override
-  Widget build(BuildContext build) {
+  Widget build(BuildContext context) {
     return Material(
       child: Padding(
         padding: const EdgeInsetsDirectional.only(
@@ -24,27 +27,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 80,
                 width: 80),
             const SizedBox(height: 20),
-            const Text("Create Account!",
+            const Text("Welcome Back!",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
                 )),
             const SizedBox(height: 20),
-            SignUpForm(),
+            const SignInForm(),
             const SizedBox(height: 20),
             Row(children: [
-              const Text("Already have an account? "),
+              const Text("Don't have an account? "),
               GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                          const SignInScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
-                    );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                const SignUpScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                          );
                   },
                   child: const Text(
-                    "Sign In",
+                    "Create one!",
                     style: TextStyle(
                         color: Color.fromRGBO(25, 154, 142, 100),
                         fontWeight: FontWeight.bold),

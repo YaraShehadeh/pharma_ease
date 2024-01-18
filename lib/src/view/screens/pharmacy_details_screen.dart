@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmaease/src/controller/pharmacy_details_cubit.dart';
-import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/controller/cubits/pharmacy_details_cubit.dart';
+import 'package:pharmaease/src/controller/services/pharmacy_service.dart';
+import 'package:pharmaease/src/controller/states/pharmacy_details_state.dart';
+import 'package:pharmaease/src/view/screens/AllPharmaciesScreen.dart';
+import 'package:pharmaease/src/view/screens/HomePage/map.dart';
+import 'package:pharmaease/src/view/screens/HomePage/map_page.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 
-import 'package:pharmaease/src/controller/location_service.dart';
-import 'package:pharmaease/src/controller/pharmacy_services.dart';
+import 'package:pharmaease/src/controller/services/location_service.dart';
 
 class PharmacyDetailsScreen extends StatefulWidget {
   bool showHomeIcon = false;

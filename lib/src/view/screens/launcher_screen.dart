@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
 
 class LauncherScreen extends StatefulWidget {
   const LauncherScreen({super.key});

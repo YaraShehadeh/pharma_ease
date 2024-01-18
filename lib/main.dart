@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
-import 'package:pharmaease/src/controller/all_pharmacies_cubit.dart';
-import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
-import 'package:pharmaease/src/controller/pharmacy_details_cubit.dart';
-import 'package:pharmaease/src/controller/sign_in_cubit.dart';
-import 'package:pharmaease/src/ui/screens/launcher_screen.dart';
-import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
+import 'package:pharmaease/src/controller/cubits/all_holding_pharmacies_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/all_pharmacies_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/authentication_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/nearest_pharmacies_at_startup_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/pharmacy_details_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/sign_in_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/sign_up_cubit.dart';
+import 'package:pharmaease/src/view/screens/launcher_screen.dart';
+import 'package:pharmaease/src/view/screens/onboarding_screen.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 void main() {
   final api = PharmaeaseApi(
+    // base connection with FastAPI
     basePathOverride: "http://10.0.2.2:8000",
   );
   final getIt = GetIt.instance;
+  // create a single instance of the model project [Client side library]
   getIt.registerSingleton<PharmaeaseApi>(api);
   runApp(const MyApp());
 }
@@ -24,6 +28,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //create an instance of each cubit controller in the main class, this allows it to be accessible throughout the application
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AllPharmaciesCubit()),
@@ -31,6 +36,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => PharmacyDetailsCubit()),
         BlocProvider(create: (_) => AllHoldingPharmaciesCubit()),
         BlocProvider(create: (_) => SignInCubit()),
+        BlocProvider(create: (_) => SignUpCubit()),
+        BlocProvider(create: (_) => AuthenticationCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

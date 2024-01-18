@@ -1,13 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
-import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
-import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
+import 'package:pharmaease/src/controller/cubits/all_holding_pharmacies_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/nearest_pharmacies_at_startup_cubit.dart';
+import 'package:pharmaease/src/controller/states/all_holding_pharmacies_state.dart';
+import 'package:pharmaease/src/controller/states/nearest_pharmacies_at_startup_state.dart';
+import 'package:pharmaease/src/view/screens/AllPharmaciesScreen.dart';
+import 'package:pharmaease/src/view/screens/HomePage/map.dart';
 import 'package:flutter/material.dart';
-import 'package:pharmaease/src/ui/screens/pharmacy_details_screen.dart';
-import 'package:pharmaease/src/ui/theme/colors.dart';
-import 'package:pharmaease/src/ui/widgets/search_bar_widget.dart';
-import 'package:pharmaease/src/ui/widgets/side_menu.dart';
+import 'package:pharmaease/src/view/screens/pharmacy_details_screen.dart';
+import 'package:pharmaease/src/view/theme/colors.dart';
+import 'package:pharmaease/src/view/widgets/search_bar_widget.dart';
+import 'package:pharmaease/src/view/widgets/side_menu.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 GlobalKey<MapState> mapKey = GlobalKey();
