@@ -21,14 +21,8 @@ async def get_all_pharmacies() -> list[Pharmacy]:
     return await PharmacyDAO.get_all_pharmacies2()
 
 
-
-# # Endpoint to search for multiple drugs
-# @pharmacy.post("/searchHoldingPharmacies")
-# async def search_drugs(drug_names: List[str], user_lat: float, user_lon: float):
-#     return await search_for_drugs_service(drug_names, user_lat, user_lon)
-
-@pharmacy.post("/searchHoldingPharmacies", response_model=dict)
-async def search_drugs(user_lat: float, user_lon: float, drug_names: List[str] = None, drug_barcode: str = None, current_user: User = Depends(get_current_user)) -> dict:
+@pharmacy.post("/searchHoldingPharmacies")
+async def search_drugs(user_lat: float, user_lon: float, drug_names: List[str] = None, drug_barcode: str = None, current_user: User = Depends(get_current_user)) -> list[Pharmacy]:
     if not drug_names and not drug_barcode:
         raise HTTPException(status_code=400, detail="Either drug names or barcode must be provided")
     return await search_for_drugs_service(drug_names, drug_barcode, user_lat, user_lon, current_user)
