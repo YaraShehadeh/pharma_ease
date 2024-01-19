@@ -10,9 +10,6 @@ bot = APIRouter()
 
 @bot.get("/chat")
 async def get_response(query:str):
-    # llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=512, openai_api_key="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")
-    # for chunk in llm.stream("Write me a song about sparkling water."):
-    #  print(chunk, end="", flush=True)
     bot = Lang()
     data = bot.load_documents("pharmaease.pdf")
     chunks = bot.chunk_data(data = data , chunksize= 500)

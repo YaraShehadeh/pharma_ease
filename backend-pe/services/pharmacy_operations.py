@@ -83,7 +83,7 @@ def get_all_service(pharmacies):
 
 
 
-async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float) -> dict:
+async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float) -> list[Pharmacy]:
     """
     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
@@ -109,12 +109,10 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
 
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
-    print("here we go")
-    print(sorted_pharmacies)
 
-    return {
-        "pharmacies": pharmaciesEntity(sorted_pharmacies)
-    }
+    print(sorted_pharmacies)
+    return pharmaciesEntity(sorted_pharmacies)
+    
 
 
 
@@ -133,7 +131,7 @@ async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float
         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
 
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
-
+    
     return pharmaciesEntity(sorted_pharmacies)
 
 
