@@ -8,7 +8,8 @@ import 'package:pharmaease_api/pharmaease_api.dart';
 
 class DrugCard extends StatefulWidget {
   List<Drug>? drugs;
-   DrugCard({super.key,required this.drugs});
+
+  DrugCard({super.key, required this.drugs});
 
   @override
   State<DrugCard> createState() => _DrugState();
