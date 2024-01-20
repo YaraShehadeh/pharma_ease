@@ -92,32 +92,32 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Either drug name or drug barcode must be provided")
 
 
-# @drug.get("/drug/drug_information")
-# async def get_drug_info(drug_name: str) -> list[Drug]:
-#     # Validate drug_name format
-#     if not re.match("^[A-Za-z ]+$", drug_name):
-#         raise HTTPException(status_code=400, detail="Invalid drug name format")
+@drug.get("/drug/drug_information")
+async def get_drug_info(drug_name: str) -> Drug:
+    # Validate drug_name format
+    if not re.match("^[A-Za-z ]+$", drug_name):
+        raise HTTPException(status_code=400, detail="Invalid drug name format")
 
-#     # Existing logic for drug information retrieval
-#     regex_pattern = f"^{drug_name}$"
-#     drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
-#     try:
-#         drugs = await drug_cursor.to_list(length=None)
-#         print(drugs)
-#         if drugs:
-#             pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
-#             post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs, "drugName")
-#             return post_processed_drugs[0]
-#         else:
-#             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
-#     except Exception as e:
-#         print(e)
-#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+    # Existing logic for drug information retrieval
+    regex_pattern = f"^{drug_name}$"
+    drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}})
+    try:
+        drugs = await drug_cursor.to_list(length=None)
+        print(drugs)
+        if drugs:
+            pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+            post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs, "drugName")
+            return post_processed_drugs[0]
+        else:
+            raise HTTPException(status_code=404, detail="Drug not found with the given name")
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
     
 
-@drug.get("/drug/drug_info")
-async def get_drug_info(drug_name: str):
-    pass
+# @drug.get("/drug/drug_info")
+# async def get_drug_info(drug_name: str):
+#     pass
 
 
 @drug.get("/drug/drug_alternatives")
