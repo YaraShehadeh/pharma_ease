@@ -4,10 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/all_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/alternative_drugs_cubit.dart';
+import 'package:pharmaease/src/controller/chatbot_cubit.dart';
 import 'package:pharmaease/src/controller/drug_details_cubit.dart';
 import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
 import 'package:pharmaease/src/controller/pharmacy_details_cubit.dart';
 import 'package:pharmaease/src/controller/searched_drug_cubit.dart';
+import 'package:pharmaease/src/ui/screens/chatbot_screen.dart';
 import 'package:pharmaease/src/ui/screens/launcher_screen.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_)=> DrugDetailsCubit()),
         BlocProvider(create: (_)=> SearchedDrugCubit()),
         BlocProvider(create: (_)=> AlternativeDrugsCubit()),
+        BlocProvider(create: (_)=> ChatBotCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
