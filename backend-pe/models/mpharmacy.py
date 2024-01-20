@@ -30,9 +30,6 @@ class Pharmacy(BaseModel):
                 raise ValueError("Incorrect date format, should be YYYY-MM-DDTHH:MM:SSZ")
         return value
 
-    class Config:
-        orm_mode = True
-
     def __init__(
         self,
         pharmacyName: str,

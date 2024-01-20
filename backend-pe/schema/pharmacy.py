@@ -29,19 +29,7 @@ def pharmacyEntity(item) -> Pharmacy:
             longitude = item["location"]["longitude"],
             latitude = item["location"]["latitude"]
         ),
-        drugs = [
-            DrugModel(
-                drugName = drug.get("drugName"), 
-                drugDescription = drug["drugDescription"],
-                drugBarcode = drug.get("drugBarcode"),
-                drugPerscription = drug["drugPerscription"],
-                drugInteractions = drug["drugInteractions"],
-                drugImage = drug.get("drugImage", []),
-                holdingPharmacies = drug.get("holdingPharmacies", []),
-                drugAlternatives = drug.get("drugAlternatives", []),
-                Allergies = drug.get("Allergies", [])
-             ) for drug in item.get("drugs", [])
-        ],
+        drugs = item.get("drugs", []),
         pharmacists = [
             Pharmacist(first_name = pharmacist["first_name"], last_name = pharmacist["last_name"],
                         username = pharmacist["username"], password = pharmacist["password"] )

@@ -29,3 +29,6 @@ email-validator>=1.0.3
 passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
+pytest-asyncio
+coverage
+radon

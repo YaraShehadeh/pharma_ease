@@ -6,13 +6,14 @@ from fastapi import APIRouter, HTTPException
 from models.mpharmacy import Pharmacy
 from models.mpharmacist import Pharmacist
 from models.mdrugs import Drug
-from config.database import collection_name
+from config.database import collection_name, drugs_collection
 from schema.pharmacy import pharmacyEntity, pharmaciesEntity
 from bson import ObjectId
 from models.mlocation import Location
 from models.muser import User
 from typing import List, Optional , Union
 import re
+from routes.drugs import create_drug 
 
 
 def get_all_service(pharmacies):
@@ -83,7 +84,7 @@ def get_all_service(pharmacies):
 
 
 
-async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float, current_user: Optional[User] = None) -> dict:
+async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float) -> dict:
     """
     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
@@ -98,17 +99,6 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
         query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
 
     pharmacies = await collection_name.find(query).to_list(1000)
-    allergy_warning = "Warning: Some drugs in this pharmacy contain ingredients you are allergic to."
-
-    if current_user:
-        for pharmacy in pharmacies:
-            for drug in pharmacy["drugs"]:
-                if any(allergy.type in drug["Allergies"] for allergy in current_user.allergies):
-                    allergy_warning = "Warning: The drug you are searching for contain ingredients you are allergic to."
-                    break  # Break the inner loop if any allergy is found
-            if allergy_warning:
-                break  # Break the outer loop if any allergy is found
-
     if not pharmacies:
         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
 
@@ -120,11 +110,72 @@ async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barc
 
     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
 
-    return {
-        "pharmacies": pharmaciesEntity(sorted_pharmacies),
-        "allergy_warning": allergy_warning
-    }
+    return pharmaciesEntity(sorted_pharmacies)
 
+
+
+
+# async def search_for_drugs_service(drug_names: Union[List[str], None], drug_barcode: Union[str, None], user_lat: float, user_lon: float, current_user: Optional[User] = None) -> dict:
+#     """
+#     Takes a list of drug names or a drug barcode along with user's latitude and longitude,
+#     then returns the top 5 pharmacies based on the distance, along with an allergy warning if applicable.
+#     """
+#     if not drug_names and not drug_barcode:
+#         raise HTTPException(status_code=400, detail="No drug names or barcode provided")
+
+#     query = {}
+#     if drug_names:
+#         query["drugs.drugName"] = {"$in": [re.compile(r'^{}$'.format(drug_name), re.IGNORECASE) for drug_name in drug_names]}
+#     elif drug_barcode:
+#         query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
+
+#     pharmacies = await collection_name.find(query).to_list(1000)
+#     allergy_warning = "Warning: Some drugs in this pharmacy contain ingredients you are allergic to."
+
+#     if current_user:
+#         for pharmacy in pharmacies:
+#             for drug in pharmacy["drugs"]:
+#                 if any(allergy.type in drug["Allergies"] for allergy in current_user.allergies):
+#                     allergy_warning = "Warning: The drug you are searching for contain ingredients you are allergic to."
+#                     break  # Break the inner loop if any allergy is found
+#             if allergy_warning:
+#                 break  # Break the outer loop if any allergy is found
+
+#     if not pharmacies:
+#         raise HTTPException(status_code=404, detail="No pharmacies found with the specified drugs or barcode")
+
+#     # Calculate distance and sort pharmacies
+#     for pharmacy in pharmacies:
+#         pharmacy_location = (pharmacy["location"]["latitude"], pharmacy["location"]["longitude"])
+#         user_loc = (user_lat, user_lon)
+#         pharmacy["distance"] = distance.distance(pharmacy_location, user_loc).km
+
+#     sorted_pharmacies = sorted(pharmacies, key=lambda x: x["distance"])[:5]
+
+#     return {
+#         "pharmacies": pharmaciesEntity(sorted_pharmacies),
+#         "allergy_warning": allergy_warning
+#     }
+
+
+
+async def check_allergies(current_user: User, drug_names: List[str]) -> Optional[str]:
+    """
+    Checks if any of the drugs (by name) contain ingredients the user is allergic to.
+    Returns an allergy warning message if applicable, otherwise None.
+    """
+    for drug_name in drug_names:
+        # Find the drug by name
+        drug = await drugs_collection.find_one({"drugName": drug_name})
+        if not drug:
+            continue
+
+        # Check if there's an overlap between user allergies and drug allergies
+        if any(allergy in drug.get("Allergies", []) for allergy in current_user.allergies):
+            return f"Warning: The drug {drug_name} contains ingredients you are allergic to."
+
+    # No allergies found
+    return None
 
 
 async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float) -> list[Pharmacy]:
@@ -148,10 +199,24 @@ async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float
 
 async def add_drug_service(pharmacy_name, drug):
       # Fetch the pharmacy document by its name
-    pharmacy = await collection_name.find_one({"name": pharmacy_name})
+    pharmacy = await pharmacy_test.find_one({"pharmacyName": pharmacy_name})
     if not pharmacy:
         raise HTTPException(status_code=404, detail="Pharmacy not found")
 
+
+    #check if the drug exists in the pharmacy
+    print(pharmacy)
+    drug_dict = drug.dict()
+    for x in pharmacy["drugs"]:
+        if x == drug_dict["drugName"]:
+            return {"drug already exists in the pharmacy"}
+    
+
+    print(drug_dict)
+    print("drug model is", drug)
+    drug_dict["drugs"].append(pharmacy_name)
+    # add the drug to the drug collection using the create drug endpoint
+    drug_result = create_drug()
     # Append the new drug
     if "drugs" not in pharmacy:
         pharmacy["drugs"] = [drug.dict()]
