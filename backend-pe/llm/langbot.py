@@ -39,7 +39,7 @@ class Lang():
         embeddings = OpenAIEmbeddings(openai_api_key=key)
 
         pinecone = PinecoinOperations()
-        index_name= os.getenv("PINECONE_INDEX_NAME")
+        index_name= "gp"
         vector_store= Pinecone.from_existing_index(index_name,embeddings)
         vector_store.add_documents(chunks_data)
         return vector_store
@@ -48,7 +48,7 @@ class Lang():
     def return_vectore_store(self):
         embeddings = OpenAIEmbeddings(openai_api_key="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")
         pinecone = PinecoinOperations()
-        index_name = os.getenv("PINECONE_INDEX_NAME")
+        index_name = "gp"
         vector_store = Pinecone.from_existing_index(index_name, embeddings)
         return vector_store
 
@@ -65,7 +65,7 @@ class Lang():
 
     def qa_services(self, vector_store_q, query):
         llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key="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")
-        retriever = vector_store_q.as_retriever(search_type="similarity", search_kwargs={'k': 3})
+        retriever = vector_store_q.as_retriever(search_type="similarity", search_kwargs={'k': 5})
         chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
         answer_qa = chain.run(query)
