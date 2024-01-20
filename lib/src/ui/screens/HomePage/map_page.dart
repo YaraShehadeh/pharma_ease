@@ -25,7 +25,7 @@ class _MapPageState extends State<MapPage> {
   final GlobalKey<MapState> mapKey = GlobalKey();
   List<Pharmacy> activePharmacies = [];
   Pharmacy? selectedPharmacy;
-  final AutoScrollController scrollController= AutoScrollController();
+  final AutoScrollController scrollController = AutoScrollController();
 
   @override
   void initState() {
@@ -35,17 +35,20 @@ class _MapPageState extends State<MapPage> {
         .getUserLocationAutomaticallyAtStartup();
   }
 
-  void onPharmacySelected(Pharmacy pharmacy){
-    int index=activePharmacies.indexOf(pharmacy);
-    if(index!=-1){
+  void onPharmacySelected(Pharmacy pharmacy) {
+    int index = activePharmacies.indexOf(pharmacy);
+    if (index != -1) {
       setState(() {
-        selectedPharmacy=pharmacy;
+        selectedPharmacy = pharmacy;
       });
-      scrollController.scrollToIndex(index*100000000,preferPosition: AutoScrollPosition.middle);
+      scrollController.scrollToIndex(index * 100000000,
+          preferPosition: AutoScrollPosition.middle);
     }
   }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -84,12 +87,10 @@ class _MapPageState extends State<MapPage> {
                 final _mapState = mapKey.currentState;
                 if (_mapState != null) {
                   _mapState.updateMarkers(activePharmacies);
-                } else {
-                  print("MapState not found");
                 }
               }
               if (state is LoadingNearestPharmaciesAtStartupState) {
-                print("LOADINGGGGG");
+                const Center(child: CircularProgressIndicator());
               }
               const Text("Loading");
             },
@@ -127,7 +128,7 @@ class _MapPageState extends State<MapPage> {
         children: <Widget>[
           Map(
             key: mapKey,
-            onPharmacySelected:onPharmacySelected,
+            onPharmacySelected: onPharmacySelected,
           ),
           Positioned(
             bottom: 0,
@@ -138,15 +139,19 @@ class _MapPageState extends State<MapPage> {
               child: PharmaciesBottomSheet(),
             ),
           ),
-          const SearchBarWidget(isFromSearchDrugScreen: false,),
+          const SearchBarWidget(
+            isFromSearchDrugScreen: false,
+          ),
         ],
       ),
     );
   }
 
   Widget PharmaciesBottomSheet() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: MediaQuery.of(context).size.height * 0.25,
+      height: screenHeight * 0.25,
       child: Column(
         children: [
           Padding(
@@ -157,7 +162,7 @@ class _MapPageState extends State<MapPage> {
                   "Nearest Pharmacies",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                const SizedBox(width: 120),
+                 SizedBox(width:screenWidth*0.234),
                 TextButton(
                   child: const Text("View all Pharmacies",
                       style: TextStyle(color: Colors.black)),
@@ -177,12 +182,13 @@ class _MapPageState extends State<MapPage> {
               itemCount: activePharmacies.length,
               itemBuilder: (context, index) {
                 Pharmacy pharmacy = activePharmacies[index];
-                bool isSelected  = selectedPharmacy!=null &&selectedPharmacy==pharmacy;
+                bool isSelected =
+                    selectedPharmacy != null && selectedPharmacy == pharmacy;
 
                 return AutoScrollTag(
                     key: ValueKey(index),
                     controller: scrollController,
-                    index: index*10,
+                    index: index * 10,
                     child: PharmacyListItem(pharmacy, isSelected));
               },
             ),
@@ -192,34 +198,33 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  Widget PharmacyListItem(Pharmacy p,  bool isSelected) {
+  Widget PharmacyListItem(Pharmacy p, bool isSelected) {
     return Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Container(
-                  decoration:  BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: isSelected?Colors.blue:pharmaGreenColor,
-                  ),
-                  child: ListTile(
-                      title: Text(
-                        p.pharmacyName.toString(),
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      leading:
-                          const Icon(Icons.pin_drop, color: Colors.white),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PharmacyDetailsScreen(
-                                    showHomeIcon: false,
-                                    pharmacyName: p.pharmacyName.toString(),
-                                  )),
-                        );
-                      }),
-                ),
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          color: isSelected ? Colors.blue : pharmaGreenColor,
+        ),
+        child: ListTile(
+            title: Text(
+              p.pharmacyName.toString(),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            leading: const Icon(Icons.pin_drop, color: Colors.white),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PharmacyDetailsScreen(
+                          showHomeIcon: false,
+                          pharmacyName: p.pharmacyName.toString(),
+                        )),
               );
+            }),
+      ),
+    );
   }
 }

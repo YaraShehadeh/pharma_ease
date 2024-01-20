@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:built_collection/src/list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pharmaease/src/controller/all_holding_pharmacies_cubit.dart';
+import 'package:pharmaease/src/controller/alternative_drugs_cubit.dart';
 import 'package:pharmaease/src/controller/nearest_pharmacies_at_startup.dart';
 import 'package:pharmaease/src/controller/searched_drug_cubit.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
@@ -30,6 +33,7 @@ class _SearchBarState extends State<SearchBarWidget> {
     String searchedDrug=_searchController.text;
     if(searchedDrug.isNotEmpty){
       context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,"");
+      context.read()<AlternativeDrugsCubit>().getSearchedDrug(searchedDrug,"");
     }
   }
   void sendBarcodeOrName(
@@ -72,6 +76,7 @@ class _SearchBarState extends State<SearchBarWidget> {
 
   @override
   Widget build(BuildContext context) {
+     const IconData barcode = IconData(0xf586);
     if (!widget.isFromSearchDrugScreen) {
       return Positioned(
         left: 10,
@@ -112,8 +117,8 @@ class _SearchBarState extends State<SearchBarWidget> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(
-                      Icons.camera_alt,
+                    icon: const FaIcon(
+                     FontAwesomeIcons.barcode ,
                       color: pharmaGreenColor,
                     ),
                     onPressed: () {
@@ -132,50 +137,66 @@ class _SearchBarState extends State<SearchBarWidget> {
           right: 10,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: BlocListener<SearchedDrugCubit, SearchedDrugState>(
-              listener: (context, state) {
-                if (state is LoadedSearchedDrugState) {}
-                if (state is ErrorSearchedDrugState) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                    "Failed to load Drugs",
-                    style: TextStyle(color: Colors.red),
-                  )));
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.white,
+            child: MultiBlocListener(
+              listeners:[
+               BlocListener<SearchedDrugCubit, SearchedDrugState>(
+                listener: (context, state) {
+                  if (state is LoadedSearchedDrugState) {}
+                  if (state is ErrorSearchedDrugState) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                      "Failed to load Drugs",
+                      style: TextStyle(color: Colors.red),
+                    )));
+                  }
+                },
+
+              ),
+                BlocListener<AlternativeDrugsCubit, AlternativeDrugsState>(
+                  listener: (context, state) {
+                    if (state is LoadedSearchedDrugState) {}
+                    if (state is ErrorSearchedDrugState) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                            "Failed to load Drugs",
+                            style: TextStyle(color: Colors.red),
+                          )));
+                    }
+                  },
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: const InputDecoration(
-                          hintText: "Search...",
-                          prefixIcon: Icon(Icons.search),
-                          border: InputBorder.none,
-                        ),
-                        onSubmitted: (value) {
-                        _onSearchChanged();
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        color: pharmaGreenColor,
-                      ),
-                      onPressed: () {
-                        scanBarcode(context);
-                      },
-                    ),
-                  ],
+
+           ] ,child: Container(
+            decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Colors.white,
+          ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  hintText: "Search...",
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
                 ),
+                onSubmitted: (value) {
+                  _onSearchChanged();
+                },
               ),
             ),
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.barcode,
+                color: pharmaGreenColor,
+              ),
+              onPressed: () {
+                scanBarcode(context);
+              },
+            ),
+          ],
+        ),
+      ),),
           ));
     }
     return const Text("ERROR");

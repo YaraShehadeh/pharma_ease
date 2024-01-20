@@ -6,8 +6,7 @@ import 'package:location/location.dart' as location;
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
-  AllHoldingPharmaciesCubit()
-      : super(InitialAllHoldingPharmaciesState());
+  AllHoldingPharmaciesCubit() : super(InitialAllHoldingPharmaciesState());
 
   final location.Location _locationController = location.Location();
 
@@ -50,30 +49,30 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
   }
 
   Future<dynamic> getAllHoldingPharmacies(
-      double userLat,
-      double userLon,
-      String? barcode,
-      BuiltList<String>? drugName,
-      ) async {
+    double userLat,
+    double userLon,
+    String? barcode,
+    BuiltList<String>? drugName,
+  ) async {
     try {
-      List<Pharmacy>? result  = (await _api
-          .getPharmacyApi()
-          .searchDrugsApiPharmacySearchHoldingPharmaciesPost(
-        userLat: userLat,
-        userLon: userLon,
-        drugBarcode: barcode,
-        requestBody: drugName,
-      )).data as List<Pharmacy>?;
+      List<Pharmacy>? result = (await _api
+              .getPharmacyApi()
+              .searchDrugsApiPharmacySearchHoldingPharmaciesPost(
+                userLat: userLat,
+                userLon: userLon,
+                drugBarcode: barcode,
+                requestBody: drugName,
+              ))
+          .data as List<Pharmacy>?;
 
-
-      print("ALL HOLDING PHARMACIES");
-      print(result);
+      //Error State
       if (result == null) {
         emit(ErrorAllHoldingPharmaciesState());
         return;
       } else {
         pharmacies = result;
-        emit(LoadedAllHoldingPharmaciesState(pharmacies: pharmacies));
+        emit(LoadedAllHoldingPharmaciesState(
+            pharmacies: pharmacies)); //Successful retrieval state
         return;
       }
     } on DioException catch (e) {
@@ -83,8 +82,7 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
         throw Exception("Failed to load all holding pharmacies");
       }
       if (e.response!.statusCode == 404) {
-        emit(NoHoldingPharmaciesFoundState());
-        print("NO PHARMACIES  RETURNED");
+        emit(NoHoldingPharmaciesFoundState()); //No pharmacies returned state
         print("Error: $e");
         throw Exception("Failed to load all holding pharmacies");
       }
@@ -92,18 +90,13 @@ class AllHoldingPharmaciesCubit extends Cubit<AllHoldingPharmaciesState> {
   }
 }
 
-
 abstract class AllHoldingPharmaciesState {}
 
 class InitialAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
-
 class LoadingAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
-
 class LoadedAllHoldingPharmaciesState extends AllHoldingPharmaciesState {
   final List<Pharmacy> pharmacies;
   LoadedAllHoldingPharmaciesState({required this.pharmacies});
 }
-
 class ErrorAllHoldingPharmaciesState extends AllHoldingPharmaciesState {}
-
-class NoHoldingPharmaciesFoundState extends AllHoldingPharmaciesState{}
+class NoHoldingPharmaciesFoundState extends AllHoldingPharmaciesState {}
