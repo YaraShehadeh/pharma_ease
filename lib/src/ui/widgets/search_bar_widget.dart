@@ -43,8 +43,10 @@ class _SearchBarState extends State<SearchBarWidget> {
       print(_searchController.text);
       String searchedDrug=_searchController.text;
       print("!!!!!! $searchedDrug");
-      if(searchedDrug.isNotEmpty){
-      context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,barcode);}
+      if(searchedDrug.isNotEmpty || barcode!=null){
+      context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,barcode);
+      context.read<AlternativeDrugsCubit>().getSearchedDrug(searchedDrug,barcode);
+      }
     } else {
       if (_searchController.text.isEmpty && barcode == null) {
         context
