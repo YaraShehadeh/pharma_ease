@@ -121,7 +121,7 @@ async def get_drug_info(drug_name: str) -> Drug:
 
 
 @drug.get("/drug/drug_alternatives")
-async def get_drug_alternatives(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None):
+async def get_drug_alternatives(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None) -> list[Drug]:
     if drug_name:
         drugs = await DrugDAO.get_exact_drug(drug_name= drug_name)
         if drugs:  
