@@ -13,7 +13,7 @@ class PinecoinOperations:
         )
         self.index = None
 
-    def create_index(self, indexName="gp") :
+    def create_index(self, indexName=os.getenv("PINECONE_API_KEY")) :
         indexes = pinecone.list_indexes()
 
         if indexName not in indexes:
