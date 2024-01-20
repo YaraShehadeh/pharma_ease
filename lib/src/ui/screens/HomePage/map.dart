@@ -78,11 +78,21 @@ class MapState extends State<Map> {
     if (_serviceEnabled) {
       _serviceEnabled = await _locationController.requestService();
     } else {
+      _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(
+                  31.952978, 35.915684),
+              zoom: 16)));
       return;
     }
     _permissionGranted = await _locationController.hasPermission();
     if (_permissionGranted == location.PermissionStatus.denied) {
       _permissionGranted = await _locationController.requestPermission();
+      _googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(
+                  31.952978, 35.915684),
+              zoom: 16)));
       if (_permissionGranted != location.PermissionStatus.granted) {
         return;
       }

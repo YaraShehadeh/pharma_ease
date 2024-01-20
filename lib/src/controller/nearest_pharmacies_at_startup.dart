@@ -27,11 +27,13 @@ class NearestPharmaciesAtStartupCubit
       if (_serviceEnabled) {
         _serviceEnabled = await _locationController.requestService();
       } else {
+        getNearestPharmaciesAtStartup(31.952978, 35.915684);
         return;
       }
       _permissionGranted = await _locationController.hasPermission();
       if (_permissionGranted == location.PermissionStatus.denied) {
         _permissionGranted = await _locationController.requestPermission();
+        getNearestPharmaciesAtStartup(31.952978, 35.915684);
         if (_permissionGranted != location.PermissionStatus.granted) {
           return;
         }
