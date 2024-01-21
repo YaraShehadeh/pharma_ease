@@ -33,7 +33,7 @@ class PharmacistDAO:
         # Update the pharmacy document to add the drug to the drugs array
         updated_pharmacy = await collection_name.find_one_and_update(
             {"pharmacyName": pharmacy_name},
-            {"$addToSet": {"drugs": drug.dict()}},  # Use $addToSet to prevent duplicates
+            {"$addToSet": {"drugs": drug.dict()}},
             return_document=ReturnDocument.AFTER
         )
         if updated_pharmacy is None:
