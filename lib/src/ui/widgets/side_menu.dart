@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_list_screen.dart';
+import 'package:pharmaease/src/ui/screens/chatbot_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
@@ -78,7 +79,7 @@ class SideMenu extends StatelessWidget {
                   );
                 },
               ),
-            const ListTile(
+             ListTile(
               leading:
                   Icon(Icons.message_outlined, size: 28, color: Colors.white70),
               minLeadingWidth: 3,
@@ -89,6 +90,9 @@ class SideMenu extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w400),
               ),
+               onTap: (){
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ChatBotScreen()));
+               },
             ),
             const ListTile(
               leading:

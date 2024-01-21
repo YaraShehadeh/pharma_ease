@@ -19,6 +19,8 @@ void main() {
     //Base connection with FastAPI
     basePathOverride: "http://10.0.2.2:8000",
   );
+  api.dio.options.connectTimeout=const Duration(seconds: 10);
+  api.dio.options.receiveTimeout=const Duration(seconds: 20);
   final getIt = GetIt.instance;
   //Creating a single instance of the Model project [Client-side library]
   getIt.registerSingleton<PharmaeaseApi>(api);

@@ -1,9 +1,13 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pharmaease/src/controller/chatbot_cubit.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/ui/widgets/typing_indicator.dart';
+import 'package:pharmaease_api/pharmaease_api.dart';
 import 'HomePage/map_page.dart';
+import 'package:pharmaease/src/ui/widgets/typing_indicator.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({super.key});
@@ -15,9 +19,9 @@ class ChatBotScreen extends StatefulWidget {
 class _ChatBotScreenState extends State<ChatBotScreen> {
   String formattedDate = DateFormat('EEEE,h:mm a').format(DateTime.now());
   final TextEditingController _textController = TextEditingController();
-  final List<ChatMessage> _messages = [];
+  final List<ChatItem> _messages = [];
 
-  void _handleSubmitted(String text) {
+  void _handleSubmitted(String text)async {
     if(text.isNotEmpty) {
       _textController.clear();
       ChatMessage message = ChatMessage(
@@ -29,8 +33,17 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
       setState(() {
         _messages.insert(0, message);
       });
-      final cubit = context.read<ChatBotCubit>().sendMessage(text);
+      await  context.read<ChatBotCubit>().sendMessage(text);
     }
+  }
+  @override 
+  void initState(){
+    super.initState();
+    ChatMessage initialGreetingMessage= ChatMessage(
+        text: "Hello! I'm the official PharmaEase chatBot.How can I assist you today",
+        messageType: MessageType.received,
+        timestamp: DateTime.now());
+    _messages.insert(0, initialGreetingMessage);
   }
 
   @override
@@ -94,44 +107,68 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
             height: 10,
           ),
           Expanded(
-            child: BlocBuilder<ChatBotCubit,ChatBotState>(
-              builder: (context,state) {
-                if(state is LoadingChatBotState){
-                  return const Center(child: CircularProgressIndicator());
-                }
-                else if (state is LoadedChatBotState){
-                  final responseMessage = ChatMessage(
+            child: BlocConsumer<ChatBotCubit,ChatBotState>(
+              listener: (context,state) {
+                 if (state is LoadedChatBotState){
+                   if(_messages.isNotEmpty &&_messages.first is TypingIndicator){
+                    _messages.removeAt(0);
+                   }
+                    final responseMessage = ChatMessage(
                       text:state.chatBotResponse??"No response" ,
                       messageType: MessageType.received,
                       timestamp: DateTime.now(),);
-                  _messages.insert(0, responseMessage);
+                   _messages.insert(0, responseMessage);
+
                 }
+                 else if (state is LoadingChatBotState){
+                  _messages.insert(0, TypingIndicator());
+                   }
+
                 else if(state is ErrorChatBotState){
                   print("ERROR CHATBOT");
+                  setState(() {
+                    _messages.removeAt(0);
+                  });
                 }
-                return ListView.builder(
+
+              }, builder: ( context,  state) {
+              return ListView.builder(
                   reverse: true,
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   itemCount: _messages.length,
-                  itemBuilder: (context, index) => _messages[index],
-                );
-              }
+                  itemBuilder: (context, index){
+                    final item= _messages[index];
+                    if(item is ChatMessage){
+                      return item;
+                    }
+                    else if(item is TypingIndicator){
+                      return TypingIndicator();
+                    }
+                  }
+
+              );
+
+            },
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    onSubmitted: _handleSubmitted,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+
+                 SizedBox(
+                    width: 360,
+                    child: TextField(
+                      controller: _textController,
+                      onSubmitted: _handleSubmitted,
+                      decoration: InputDecoration(
+                        hintText: 'Type a message...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
-                    ),
+
                   ),
                 ),
               ],
@@ -143,15 +180,16 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   }
 }
 
+abstract class ChatItem{}
 enum MessageType { sent, received }
 
-class ChatMessage extends StatelessWidget {
+
+class ChatMessage extends StatelessWidget implements ChatItem {
   final String text;
   final MessageType messageType;
   final DateTime timestamp;
 
-  const ChatMessage({
-    super.key,
+   ChatMessage({
     required this.text,
     required this.messageType,
     required this.timestamp,
@@ -186,6 +224,29 @@ class ChatMessage extends StatelessWidget {
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class TypingIndicator extends StatelessWidget implements ChatItem{
+
+  @override
+  Widget build(BuildContext context) {
+    return  Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        SizedBox(width: 20.0, height: 20.0),
+        DefaultTextStyle(
+            style: const TextStyle(
+              fontSize: 20.0,
+              fontFamily: 'Agne',
+              color: Colors.black
+            ),
+            child: AnimatedTextKit(animatedTexts: [
+              TyperAnimatedText(
+                  'Typing...', speed: Duration(milliseconds: 100)),
+            ], repeatForever: true,))
       ],
     );
   }

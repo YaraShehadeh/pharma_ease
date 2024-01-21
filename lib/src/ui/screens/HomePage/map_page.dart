@@ -170,7 +170,7 @@ class _MapPageState extends State<MapPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AllPharmaciesScreen()));
+                            builder: (context) => AllPharmaciesScreen(drugName: null,)));
                   },
                 ),
               ],

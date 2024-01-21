@@ -12,10 +12,11 @@ import 'package:pharmaease/src/controller/pharmacy_services.dart';
 class PharmacyDetailsScreen extends StatefulWidget {
   bool showHomeIcon = false;
   String pharmacyName;
+  String? searchedDrug;
   //final GlobalKey<MapState> mapKey;
 
   PharmacyDetailsScreen(
-      {super.key, required this.showHomeIcon, required this.pharmacyName,});
+      {super.key, required this.showHomeIcon, required this.pharmacyName, this.searchedDrug});
 
   @override
   State<StatefulWidget> createState() => _PharmacyDetailsScreenState();
@@ -71,12 +72,19 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              if (widget.showHomeIcon) {
+              if (widget.showHomeIcon && widget.searchedDrug==null) {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AllPharmaciesScreen()));
-              } else {
+                        builder: (context) =>  AllPharmaciesScreen()));
+              }
+              else if(widget.showHomeIcon==false && widget.searchedDrug!=null) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>  AllPharmaciesScreen(drugName: widget.searchedDrug,)));
+              }
+              else {
                 Navigator.pop(context);
               }
             },

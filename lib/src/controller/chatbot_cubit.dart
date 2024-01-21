@@ -7,7 +7,7 @@ import 'package:pharmaease_api/pharmaease_api.dart';
 class ChatBotCubit extends Cubit<ChatBotState>{
   ChatBotCubit(): super(InitialChatBotState()){}
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
-  String? chatBotResponse;
+
   Future <dynamic> sendMessage(String message) async{
     try{
       emit(LoadingChatBotState());

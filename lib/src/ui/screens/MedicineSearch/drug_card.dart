@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmaease/src/controller/drug_details_cubit.dart';
-import 'package:pharmaease/src/controller/searched_drug_cubit.dart';
 import 'package:pharmaease/src/ui/screens/drug_details_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
@@ -55,7 +52,7 @@ class _DrugState extends State<DrugCard> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              DrugDetailsScreen(drugName: "panadol")));
+                              DrugDetailsScreen(drugName: widget.drugs![index].drugName.toString())));
                 },
                 child: Stack(
                   alignment: Alignment.topRight,
