@@ -1,24 +1,43 @@
-from models.mdrugs import Drug as DrugModel
+from models.mdrugs import Drug
 from typing import List
 import re
 
-def filter_wrong_medicines(medicine: str, medicines: List[List[DrugModel]],filter_type) -> List[List[DrugModel]]:
+def filter_wrong_medicines(medicine: str, medicines: List[List[Drug]], filter_type) -> List[Drug]:
     medicine = medicine.lower()
     filtered_medicines = []
 
+    #Filter based on the medicine being searched for
     for sublist in medicines:
-        sublist_filtered = []
         for drug in sublist:
             drug_dict = drug.dict()
-            if re.findall(f"^{medicine}", drug_dict[f"{filter_type}"].lower()):
-                sublist_filtered.append(drug)
-        if sublist_filtered:
-            filtered_medicines.append(sublist_filtered)
+            if medicine in drug_dict[f"{filter_type}"].lower():
+                filtered_medicines.append(drug)
 
-    return filtered_medicines
+    #Convert names to lowercase, check and remove duplicates
+    unique_medicines = []
+    added_drug_names = set()
+    for drug in filtered_medicines:
+        drug_name_lower = drug.dict()[f"{filter_type}"].lower()
+        if drug_name_lower not in added_drug_names:
+            unique_medicines.append(drug)
+            added_drug_names.add(drug_name_lower)
 
-def drugEntity(item: dict) -> DrugModel:
-    return DrugModel(
+    return unique_medicines
+
+
+def filter_exact_medicines(medicine: str, medicines: List[Drug]):
+    right_drugs = []
+    for drug in medicines:
+        if drug.drugNmae.lower() == medicine.lower():
+            right_drugs.append(drug)
+
+    print("\n right drugs are", right_drugs)
+
+    return right_drugs
+
+
+def drugEntity(item: dict) -> Drug:
+    return  Drug(
         drugName=item.get("drugName"),
         drugDescription=item["drugDescription"],
         drugBarcode=item["drugBarcode"],
@@ -30,5 +49,6 @@ def drugEntity(item: dict) -> DrugModel:
         Allergies=item["Allergies"]
     )
 
-def drugsEntity(entity: List[dict]) -> DrugModel:
+
+def drugsEntity(entity: List[dict]) -> Drug:
     return [drugEntity(item) for item in entity]

@@ -8,6 +8,7 @@ from bson import ObjectId
 from models.mlocation import Location
 from typing import List, Optional
 from services.pharmacy_operations import *
+from utility.token_gen import get_current_user
 
 from dao.pharmacy_dao import PharmacyDAO
 
@@ -20,18 +21,17 @@ async def get_all_pharmacies() -> list[Pharmacy]:
     return await PharmacyDAO.get_all_pharmacies2()
 
 
-
-# # Endpoint to search for multiple drugs
-# @pharmacy.post("/searchHoldingPharmacies")
-# async def search_drugs(drug_names: List[str], user_lat: float, user_lon: float):
-#     return await search_for_drugs_service(drug_names, user_lat, user_lon)
-
-@pharmacy.post("/searchHoldingPharmacies") 
+@pharmacy.post("/searchHoldingPharmacies")
 async def search_drugs(user_lat: float, user_lon: float, drug_names: List[str] = None, drug_barcode: str = None) -> list[Pharmacy]:
     if not drug_names and not drug_barcode:
         raise HTTPException(status_code=400, detail="Either drug names or barcode must be provided")
     return await search_for_drugs_service(drug_names, drug_barcode, user_lat, user_lon)
 
+# @pharmacy.post("/searchHoldingPharmacies")
+# async def search_drugs(user_lat: float, user_lon: float, drug_names: List[str] = None, drug_barcode: str = None, current_user: User = Depends(get_current_user)) -> list[Pharmacy]:
+#     if not drug_names and not drug_barcode:
+#         raise HTTPException(status_code=400, detail="Either drug names or barcode must be provided")
+#     return await search_for_drugs_service(drug_names, drug_barcode, user_lat, user_lon, current_user)
 
 @pharmacy.get("/searchNearestPharmacies")
 async def search_nearest_pharmacies(user_lat: float, user_lon: float) -> list[Pharmacy]:
@@ -47,8 +47,10 @@ async def add_drug_to_pharmacy(pharmacy_name: str, drug: Drug):
 # create a pharmacy in mdb
 @pharmacy.post("/create")
 async def add_pharmacy(pharmacy: Pharmacy):
-    # return await add_pharmacy_service(pharmacy)
     try:
+        result = await PharmacyDAO.pharmacy_exists(pharmacy.pharmacyName)
+        if result :
+            return {"message": "Pharmacy already exists"}
         result = await PharmacyDAO.create_pharmacy(pharmacy=pharmacy)
         return result
     except Exception as e:

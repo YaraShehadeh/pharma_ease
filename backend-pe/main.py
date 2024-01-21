@@ -1,6 +1,6 @@
 from fastapi import FastAPI 
 from contextlib import asynccontextmanager
-from routes import pharmacy, pharmacist , users , drugs
+from routes import pharmacy, pharmacist , users , drugs, llm
 # from middleware.errorHandler import error_handler
 from config.database import setup_indexes
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,9 +31,10 @@ app.add_middleware(
 )
 
 app.include_router(pharmacy.pharmacy, prefix="/api/pharmacy", tags=["pharmacy"])
-app.include_router(users.user_router, prefix= "/api/user", tags=["user"])
+app.include_router(users.user)
 app.include_router(drugs.drug , prefix= "/api/drug" , tags=["drug"])
-# app.include_router(pharmacist.pharmacist_router , prefix= "/api/pharmacist" , tags=["Pharmacist"])
+app.include_router(llm.bot , prefix="/api/chatbot" , tags=["chatbot"])
+app.include_router(pharmacist.pharmacist_router , prefix= "/api/pharmacist" , tags=["Pharmacist"])
 # app.middleware("http")(error_handler)
 
 

@@ -14,10 +14,10 @@ def pharmacyEntity(item) -> Pharmacy:
     if closing_hours:
         closing_hours = closing_hours.strftime('%Y-%m-%dT%H:%M:%SZ') if isinstance(closing_hours, datetime) else closing_hours
 
+
     return Pharmacy(
-#         id = str(item["_id"]),
-        pharmacyName = item["pharmacyName"],
-        pharmacyemail = item["pharmacyemail"],
+        pharmacyName = item.get("pharmacyName"),
+        pharmacyemail = item.get("pharmacyemail"),
         pharmacyDescription = item.get("pharmacyDescription", ""),
         pharmacyImage = item.get("pharmacyImage", ""),
         pharmacyArea = item.get("pharmacyArea", ""),
@@ -29,19 +29,7 @@ def pharmacyEntity(item) -> Pharmacy:
             longitude = item["location"]["longitude"],
             latitude = item["location"]["latitude"]
         ),
-        drugs = [
-            DrugModel(
-                drugName = drug.get("drugName"), 
-                drugDescription = drug["drugDescription"],
-                drugBarcode = drug.get("drugBarcode"),
-                drugPerscription = drug["drugPerscription"],
-                drugInteractions = drug["drugInteractions"],
-                drugImage = drug.get("drugImage", []),
-                holdingPharmacies = drug.get("holdingPharmacies", []),
-                drugAlternatives = drug.get("drugAlternatives", []),
-                Allergies = drug.get("Allergies", [])
-             ) for drug in item.get("drugs", [])
-        ],
+        drugs = item.get("drugs", []),
         pharmacists = [
             Pharmacist(first_name = pharmacist["first_name"], last_name = pharmacist["last_name"],
                         username = pharmacist["username"], password = pharmacist["password"] )

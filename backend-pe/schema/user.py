@@ -1,6 +1,7 @@
 def UserEntity(item) -> dict:
     return{
         "id": str(item["_id"]),
+        "name": str(item["name"]),
         "email": str(item["email"]),
         "password": str(item["password"]),
         "dob": str(item["dob"]),
@@ -9,7 +10,6 @@ def UserEntity(item) -> dict:
             "latitude": item["location"]["latitude"]
         },
         "allergies": {
-            "name": item["allergies"]["name"],
             "type": item["allergies"]["type"]
         }
     }
