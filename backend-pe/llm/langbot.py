@@ -18,7 +18,7 @@ from langchain.llms import AzureOpenAI
 
 class Lang():
 
-    def __init__(self,key= "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"):
+    def __init__(self,key= "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"):
         self.key=key
 
 
@@ -46,14 +46,14 @@ class Lang():
 
 
     def return_vectore_store(self):
-        embeddings = OpenAIEmbeddings(openai_api_key="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")
+        embeddings = OpenAIEmbeddings(openai_api_key="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")
         pinecone = PinecoinOperations()
         index_name = "gp"
         vector_store = Pinecone.from_existing_index(index_name, embeddings)
         return vector_store
 
     def qa(self, vector_store_q, query):
-        llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key="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")
+        llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key="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")
         #embeddings = AzureOpenAI(deployment_name="first", model_name="gpt-35-turbo")
         retriever = vector_store_q.as_retriever(search_type="similarity", search_kwargs={'k': 3})
         chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
@@ -64,7 +64,7 @@ class Lang():
 
 
     def qa_services(self, vector_store_q, query):
-        llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key="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")
+        llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key="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")
         retriever = vector_store_q.as_retriever(search_type="similarity", search_kwargs={'k': 5})
         chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
