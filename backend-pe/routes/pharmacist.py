@@ -30,9 +30,9 @@ async def get_pharmacist_pharmacy(pharmacist_name: str):
     return {
         "pharmacy": {
             "id": str(pharmacy["_id"]),
-            "name": pharmacy["name"],
-            "email": pharmacy["email"],
-            "description": pharmacy["description"],
+            "name": pharmacy["pharmacyName"],
+            "email": pharmacy["pharmacyemail"],
+            "description": pharmacy["pharmacyDescription"],
             "location": pharmacy["location"]
         }
     }
@@ -45,15 +45,31 @@ async def add_pharmacist(pharmacist: Pharmacist):
 
 
 
+
+from bson import ObjectId
+from fastapi.encoders import jsonable_encoder
+
+def custom_jsonable_encoder(obj):
+    if isinstance(obj, ObjectId):
+        return str(obj)
+    if isinstance(obj, list):
+        return [custom_jsonable_encoder(item) for item in obj]
+    if isinstance(obj, dict):
+        return {key: custom_jsonable_encoder(value) for key, value in obj.items()}
+    return jsonable_encoder(obj)
+
+
 @pharmacist_router.post("/add_drug_pharmacy")
 async def add_drug_pharmacy(drug: Drug, pharmacy_name: str):
     try:
-        result = await PharmacistDAO.drug_exists(drug,pharmacy_name)
+        result = await PharmacistDAO.drug_exists(drug, pharmacy_name)
         if result == 1:
-            return {"The drug you are trying to add already exists in the pharmacy"}
+            return {"message": "The drug you are trying to add already exists in the pharmacy"}
         
-        result = await PharmacistDAO.add_drug_pharmacy(drug,pharmacy_name)
-        return result
+        result = await PharmacistDAO.add_drug_pharmacy(drug, pharmacy_name)
+        return {"message": "Drug added successfully", "updated_pharmacy": custom_jsonable_encoder(result)}
+    except ValueError as e:
+        return {"error": str(e)}
     
 
     except Exception as e:
