@@ -9,10 +9,10 @@ class ChatBotCubit extends Cubit<ChatBotState>{
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   Future <dynamic> sendMessage(String message) async{
+    String chatBotResponse;
     try{
       emit(LoadingChatBotState());
-      dynamic response = (await _api.getChatbotApi().getResponseApiChatbotChatGet(query: message)) as String;
-      print("ChatBot $response");
+      var response = (await _api.getChatbotApi().getResponseApiChatbotChatGet(query: message))!.data;
       if(response ==null){
         emit(ErrorChatBotState());
       }
@@ -23,7 +23,6 @@ class ChatBotCubit extends Cubit<ChatBotState>{
     }  on DioException catch(e){
       if(e.response!.statusCode==401 && e.response!=null){
         emit(ErrorChatBotState());
-        print("CHATBOT ERROR $e");
       }
       else{
         emit(ErrorChatBotState());
