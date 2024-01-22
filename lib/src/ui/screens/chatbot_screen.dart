@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pharmaease/src/controller/chatbot_cubit.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
-import 'package:pharmaease/src/ui/widgets/typing_indicator.dart';
-import 'package:pharmaease_api/pharmaease_api.dart';
 import 'HomePage/map_page.dart';
-import 'package:pharmaease/src/ui/widgets/typing_indicator.dart';
+
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({super.key});
@@ -121,11 +119,10 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
 
                 }
                  else if (state is LoadingChatBotState){
-                  _messages.insert(0, TypingIndicator());
+                  _messages.insert(0, const TypingIndicator());
                    }
 
                 else if(state is ErrorChatBotState){
-                  print("ERROR CHATBOT");
                   setState(() {
                     _messages.removeAt(0);
                   });
@@ -142,7 +139,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                       return item;
                     }
                     else if(item is TypingIndicator){
-                      return TypingIndicator();
+                      return const TypingIndicator();
                     }
                   }
 
@@ -189,7 +186,8 @@ class ChatMessage extends StatelessWidget implements ChatItem {
   final MessageType messageType;
   final DateTime timestamp;
 
-   ChatMessage({
+  const ChatMessage({
+    super.key,
     required this.text,
     required this.messageType,
     required this.timestamp,
@@ -230,13 +228,14 @@ class ChatMessage extends StatelessWidget implements ChatItem {
 }
 
 class TypingIndicator extends StatelessWidget implements ChatItem{
+  const TypingIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
     return  Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox(width: 20.0, height: 20.0),
+        const SizedBox(width: 20.0, height: 20.0),
         DefaultTextStyle(
             style: const TextStyle(
               fontSize: 20.0,
@@ -245,7 +244,7 @@ class TypingIndicator extends StatelessWidget implements ChatItem{
             ),
             child: AnimatedTextKit(animatedTexts: [
               TyperAnimatedText(
-                  'Typing...', speed: Duration(milliseconds: 100)),
+                  'Typing...', speed: const Duration(milliseconds: 100)),
             ], repeatForever: true,))
       ],
     );

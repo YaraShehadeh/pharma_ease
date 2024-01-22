@@ -243,7 +243,8 @@ class _AllPharmaciesScreenState extends State<AllPharmaciesScreen> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Pharmacies holding ${widget.drugName}"),
+          toolbarHeight: 100,
+          title: Text("Pharmacies holding ${widget.drugName}",maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 20),),
           backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),

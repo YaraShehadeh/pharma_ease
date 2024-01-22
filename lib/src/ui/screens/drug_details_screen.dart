@@ -5,6 +5,7 @@ import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
 import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_list_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
+import 'package:pharmaease/src/ui/widgets/medical_interactions_dialogue.dart';
 
 
 class DrugDetailsScreen extends StatefulWidget {
@@ -288,7 +289,7 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                       Row(
                         children: [
                           Flexible(
                             child: Text(
@@ -296,9 +297,18 @@ class _DrugDetailsScreenState extends State<DrugDetailsScreen> {
                               style: TextStyle(color: Colors.grey, fontSize: 12),
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_forward_rounded,
-                            color: Color(0xFF199A8E),
+                          GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context){
+                                    return MedicalInteractionsPopUP(interactions:drug!.drugInteractions.toString());
+                              },);
+                            },
+                            child: Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Color(0xFF199A8E),
+                            ),
                           ),
                         ],
                       ),

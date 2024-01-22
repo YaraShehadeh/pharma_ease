@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmaease/src/controller/pharmacy_details_cubit.dart';
 import 'package:pharmaease/src/ui/screens/AllPharmaciesScreen.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map.dart';
-import 'package:pharmaease/src/ui/screens/HomePage/map_page.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 
 import 'package:pharmaease/src/controller/location_service.dart';
@@ -179,7 +177,7 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                             IconButton(
                                 onPressed: () {},
                                 icon: const Icon(Icons.access_time_outlined)),
-                            Text("${_travelTime} mins away",style: TextStyle(fontSize: width*0.03,fontWeight: FontWeight.w500,)),
+                            Text("${_travelTime} ${ _travelTime==1?" minute away": "minutes away"}",style: TextStyle(fontSize: width*0.03,fontWeight: FontWeight.w500,)),
                           ],
                         ),
 
