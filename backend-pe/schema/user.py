@@ -4,11 +4,7 @@ def UserEntity(item) -> dict:
         "name": str(item["name"]),
         "email": str(item["email"]),
         "password": str(item["password"]),
-        "dob": str(item["dob"]),
-        "location":{
-            "longitude": item["location"]["longitude"],
-            "latitude": item["location"]["latitude"]
-        },
+        "phoneNumber": str(item["phoneNumber"]),
         "allergies": {
             "type": item["allergies"]["type"]
         }

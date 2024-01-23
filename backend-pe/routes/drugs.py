@@ -181,14 +181,29 @@ async def get_drug_alternatives(drug_name: Optional[str] = None, drug_barcode: O
         drug_cursor = collection_name.find(query)
         try:
             drugs = await drug_cursor.to_list(length=None)
-            # Check if any drugs were found
             if not drugs:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given barcode")
             
-            # Process the drugs if found
             pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
             post_processed_drugs = filter_wrong_medicines(drug_barcode, pre_processed_drugs, "drugBarcode")
-            return post_processed_drugs
+
+            # Check if any drugs were found
+            if not post_processed_drugs:
+                return []
+
+            alternative_drug_details = []
+            
+            # Steps to return the drug alternatives
+            if post_processed_drugs[0].drugAlternatives:
+                for med in post_processed_drugs[0].drugAlternatives:
+                    details = await get_drug_by_name_or_barcode(med)
+                    if details:
+                        alternative_drug_details.append(details)
+            
+            if not alternative_drug_details:
+                return []
+            
+            return alternative_drug_details[0]
 
         except Exception as e:
             print(e)
@@ -196,7 +211,6 @@ async def get_drug_alternatives(drug_name: Optional[str] = None, drug_barcode: O
 
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Either drug name or drug barcode must be provided")
-
 
 
         
