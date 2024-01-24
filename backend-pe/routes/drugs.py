@@ -68,7 +68,7 @@ async def create_drug(drug: Drug):
 
 
 @drug.get("/drug_auth")
-async def get_drug_by_name_or_barcode_auth(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None, current_user: Optional[User] = None) -> list[Drug]:
+async def get_drug_by_name_or_barcode_auth(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None, current_user: User = Depends(get_current_user)) :
     
     if not current_user:
         raise HTTPException(status_code=401, detail="User is not authenticated")
@@ -80,19 +80,20 @@ async def get_drug_by_name_or_barcode_auth(drug_name: Optional[str] = None, drug
                 try:
                     # Check if any drugs were found
                     
-                    if not drugs:
-                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
-                    
                     # Process the drugs if found
                     pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
                     post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
                     if not post_processed_drugs:
                         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No drugs found after processing")
                     allergy_warning = None
+                    print(post_processed_drugs)
                     if current_user.allergies:
+                        print("there is an allergy")
                         for drug in post_processed_drugs:
-                            if any(allergy in drug["Allergies"] for allergy in current_user.allergies):
+                            # if any(allergy in drug.Allergies for allergy in current_user.allergies):
+                            if any(allergy.type in drug.Allergies for allergy in current_user.allergies):
                                 allergy_warning = "Warning: This drug contains ingredients you are allergic to."
+                                
                                 break  # Break the loop if any allergy is found
 
                         return {
@@ -103,7 +104,7 @@ async def get_drug_by_name_or_barcode_auth(drug_name: Optional[str] = None, drug
 
                 except Exception as e:
                     print(e)
-                    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+                    raise HTTPException(status_code=500, detail="Drug Not Found")
             else: 
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
 
@@ -147,8 +148,6 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
                 post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
                 if not post_processed_drugs:
                     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No drugs found after processing")
-                
-                allergy_warning = None
 
                 return post_processed_drugs
 
