@@ -1,12 +1,15 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status , Depends
 from config.database import drugs_collection, collection_name
 from schema.drugs import drugEntity, drugsEntity, filter_wrong_medicines
 from models.mlocation import Location
+from models.muser import User
 from typing import List, Optional, Union
 from models.mdrugs import Drug
 from dao.drug_dao import DrugDAO
 import re
 import requests
+from models.muser import User
+from utility.token_gen import get_current_user
 
 drug = APIRouter()
 
@@ -19,29 +22,66 @@ async def create_drug(drug: Drug):
     return {"id":str(drug_id)}
 
 
+@drug.get("/drug_auth")
+async def get_drug_by_name_or_barcode_auth(drug_name: Optional[str] = None, drug_barcode: Optional[str] = None, current_user: User) -> list[Drug]:
+    
+    if not current_user:
+        raise HTTPException(status_code=401, detail="User is not authenticated")
+    
+    else:
+        if drug_name:
+            drugs = await DrugDAO.get_drugs(drug_name= drug_name)
+            if drugs:  
+                try:
+                    # Check if any drugs were found
+                    
+                    if not drugs:
+                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
+                    
+                    # Process the drugs if found
+                    pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+                    post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
+                    if not post_processed_drugs:
+                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No drugs found after processing")
+                    allergy_warning = None
+                    if current_user.allergies:
+                        for drug in post_processed_drugs:
+                            if any(allergy in drug["Allergies"] for allergy in current_user.allergies):
+                                allergy_warning = "Warning: This drug contains ingredients you are allergic to."
+                                break  # Break the loop if any allergy is found
 
-# @drug.get("/drugname/{drug_name}")
-# async def get_drug_by_name(drug_name: Union[str,None], drug_barcode: Union[str,None]):
-#     regex_pattern = f"^{drug_name}.*"   
-#     # drug_cursor = drugs_collection.find({"drugName": {"$regex": regex_pattern, "$options": "i"}}) 
-#     drug_cursor = collection_name.find({"drugs.drugName": {"$regex": regex_pattern, "$options": "i"}}) 
-#     if drug_cursor:
-#         try: 
-#             drugs = await drug_cursor.to_list(length=None)
-#             if drugs:
-#                 # entity2 = [drug["drugs"] for drug in entity ]
-#                 pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]  
-#                 post_processed_drugs = filter_wrong_medicines(drug_name,pre_processed_drugs)
-#                 return post_processed_drugs
-#             else:
-#                 raise HTTPException(status_code=404, detail="Drug not found")
-#         except Exception as e:
-#             print(e)
-#     elif drug_barcode:
-#         query = {}
-#         query["drugs.drugBarcode"] = re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)
+                        return {
+                            "drugs": post_processed_drugs,
+                            "allergy_warning": allergy_warning
+                            }
+                    # return post_processed_drugs
 
+                except Exception as e:
+                    print(e)
+                    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+            else: 
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given name")
 
+        elif drug_barcode:
+            query = {"drugs.drugBarcode": re.compile(r'^{}$'.format(drug_barcode), re.IGNORECASE)}
+            drug_cursor = collection_name.find(query)
+            try:
+                drugs = await drug_cursor.to_list(length=None)
+                # Check if any drugs were found
+                if not drugs:
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Drug not found with the given barcode")
+                
+                # Process the drugs if found
+                pre_processed_drugs = [drugsEntity(drug["drugs"]) for drug in drugs]
+                post_processed_drugs = filter_wrong_medicines(drug_barcode, pre_processed_drugs, "drugBarcode")
+                return post_processed_drugs
+
+            except Exception as e:
+                print(e)
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server Error")
+
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Either drug name or drug barcode must be provided")
 
 
 
@@ -62,6 +102,9 @@ async def get_drug_by_name_or_barcode(drug_name: Optional[str] = None, drug_barc
                 post_processed_drugs = filter_wrong_medicines(drug_name, pre_processed_drugs,"drugName")
                 if not post_processed_drugs:
                     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No drugs found after processing")
+                
+                allergy_warning = None
+
                 return post_processed_drugs
 
             except Exception as e:

@@ -59,3 +59,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
     return access_token
+
+
+@user.post("/signout")
+async def sign_out(current_user: User = Depends(get_current_user)):
+    """
+    Endpoint to sign out the user.
+    """
+    
+    return {"message": "User signed out successfully"}
+

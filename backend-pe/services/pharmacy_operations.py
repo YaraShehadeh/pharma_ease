@@ -199,7 +199,7 @@ async def search_for_nearest_pharmacies_service(user_lat: float, user_lon: float
 
 async def add_drug_service(pharmacy_name, drug):
       # Fetch the pharmacy document by its name
-    pharmacy = await pharmacy_test.find_one({"pharmacyName": pharmacy_name})
+    pharmacy = await collection_name.find_one({"pharmacyName": pharmacy_name})
     if not pharmacy:
         raise HTTPException(status_code=404, detail="Pharmacy not found")
 
