@@ -68,7 +68,7 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
       ),
-      drawer: const Drawer(
+      drawer: Drawer(
         child: SideMenu(
           showSearchDrug: true,
         ),

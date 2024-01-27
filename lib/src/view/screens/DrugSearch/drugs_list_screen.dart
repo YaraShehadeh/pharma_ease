@@ -49,7 +49,7 @@ class _DrugsListScreenState extends State<DrugsListScreen> {
         surfaceTintColor: Colors.white,
 
       ),
-      drawer: const Drawer(
+      drawer: Drawer(
         child: SideMenu(showSearchDrug: false,),
       ),
       body: Stack(

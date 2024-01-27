@@ -14,6 +14,12 @@ class SignUpCubit extends Cubit<SignUpState> {
   final FocusNode phoneNumberFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
 
+  void clearForm(){
+    nameController.clear();
+    emailController.clear();
+    phoneNumberController.clear();
+    passwordController.clear();
+  }
 
   void togglePasswordVisibility() {
     if (state is SignUpFormUpdate) {

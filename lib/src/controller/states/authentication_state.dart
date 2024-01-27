@@ -13,26 +13,20 @@ class InitialAuthenticationState extends AuthenticationState {
 }
 
 class AuthenticatedState extends AuthenticationState {
-  const AuthenticatedState();
+  final String token;
+
+  const AuthenticatedState({required this.token});
 
   @override
   List<Object> get props => [];
 }
 
 class FailedAuthenticationState extends AuthenticationState {
-  final String error;
-  const FailedAuthenticationState({required this.error});
-
   @override
   List<Object> get props => [];
 }
 
 class UnauthenticatedState extends AuthenticationState {
-  @override
-  List<Object> get props => [];
-}
-
-class UnknownAuthenticationState extends AuthenticationState {
   @override
   List<Object> get props => [];
 }
@@ -43,6 +37,11 @@ class LoadingAuthenticationState extends AuthenticationState {
 }
 
 class AuthenticationTimedOutState extends AuthenticationState {
+  @override
+  List<Object> get props => [];
+}
+
+class AlreadyRegisteredState extends AuthenticationState {
   @override
   List<Object> get props => [];
 }

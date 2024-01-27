@@ -70,18 +70,17 @@ user = APIRouter(prefix= '/auth' , tags=['auth'])
 
 
 @user.post("/register")
-async def create_user(new_user: User):
+async def create_user(new_user: User) -> str:
 
     existing_user = await users_collection.find_one({"email": new_user.email})
     print(type(new_user))
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        return "User already registred"
 
     hashed_password = hash_password(new_user.password)
     await users_collection.insert_one({**new_user.dict(), "password": hashed_password})
     print(hash_password)
-    return {"message": "User created successfully."}
-    
+    return "User created successfully."
 
 
 

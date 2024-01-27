@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pharmaease/src/controller/cubits/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/all_pharmacies_cubit.dart';
@@ -15,11 +16,13 @@ import 'package:pharmaease_api/pharmaease_api.dart';
 void main() {
   final api = PharmaeaseApi(
     // base connection with FastAPI
-    basePathOverride: "http://192.168.100.12:8000",
+    basePathOverride: "http://10.0.2.2:8000",
   );
+  final storage = FlutterSecureStorage();
   final getIt = GetIt.instance;
   // create a single instance of the model project [Client side library]
   getIt.registerSingleton<PharmaeaseApi>(api);
+  getIt.registerSingleton<FlutterSecureStorage>(storage);
   runApp(const MyApp());
 }
 

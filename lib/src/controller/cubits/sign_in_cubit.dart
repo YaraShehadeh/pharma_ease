@@ -10,6 +10,11 @@ class SignInCubit extends Cubit<SignInState> {
   final passwordController = TextEditingController();
   final FocusNode passwordFocuseNode = FocusNode();
 
+  void clearForm(){
+    emailController.clear();
+    passwordController.clear();
+  }
+
   void togglePasswordVisibility() {
     if (state is SignInFormUpdate) {
       bool hidePassword = !(state as SignInFormUpdate).hidePassword;
