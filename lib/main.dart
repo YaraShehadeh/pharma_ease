@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pharmaease/src/controller/cubits/alternative_drugs_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/chatbot_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/all_holding_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/all_pharmacies_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/authentication_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/drug_details_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/nearest_pharmacies_at_startup_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/pharmacy_details_cubit.dart';
+import 'package:pharmaease/src/controller/cubits/searched_drug_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/sign_in_cubit.dart';
 import 'package:pharmaease/src/controller/cubits/sign_up_cubit.dart';
 import 'package:pharmaease/src/view/screens/OnboardingPages/launcher_screen.dart';
@@ -19,6 +23,8 @@ void main() {
     basePathOverride: "http://10.0.2.2:8000",
   );
   final storage = FlutterSecureStorage();
+  api.dio.options.connectTimeout = const Duration(seconds: 10);
+  api.dio.options.receiveTimeout = const Duration(seconds: 20);
   final getIt = GetIt.instance;
   // create a single instance of the model project [Client side library]
   getIt.registerSingleton<PharmaeaseApi>(api);
@@ -37,6 +43,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => AllPharmaciesCubit()),
         BlocProvider(create: (_) => NearestPharmaciesAtStartupCubit()),
         BlocProvider(create: (_) => PharmacyDetailsCubit()),
+        BlocProvider(create: (_) => AllHoldingPharmaciesCubit()),
+        BlocProvider(create: (_) => DrugDetailsCubit()),
+        BlocProvider(create: (_) => SearchedDrugCubit()),
+        BlocProvider(create: (_) => AlternativeDrugsCubit()),
+        BlocProvider(create: (_) => ChatBotCubit()),
         BlocProvider(create: (_) => AllHoldingPharmaciesCubit()),
         BlocProvider(create: (_) => SignInCubit()),
         BlocProvider(create: (_) => SignUpCubit()),

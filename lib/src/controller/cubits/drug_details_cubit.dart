@@ -13,8 +13,8 @@ class DrugDetailsCubit extends Cubit<DrugDetailsState> {
   Future<dynamic> getDrugDetails(String drugName) async {
     try {
       emit(LoadingDrugDetailsState());
-      Drug? result = (await _api
-          .getDrugApi().getDrugInfoApiDrugDrugDrugInformationGet(drugName: drugName))
+     Drug? result = (await _api
+              .getDrugApi().getDrugInfoApiDrugDrugDrugInformationGet(drugName: drugName))
           .data;
       if (result == null) {
         emit(ErrorDrugDetailsState());

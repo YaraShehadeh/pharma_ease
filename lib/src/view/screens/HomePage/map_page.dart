@@ -11,6 +11,7 @@ import 'package:pharmaease/src/view/theme/colors.dart';
 import 'package:pharmaease/src/view/widgets/search_bar_widget.dart';
 import 'package:pharmaease/src/view/widgets/side_menu.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 GlobalKey<MapState> mapKey = GlobalKey();
 
@@ -25,6 +26,9 @@ class _MapPageState extends State<MapPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<MapState> mapKey = GlobalKey();
   List<Pharmacy> activePharmacies = [];
+  Pharmacy? selectedPharmacy;
+  final AutoScrollController scrollController = AutoScrollController();
+  bool noHoldingPharmaciesFound= false;
 
   @override
   void initState() {
@@ -33,20 +37,20 @@ class _MapPageState extends State<MapPage> {
         .getUserLocationAutomaticallyAtStartup();
   }
 
-  // Timer(const Duration(seconds: 0), () {
-  //   _scaffoldKey.currentState!.showBottomSheet(
-  //     (context) => ClipRRect(
-  //       borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-  //       child: Container(
-  //         child: buildBottomSheetContent(context),
-  //       ),
-  //     ),
-  //     enableDrag: false,
-  //   );
-  // });
+  void onPharmacySelected(Pharmacy pharmacy) {
+    int index = activePharmacies.indexOf(pharmacy);
+    if (index != -1) {
+      setState(() {
+        selectedPharmacy = pharmacy;
+      });
+      scrollController.scrollToIndex(index * 100000000,
+          preferPosition: AutoScrollPosition.middle);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -81,16 +85,15 @@ class _MapPageState extends State<MapPage> {
               if (state is LoadedNearestPharmaciesAtStartupState) {
                 setState(() {
                   activePharmacies = state.pharmacies;
+                  noHoldingPharmaciesFound=false;
                 });
                 final _mapState = mapKey.currentState;
                 if (_mapState != null) {
                   _mapState.updateMarkers(activePharmacies);
-                } else {
-                  print("MapState not found");
                 }
               }
               if (state is LoadingNearestPharmaciesAtStartupState) {
-                print("LOADINGGGGG");
+                const Center(child: CircularProgressIndicator());
               }
               const Text("Loading");
             },
@@ -100,6 +103,7 @@ class _MapPageState extends State<MapPage> {
             if (state is LoadedAllHoldingPharmaciesState) {
               setState(() {
                 activePharmacies = state.pharmacies;
+                noHoldingPharmaciesFound=false;
               });
               final _mapState = mapKey.currentState;
               if (_mapState != null) {
@@ -108,7 +112,7 @@ class _MapPageState extends State<MapPage> {
             }
             if (state is NoHoldingPharmaciesFoundState) {
               setState(() {
-                activePharmacies = [];
+               noHoldingPharmaciesFound=true;
               });
               final _mapState = mapKey.currentState;
               if (_mapState != null) {
@@ -128,6 +132,7 @@ class _MapPageState extends State<MapPage> {
         children: <Widget>[
           Map(
             key: mapKey,
+            onPharmacySelected: onPharmacySelected,
           ),
           Positioned(
             bottom: 0,
@@ -138,26 +143,34 @@ class _MapPageState extends State<MapPage> {
               child: PharmaciesBottomSheet(),
             ),
           ),
-          const SearchBarWidget(),
+          const SearchBarWidget(
+            isFromSearchDrugScreen: false,
+          ),
         ],
       ),
     );
   }
 
   Widget PharmaciesBottomSheet() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      height: MediaQuery.of(context).size.height * 0.25,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      height: noHoldingPharmaciesFound? screenHeight*0.15: screenHeight * 0.25,
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                const Text(
-                  "Nearest Pharmacies",
+                 Text(
+                   noHoldingPharmaciesFound?"":"Nearest Pharmacies",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                const SizedBox(width: 120),
+                 SizedBox(width:noHoldingPharmaciesFound?screenWidth*0.5:screenWidth*0.234),
                 TextButton(
                   child: const Text("View all Pharmacies",
                       style: TextStyle(color: Colors.black)),
@@ -165,50 +178,63 @@ class _MapPageState extends State<MapPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AllPharmaciesScreen()));
+                            builder: (context) => AllPharmaciesScreen(drugName: null,)));
                   },
                 ),
               ],
             ),
           ),
           const SizedBox(height: 10),
+          noHoldingPharmaciesFound? Text("No pharmacies holding that drug",style: TextStyle(fontWeight: FontWeight.w500),):
           Expanded(
             child: ListView.builder(
               itemCount: activePharmacies.length,
               itemBuilder: (context, index) {
-                Pharmacy p = activePharmacies[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: pharmaGreenColor,
-                    ),
-                    child: ListTile(
-                        title: Text(
-                          p.pharmacyName.toString(),
-                          style: const TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        leading:
-                            const Icon(Icons.pin_drop, color: Colors.white),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PharmacyDetailsScreen(
-                                      showHomeIcon: false,
-                                      pharmacyName: p.pharmacyName.toString(),
-                                    )),
-                          );
-                        }),
-                  ),
-                );
+                Pharmacy pharmacy = activePharmacies[index];
+                bool isSelected =
+                    selectedPharmacy != null && selectedPharmacy == pharmacy;
+
+                return AutoScrollTag(
+                    key: ValueKey(index),
+                    controller: scrollController,
+                    index: index * 10,
+                    child: PharmacyListItem(pharmacy, isSelected));
               },
             ),
           ),
         ],
+      ),
+    );
+
+
+  }
+
+  Widget PharmacyListItem(Pharmacy p, bool isSelected) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          color: isSelected ? Colors.blue : pharmaGreenColor,
+        ),
+        child: ListTile(
+            title: Text(
+              p.pharmacyName.toString(),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            leading: const Icon(Icons.pin_drop, color: Colors.white),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PharmacyDetailsScreen(
+                          showHomeIcon: false,
+                          pharmacyName: p.pharmacyName.toString(),
+                        )),
+              );
+            }),
       ),
     );
   }

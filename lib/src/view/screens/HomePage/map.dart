@@ -7,7 +7,8 @@ import 'package:pharmaease/src/view/theme/colors.dart';
 import 'package:pharmaease_api/pharmaease_api.dart';
 
 class Map extends StatefulWidget {
-  const Map({super.key});
+ final  Function(Pharmacy)? onPharmacySelected;
+   Map({super.key,this.onPharmacySelected});
 
   @override
   State<Map> createState() => MapState();
@@ -19,6 +20,12 @@ class MapState extends State<Map> {
   CameraPosition(target: LatLng(31.963158, 35.930359), zoom: 10);
   late GoogleMapController _googleMapController;
   final location.Location _locationController = location.Location();
+
+
+
+  void _onMarkerTapped(Pharmacy pharmacy){
+    widget.onPharmacySelected?.call(pharmacy);
+  }
 
   @override
   void initState() {
@@ -50,6 +57,7 @@ class MapState extends State<Map> {
               //position: LatLng(32.0006533,35.8879917),
               infoWindow: InfoWindow(title: pharmacy.pharmacyName.toString()),
               icon: BitmapDescriptor.defaultMarker,
+              onTap: () => _onMarkerTapped(pharmacy),
             );
           }).toSet();
         }

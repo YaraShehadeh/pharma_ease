@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pharmaease/src/controller/cubits/authentication_cubit.dart';
 import 'package:pharmaease/src/controller/states/authentication_state.dart';
 import 'package:pharmaease/src/view/screens/DrugSearch/drugs_list_screen.dart';
+import 'package:pharmaease/src/view/screens/chatbot_screen.dart';
+import 'package:pharmaease/src/view/screens/help_screen.dart';
 import 'package:pharmaease/src/view/theme/colors.dart';
-import 'package:pharmaease/src/view/screens/OnboardingPages/onboarding_screen.dart';
 import 'package:pharmaease/src/view/screens/SignIn/sign_in_screen.dart';
 import 'package:pharmaease/src/view/widgets/sign_out_pop_up.dart';
 
 class SideMenu extends StatelessWidget {
   final bool showSearchDrug;
 
-  SideMenu({super.key, required this.showSearchDrug});
+  const SideMenu({super.key, required this.showSearchDrug});
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       builder: (context, state) {
         final authCubit = context.read<AuthenticationCubit>().getToken();
@@ -25,13 +26,12 @@ class SideMenu extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                // height: 120,
                 Container(
                   height: MediaQuery.of(context).size.height * 0.18,
                   child: DrawerHeader(
                     padding:
                         const EdgeInsetsDirectional.only(top: 30, start: 13),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: pharmaGreenColor,
                     ),
                     child: Flexible(
@@ -65,37 +65,39 @@ class SideMenu extends StatelessWidget {
                   ),
                 ),
                 if (showSearchDrug)
-                  const ListTile(
+                  ListTile(
                     leading:
-                        Icon(Icons.search, size: 28, color: Colors.white70),
+                    const Icon(Icons.search, size: 28, color: Colors.white70),
                     minLeadingWidth: 3,
-                    title: Text(
+                    title: const Text(
                       'Search Drug',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w400),
                     ),
-                    // onTap: () {
-                    //   Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) =>
-                    //         DrugsListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
-                    //   );
-                    // },
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DrugsListScreen(fromMapPage: true,)),
+                      );
+                    },
                   ),
-                const ListTile(
-                  leading: Icon(Icons.message_outlined,
-                      size: 28, color: Colors.white70),
+                ListTile(
+                  leading: const Icon(Icons.message_outlined, size: 28, color: Colors.white70),
                   minLeadingWidth: 3,
-                  title: Text(
+                  title: const Text(
                     'ChatBot',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.w400),
                   ),
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const ChatBotScreen()));
+                  },
                 ),
                 if (state is AuthenticatedState)
                   ListTile(
@@ -136,25 +138,28 @@ class SideMenu extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignInScreen(),
+                          builder: (context) => const SignInScreen(),
                         ),
                       );
                     },
                   ),
-                const SizedBox(
-                  height: 290,
+                SizedBox(
+                  height:screenHeight*0.5 ,
                 ),
-                const ListTile(
+                ListTile(
                   leading:
-                      Icon(Icons.help_outline, size: 28, color: Colors.white70),
+                  const Icon(Icons.help_outline, size: 28, color: Colors.white70),
                   minLeadingWidth: 3,
-                  title: Text(
+                  title: const Text(
                     'Help',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.w400),
                   ),
+                  onTap: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const HelpScreen()));
+                  },
                 ),
               ],
             ),
