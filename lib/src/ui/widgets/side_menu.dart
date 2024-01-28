@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pharmaease/src/ui/screens/MedicineSearch/drugs_list_screen.dart';
 import 'package:pharmaease/src/ui/screens/chatbot_screen.dart';
+import 'package:pharmaease/src/ui/screens/help_screen.dart';
 import 'package:pharmaease/src/ui/theme/colors.dart';
 import 'package:pharmaease/src/ui/screens/onboarding_screen.dart';
 import 'package:pharmaease/src/ui/screens/sign_in_screen.dart';
@@ -14,6 +15,8 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
       return Drawer(
       child: Container(
         color: pharmaGreenColor,
@@ -22,7 +25,7 @@ class SideMenu extends StatelessWidget {
           children: [
             // height: 120,
             Container(
-              height: MediaQuery.of(context).size.height * 0.18,
+              height: screenHeight* 0.18,
               child: DrawerHeader(
                 padding: const EdgeInsetsDirectional.only(top: 30, start: 13),
                 decoration: BoxDecoration(
@@ -75,7 +78,7 @@ class SideMenu extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                        DrugsListScreen()), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
+                        DrugsListScreen(fromMapPage: true,)), // Replace 'SearchMedicineScreen' with the actual class for your search medicine screen
                   );
                 },
               ),
@@ -83,7 +86,7 @@ class SideMenu extends StatelessWidget {
               leading:
                   Icon(Icons.message_outlined, size: 28, color: Colors.white70),
               minLeadingWidth: 3,
-              title: Text(
+              title: const Text(
                 'ChatBot',
                 style: TextStyle(
                     color: Colors.white,
@@ -93,18 +96,6 @@ class SideMenu extends StatelessWidget {
                onTap: (){
                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ChatBotScreen()));
                },
-            ),
-            const ListTile(
-              leading:
-                  Icon(Icons.message_outlined, size: 28, color: Colors.white70),
-              minLeadingWidth: 3,
-              title: Text(
-                'Request Restock',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400),
-              ),
             ),
             const ListTile(
               leading: Icon(Icons.person, size: 28, color: Colors.white70),
@@ -119,10 +110,10 @@ class SideMenu extends StatelessWidget {
               // ADD ROUTING TO SIGN IN PAGE
               // onTap: Navigator.pushReplacement(context, OnBoardingScreen()),
             ),
-            const SizedBox(
-              height: 290,
+             SizedBox(
+              height:screenHeight*0.5 ,
             ),
-            const ListTile(
+             ListTile(
               leading:
                   Icon(Icons.help_outline, size: 28, color: Colors.white70),
               minLeadingWidth: 3,
@@ -133,6 +124,9 @@ class SideMenu extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w400),
               ),
+               onTap: (){
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HelpScreen()));
+               },
             ),
           ],
         ),

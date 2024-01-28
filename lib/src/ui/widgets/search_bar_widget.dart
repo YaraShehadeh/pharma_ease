@@ -33,19 +33,25 @@ class _SearchBarState extends State<SearchBarWidget> {
     String searchedDrug=_searchController.text;
     if(searchedDrug.isNotEmpty){
       context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,"");
-      context.read()<AlternativeDrugsCubit>().getSearchedDrug(searchedDrug,"");
+      context.read<AlternativeDrugsCubit>().getSearchedDrug(searchedDrug,"");
+    }
+    if(searchedDrug.isEmpty || searchedDrug==null ){
+      context.read<SearchedDrugCubit>().emit(InitialSearchedDrugState());
+      context.read<AlternativeDrugsCubit>().emit(InitialAlternativeDrugsState());
+
     }
   }
-  void sendBarcodeOrName(
-      String? barcode, BuiltList<String>? drugName) {
+  void sendBarcodeOrName(String? barcode, BuiltList<String>? drugName) {
     if (widget.isFromSearchDrugScreen) {
-      print("Searched DRUG");
-      print(_searchController.text);
       String searchedDrug=_searchController.text;
-      print("!!!!!! $searchedDrug");
-      if(searchedDrug.isNotEmpty || barcode!=null){
+      if(searchedDrug.isNotEmpty ){
       context.read<SearchedDrugCubit>().getSearchedDrug(searchedDrug,barcode);
       context.read<AlternativeDrugsCubit>().getSearchedDrug(searchedDrug,barcode);
+      }
+      else if (barcode !=null && barcode.isNotEmpty){
+        context.read<SearchedDrugCubit>().getSearchedDrug("",barcode);
+        context.read<AlternativeDrugsCubit>().getSearchedDrug("",barcode);
+
       }
     } else {
       if (_searchController.text.isEmpty && barcode == null) {
@@ -61,6 +67,11 @@ class _SearchBarState extends State<SearchBarWidget> {
   }
 
   Future<void> scanBarcode(BuildContext context) async {
+    if(_searchController.text.isNotEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Please clear the search field before scanning the drug barcode")));
+    return;
+    }
     try {
       String scanningResult = await FlutterBarcodeScanner.scanBarcode(
         "#199A8E",

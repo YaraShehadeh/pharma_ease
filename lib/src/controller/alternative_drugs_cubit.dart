@@ -10,8 +10,6 @@ class AlternativeDrugsCubit extends Cubit<AlternativeDrugsState> {
   final PharmaeaseApi _api = GetIt.I.get<PharmaeaseApi>();
 
   List<Drug>? drugs=[];
-  // Drug ?drug;
-
 
   Future<dynamic> getSearchedDrug(String? drugName,String? drugBarcode) async {
     try {
@@ -34,6 +32,10 @@ class AlternativeDrugsCubit extends Cubit<AlternativeDrugsState> {
         print("Errorrrrr: $e");
         throw Exception("Drug not found");
       }
+      if(e.response!.statusCode==404){
+        emit(IncorrectAlternativeSearchedDrugState());
+        print("INCORRECT DRUG SEARCHED");
+      }
       print("ERRORRR $e");
     }
   }
@@ -51,3 +53,4 @@ class LoadedAlternativeDrugsState extends AlternativeDrugsState {
 }
 
 class ErrorAlternativeDrugsState extends AlternativeDrugsState {}
+class IncorrectAlternativeSearchedDrugState extends AlternativeDrugsState{}

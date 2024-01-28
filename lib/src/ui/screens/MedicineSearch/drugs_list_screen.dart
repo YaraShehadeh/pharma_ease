@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pharmaease/src/controller/alternative_drugs_cubit.dart';
 import 'package:pharmaease/src/controller/searched_drug_cubit.dart';
 import 'package:pharmaease/src/ui/screens/MedicineSearch/drug_card.dart';
@@ -11,28 +12,46 @@ import 'package:pharmaease_api/pharmaease_api.dart';
 
 class DrugsListScreen extends StatefulWidget {
   static const String routeName = '/medicine_list';
-
-  DrugsListScreen({super.key});
+  bool fromMapPage=false;
+  DrugsListScreen({super.key,required this.fromMapPage});
 
   @override
   State<DrugsListScreen> createState() => _DrugsListScreenState();
 }
 
-class _DrugsListScreenState extends State<DrugsListScreen>  with SingleTickerProviderStateMixin{
+class _DrugsListScreenState extends State<DrugsListScreen>  with TickerProviderStateMixin{
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
+  late final AnimationController _controller;
   bool hasSearched = false;
   int currentTabIndex=0;
   List<Drug>? drugs;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    drugs=[];
+    if(widget.fromMapPage ){
+    context.read<SearchedDrugCubit>().emit(InitialSearchedDrugState());
+    context.read<AlternativeDrugsCubit>().emit(InitialAlternativeDrugsState());}
+    _controller= AnimationController(vsync: this)
+      ..addStatusListener((status) {
+        if(status == AnimationStatus.completed){
+          _controller.repeat();
+        }
+      });
   }
   @override
   void dispose(){
     _tabController.dispose();
+    _controller.dispose();
     super.dispose();
+  }
+  void clearData(){
+    setState(() {
+      drugs=[];
+    });
   }
 
   @override
@@ -61,7 +80,10 @@ class _DrugsListScreenState extends State<DrugsListScreen>  with SingleTickerPro
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => MapPage()));
-              },
+                setState(() {
+                  drugs=[];
+                });
+                },
             ),
           ],
           backgroundColor: Colors.white,
@@ -92,6 +114,22 @@ class _DrugsListScreenState extends State<DrugsListScreen>  with SingleTickerPro
                       else if(state is ErrorSearchedDrugState){
                         return Text("Drug does not exist");
                       }
+                      else if(state is IncorrectSearchedDrugState){
+                        return Container(
+                          height:40,
+                          child:
+                            Lottie.asset(
+                               "assets/animations/no_drugs_found_animation.json",
+                                controller:_controller,
+                                onLoaded:(composition){
+                                 _controller
+                                     ..duration=composition.duration
+                                     ..forward();
+                                }
+                              ),
+
+                        );
+                      }
                       return const Center(child:Text("No drugs searched"));
                     }, listener: (context, state) {
                       const Text("Loading");
@@ -107,7 +145,23 @@ class _DrugsListScreenState extends State<DrugsListScreen>  with SingleTickerPro
                             else if(state is ErrorAlternativeDrugsState){
                               return Text("No alternative drugs found");
                             }
-                            return const Center(child:Text("No drugs searched!"));
+                            else if(state is IncorrectAlternativeSearchedDrugState){
+                              return Container(
+                                height:40,
+                                child:
+                                Lottie.asset(
+                                    "assets/animations/no_drugs_found_animation.json",
+                                    controller:_controller,
+                                    onLoaded:(composition){
+                                      _controller
+                                        ..duration=composition.duration
+                                        ..forward();
+                                    }
+                                ),
+
+                              );
+                            }
+                            return const Center(child:Text("No drugs searched"));
                           }, listener: (context, state) {
                         const Text("Loading");
                       }),
@@ -124,7 +178,7 @@ class _DrugsListScreenState extends State<DrugsListScreen>  with SingleTickerPro
                         indicatorColor: pharmaGreenColor,
                         labelColor: pharmaGreenColor,
                         unselectedLabelColor: Colors.grey,
-                        tabs: [
+                        tabs: const [
                           Tab(
                             text: 'Drugs',
                           ),

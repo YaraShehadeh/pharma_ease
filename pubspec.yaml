@@ -59,6 +59,7 @@ dependencies:
   material_design_icons_flutter: ^7.0.7296
   font_awesome_flutter: ^10.6.0
   animated_text_kit: ^4.2.2
+  lottie: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +89,7 @@ flutter:
   assets:
     - assets/svg/
     - assets/images/
+    - assets/animations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

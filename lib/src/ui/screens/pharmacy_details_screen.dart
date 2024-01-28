@@ -11,32 +11,39 @@ class PharmacyDetailsScreen extends StatefulWidget {
   bool showHomeIcon = false;
   String pharmacyName;
   String? searchedDrug;
+
   //final GlobalKey<MapState> mapKey;
 
   PharmacyDetailsScreen(
-      {super.key, required this.showHomeIcon, required this.pharmacyName, this.searchedDrug});
+      {super.key,
+      required this.showHomeIcon,
+      required this.pharmacyName,
+      this.searchedDrug});
 
   @override
   State<StatefulWidget> createState() => _PharmacyDetailsScreenState();
 }
 
 class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
-
   double? _distanceToPharmacy;
   int? _travelTime;
   final LocationService _locationService = LocationService();
-  final PharmacyService _pharmacyService= PharmacyService();
+  final PharmacyService _pharmacyService = PharmacyService();
+
 
 
   @override
   void initState() {
     super.initState();
-    _calculateAndDisplayDistance();
-    Future.delayed(Duration.zero, () {
-      context
-          .read<PharmacyDetailsCubit>()
-          .getPharmacyInformation(widget.pharmacyName);
+
+      _calculateAndDisplayDistance();
+      Future.delayed(Duration.zero, () {
+        context
+            .read<PharmacyDetailsCubit>()
+            .getPharmacyInformation(widget.pharmacyName);
+
     });
+
   }
 
   void _calculateAndDisplayDistance() async {
@@ -53,36 +60,49 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
         setState(() {
           _distanceToPharmacy =
               distance / 1000; //converts distance to Kilometers
-          _travelTime = _pharmacyService.calculateTravelTime(_distanceToPharmacy!, 5);
+          _travelTime =
+              _pharmacyService.calculateTravelTime(_distanceToPharmacy!, 5);
         });
       }
     }
   }
 
+  String formatTravelTime(int? minutes) {
+    if (minutes == null) return '';
+    if (minutes < 60) {
+      return '$minutes minute${minutes == 1 ? '' : 's'}';
+    } else {
+      int hours = minutes ~/ 60;
+      int remainingMinutes = minutes % 60;
+      return '${hours} hour${hours == 1 ? '' : 's'}${remainingMinutes > 0 ? ' and $remainingMinutes minute${remainingMinutes == 1 ? '' : 's'}' : ''}';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    double width= MediaQuery.of(context).size.width;
-    double height= MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              if (widget.showHomeIcon && widget.searchedDrug==null) {
+              if (widget.showHomeIcon && widget.searchedDrug == null) {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>  AllPharmaciesScreen()));
-              }
-              else if(widget.showHomeIcon==false && widget.searchedDrug!=null) {
+                        builder: (context) => AllPharmaciesScreen()));
+              } else if (widget.showHomeIcon == false &&
+                  widget.searchedDrug != null) {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>  AllPharmaciesScreen(drugName: widget.searchedDrug,)));
-              }
-              else {
+                        builder: (context) => AllPharmaciesScreen(
+                              drugName: widget.searchedDrug,
+                            )));
+              } else {
                 Navigator.pop(context);
               }
             },
@@ -107,82 +127,115 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
               final pharmacy = state.pharmacy;
               if (pharmacy != null) {
                 return Padding(
-                  padding:  EdgeInsets.all(width*0.05),
+                  padding: EdgeInsets.all(screenWidth * 0.05),
                   child: Column(
                     children: [
                       Text(pharmacy!.pharmacyName.toString(),
-                          style:  TextStyle(
-                            fontSize: width*0.06,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.06,
                           )),
-                       SizedBox(height: height*0.03),
+                      SizedBox(height: screenHeight * 0.03),
                       const Image(
                         image: AssetImage('assets/images/aster.png'),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              if(pharmacy.location!=null){
-                                _pharmacyService.launchGoogleMaps(
-                                double.parse(pharmacy.location.latitude.toString()),
-                                    double.parse(pharmacy.location.longitude.toString()));
-                              }
-                            },
-                            child: const Row(
-                              children: [
-                                const Icon(
-                                  Icons.pin_drop,
-                                  color: pharmaGreenColor,
-                                ),
-                                SizedBox(width: 5,),
-                                Text("Directions"),
-                              ],
-                            ),
-                          ),
-
-                          GestureDetector(
-                            onTap: () {
-                              _pharmacyService.launchPhone(
-                                  pharmacy.pharmacyPhoneNumber.toString());
-                            },
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.call_outlined,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                _pharmacyService.launchPhone(
+                                    pharmacy.pharmacyPhoneNumber.toString());
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.phone,
                                     color: pharmaGreenColor,
                                   ),
-                                ),
-                                const Text("Call"),
-                              ],
+                                  SizedBox(
+                                    width: screenWidth * 0.02,
+                                  ),
+                                  Text(
+                                    "Call",
+                                    style: TextStyle(
+                                        fontSize: screenWidth * 0.03,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              width: screenWidth * 0.04,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (pharmacy.location != null) {
+                                  _pharmacyService.launchGoogleMaps(
+                                      double.parse(
+                                          pharmacy.location.latitude.toString()),
+                                      double.parse(pharmacy.location.longitude
+                                          .toString()));
+                                }
+                              },
 
-                        ],
-                      ),
-
-                      Row(children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.location_on_outlined),
-                        ),
-                        if (_distanceToPharmacy != null && _travelTime != null)
-                          Text(
-                              "${_distanceToPharmacy!.toStringAsFixed(2)} KM away from you",style: TextStyle(fontSize: width*0.03,fontWeight: FontWeight.w500,)),
-                      ]),
-                        Row(
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.access_time_outlined)),
-                            Text("${_travelTime} ${ _travelTime==1?" minute away": "minutes away"}",style: TextStyle(fontSize: width*0.03,fontWeight: FontWeight.w500,)),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.pin_drop,
+                                    color: pharmaGreenColor,
+                                  ),
+                                  SizedBox(
+                                    width: screenWidth * 0.01,
+                                  ),
+                                  Text(
+                                    "Directions",
+                                    style: TextStyle(
+                                        fontSize: screenWidth * 0.03,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-
-
-
+                      ),
+                      Visibility(
+                        visible:
+                            _distanceToPharmacy != null && _travelTime != null,
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.location_on_outlined),
+                              ),
+                              if (_distanceToPharmacy != null &&
+                                  _travelTime != null)
+                                Text(
+                                    "${_distanceToPharmacy!.toStringAsFixed(2)} KM away from you",
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.03,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                            ]),
+                            Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {},
+                                    icon:
+                                        const Icon(Icons.access_time_outlined)),
+                                Text(formatTravelTime(_travelTime),
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.03,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       const Divider(
                         thickness: 0.6,
                         color: Colors.black,
@@ -196,13 +249,16 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                             color: const Color.fromRGBO(25, 154, 142, 100),
                             iconSize: 30,
                           ),
-                           Text(
+                          Text(
                             "Address",
-                              style: TextStyle(fontSize: width*0.04,fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
-                      Text(pharmacy.pharmacyArea.toString(),style: TextStyle(fontSize: width*0.04)),
+                      Text(pharmacy.pharmacyArea.toString(),
+                          style: TextStyle(fontSize: screenWidth * 0.04)),
                       const Divider(thickness: 0.6, color: Colors.black),
                       Row(
                         children: [
@@ -212,13 +268,18 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
                             onPressed: () {},
                             iconSize: 26,
                           ),
-                           Text(
+                          Text(
                             "Description",
-                            style: TextStyle(fontSize: width*0.04,fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                fontSize: screenWidth * 0.04,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
-                      Text(pharmacy.pharmacyDescription.toString(),style: TextStyle(fontSize: width*0.03,)),
+                      Text(pharmacy.pharmacyDescription.toString(),
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.03,
+                          )),
                     ],
                   ),
                 );
@@ -228,7 +289,8 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
             } else if (state is LoadingPharmacyDetailsState) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is ErrorPharmacyDetailsState) {
-              return const Center(child: Text("Error loading pharmacy details"));
+              return const Center(
+                  child: Text("Error loading pharmacy details"));
             } else {
               return const Center(child: Text("No data"));
             }
@@ -239,5 +301,3 @@ class _PharmacyDetailsScreenState extends State<PharmacyDetailsScreen> {
         ));
   }
 }
-
-

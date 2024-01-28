@@ -24,7 +24,8 @@ class SearchedDrugCubit extends Cubit<SearchedDrugState> {
       print(result);
       if (result == null) {
         emit(ErrorSearchedDrugState());
-      } else {
+      }
+      else {
         drugs = result;
         emit(LoadedSearchedDrugState(drugs));
       }
@@ -33,6 +34,9 @@ class SearchedDrugCubit extends Cubit<SearchedDrugState> {
         emit(ErrorSearchedDrugState());
         print("Errorrrrr: $e");
         throw Exception("Drug not found");
+      }if(e.response!.statusCode==404){
+        emit(IncorrectSearchedDrugState());
+        print("INCORRECT DRUG SEARCHED");
       }
       print("ERRORRR $e");
     }
@@ -51,3 +55,4 @@ class LoadedSearchedDrugState extends SearchedDrugState {
 }
 
 class ErrorSearchedDrugState extends SearchedDrugState {}
+class IncorrectSearchedDrugState extends SearchedDrugState{}

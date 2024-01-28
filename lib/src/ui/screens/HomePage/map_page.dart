@@ -26,6 +26,7 @@ class _MapPageState extends State<MapPage> {
   List<Pharmacy> activePharmacies = [];
   Pharmacy? selectedPharmacy;
   final AutoScrollController scrollController = AutoScrollController();
+  bool noHoldingPharmaciesFound= false;
 
   @override
   void initState() {
@@ -83,6 +84,7 @@ class _MapPageState extends State<MapPage> {
               if (state is LoadedNearestPharmaciesAtStartupState) {
                 setState(() {
                   activePharmacies = state.pharmacies;
+                  noHoldingPharmaciesFound=false;
                 });
                 final _mapState = mapKey.currentState;
                 if (_mapState != null) {
@@ -100,6 +102,7 @@ class _MapPageState extends State<MapPage> {
             if (state is LoadedAllHoldingPharmaciesState) {
               setState(() {
                 activePharmacies = state.pharmacies;
+                noHoldingPharmaciesFound=false;
               });
               final _mapState = mapKey.currentState;
               if (_mapState != null) {
@@ -108,7 +111,7 @@ class _MapPageState extends State<MapPage> {
             }
             if (state is NoHoldingPharmaciesFoundState) {
               setState(() {
-                activePharmacies = [];
+               noHoldingPharmaciesFound=true;
               });
               final _mapState = mapKey.currentState;
               if (_mapState != null) {
@@ -150,19 +153,23 @@ class _MapPageState extends State<MapPage> {
   Widget PharmaciesBottomSheet() {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      height: screenHeight * 0.25,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      height: noHoldingPharmaciesFound? screenHeight*0.15: screenHeight * 0.25,
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                const Text(
-                  "Nearest Pharmacies",
+                 Text(
+                   noHoldingPharmaciesFound?"":"Nearest Pharmacies",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                 SizedBox(width:screenWidth*0.234),
+                 SizedBox(width:noHoldingPharmaciesFound?screenWidth*0.5:screenWidth*0.234),
                 TextButton(
                   child: const Text("View all Pharmacies",
                       style: TextStyle(color: Colors.black)),
@@ -177,6 +184,7 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
           const SizedBox(height: 10),
+          noHoldingPharmaciesFound? Text("No pharmacies holding that drug",style: TextStyle(fontWeight: FontWeight.w500),):
           Expanded(
             child: ListView.builder(
               itemCount: activePharmacies.length,
@@ -196,6 +204,8 @@ class _MapPageState extends State<MapPage> {
         ],
       ),
     );
+
+
   }
 
   Widget PharmacyListItem(Pharmacy p, bool isSelected) {
