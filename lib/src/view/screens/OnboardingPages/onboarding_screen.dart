@@ -163,10 +163,6 @@ final List<OnBoard> onboarding_data = [
     image: "assets/images/onboarding_image_3.png",
     description: "Look for an alternative drug ",
   ),
-  OnBoard(
-    image: "assets/images/onboarding_image_4.png",
-    description: "Request for a stock up ",
-  )
 ];
 
 class OnBoardContent extends StatelessWidget {
