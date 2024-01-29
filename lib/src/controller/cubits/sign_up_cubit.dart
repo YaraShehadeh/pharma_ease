@@ -20,11 +20,11 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   final List<String> allergyOptions = [
     'None',
-    'Peanuts',
-    'Milk',
-    'Eggs',
-    'Shellfish',
-    'Soy',
+    'Pencillin',
+    'Sulfa Drugs',
+    'Iodine',
+    'Aspirin',
+    'NSAIDs',
   ];
 
   void clearForm(){
@@ -32,6 +32,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     emailController.clear();
     phoneNumberController.clear();
     passwordController.clear();
+    allergiesController.clear();
   }
 
   void selectAllergy(String? allergy) {

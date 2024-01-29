@@ -26,7 +26,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(AlreadyRegisteredState());
       }
       if (response == "User created successfully.") {
-        emit(UnauthenticatedState());
+        emit(SuccessfullyRegisteredState());
       }
     } catch (e) {
       emit(FailedAuthenticationState());
@@ -53,11 +53,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<String?> getToken() async {
     String? token = await _secureStorage.read(key: USER_TOKEN_KEY);
     if(token == null || token.isEmpty) {
-      print("token falseee");
       emit(UnauthenticatedState());
     }
     else {
-      print("token trueee");
       emit(AuthenticatedState(token: token));
       return token;
     }

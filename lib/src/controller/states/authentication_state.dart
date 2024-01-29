@@ -45,3 +45,8 @@ class AlreadyRegisteredState extends AuthenticationState {
   @override
   List<Object> get props => [];
 }
+
+class SuccessfullyRegisteredState extends AuthenticationState {
+  @override
+  List<Object> get props => [];
+}
