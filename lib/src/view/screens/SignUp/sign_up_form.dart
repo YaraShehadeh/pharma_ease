@@ -159,15 +159,15 @@ class _SignUpFormState extends State<SignUpForm> with RouteAware {
           DropdownButtonFormField<String>(
             value: cubit.selectedAllergy,
             decoration: const InputDecoration(
-                hintText: 'Your Allergy',
-                prefixIcon: Icon(Icons.medication_outlined),
-                prefixIconColor: pharmaGreenColor,
-                focusColor: pharmaGreenColor),
+              hintText: 'Your Allergy',
+              prefixIcon: Icon(Icons.medication_outlined),
+              prefixIconColor: pharmaGreenColor,
+              focusColor: pharmaGreenColor,
+            ),
             items: cubit.allergyOptions.map((String allergy) {
               return DropdownMenuItem<String>(
                 value: allergy,
-                child: Text(allergy,
-                    style: const TextStyle(color: Colors.black54)),
+                child: Text(allergy, style: const TextStyle(color: Colors.black54)),
               );
             }).toList(),
             onChanged: (String? value) {
@@ -191,7 +191,6 @@ class _SignUpFormState extends State<SignUpForm> with RouteAware {
                   cubit.emailController,
                   cubit.phoneNumberController,
                   cubit.passwordController,
-                  cubit.allergiesController,
                 );
                 context.read<AuthenticationCubit>().stream.listen(
                   (state) {
@@ -222,23 +221,18 @@ class _SignUpFormState extends State<SignUpForm> with RouteAware {
       TextEditingController emailController,
       TextEditingController phoneNumberController,
       TextEditingController passwordController,
-      TextEditingController allergiesController) {
+      ) {
     if (formKey.currentState!.validate()) {
-      final allergiesText = allergiesController.text;
-      final allergyList = allergiesText
-          .split(',')
-          .map((allergy) => allergy.trim())
-          .where((allergy) => allergy.isNotEmpty)
-          .toList();
       var user = User((b) => b
         ..name = nameController.value.text
         ..email = emailController.value.text
         ..password = passwordController.value.text
-        ..allergies = ListBuilder<Allergie>(
-          allergyList.map((allergy) => Allergie()),
-        ));
+        ..allergies = cubit.selectedAllergy != null? ListBuilder<Allergie>([Allergie(type: cubit.selectedAllergy!)])
+        : ListBuilder<Allergie>(),
+        );
       authCubit.signUp(user);
       TextInput.finishAutofillContext();
     }
   }
 }
+

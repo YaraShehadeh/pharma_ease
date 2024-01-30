@@ -10,7 +10,6 @@ class SignUpCubit extends Cubit<SignUpState> {
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
-  final allergiesController = TextEditingController();
   final FocusNode emailFocusNode = FocusNode();
   final FocusNode phoneNumberFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
@@ -32,7 +31,6 @@ class SignUpCubit extends Cubit<SignUpState> {
     emailController.clear();
     phoneNumberController.clear();
     passwordController.clear();
-    allergiesController.clear();
   }
 
   void selectAllergy(String? allergy) {

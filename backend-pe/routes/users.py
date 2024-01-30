@@ -65,6 +65,7 @@ from config.database import users_collection
 from utility.hash_util import hash_password, verify_password
 from utility.token_gen import create_access_token, get_current_user
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Depends
 
 user = APIRouter(prefix= '/auth' , tags=['auth'])
 
@@ -114,3 +115,10 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user["email"]}, expires_delta=access_token_expires
     )
     return access_token
+
+@user.get("/user_details")
+async def get_user_details(token: str) -> User:
+    current_user = await get_current_user(token)
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return current_user
